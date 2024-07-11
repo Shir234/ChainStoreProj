@@ -1,2 +1,8 @@
 ﻿  main.cpp
-  ChainStoreProj.vcxproj -> C:\CPP_Course\ChainStoreProj\x64\Debug\ChainStoreProj.exe
+  OnlineBranch.cpp
+C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\OnlineBranch.cpp(62,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  OnlineRegularBranch.cpp
+  RegularBranch.cpp
+C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\RegularBranch.cpp(114,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+  ChainStoreProj.vcxproj -> C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\x64\Debug\ChainStoreProj.exe

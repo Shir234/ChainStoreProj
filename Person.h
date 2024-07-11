@@ -6,20 +6,29 @@ private:
     char* name;
     int age;
 
-public:
-    Person(const char* name, int age = 0); // Constructor
+    int id; // Unique ID for each Person
+    static int nextId; // Static variable to track next available ID
+
     Person(const Person& other); // Copy constructor
-    Person(Person&& other) ; // Move constructor
-    virtual ~Person(); // Destructor
-
     Person& operator=(const Person& other); // Copy assignment operator
-    Person& operator=(Person&& other) ; // Move assignment operator
 
-    const char* getName() const; // Getter for name
-    void setName(const char* name); // Setter for name
+public:
+    Person(const char* name, int age); // Constructor
+    Person(Person&& other) = delete; // Move constructor
+    ~Person(); // Destructor
 
-    int getAge() const; // Getter for age
-    void setAge(int age); // Setter for age
+    Person& operator=(Person&& other) = delete; // Move assignment operator
+
+    const char* getName() const { return name; } // Getter for name
+    bool setName(const char* name); // Setter for name
+
+    int getAge() const { return age; } // Getter for age
+    bool setAge(int age); // Setter for age
+    int getId() const { return id; }   // Getter for ID
+
+    friend ostream& operator<<(ostream& os, const Person& person); // Output operator
+    friend class Employee;
+
 };
 
 #endif // PERSON_H

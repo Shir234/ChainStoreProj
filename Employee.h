@@ -6,18 +6,21 @@
 class Employee : public Person {
 private:
     char* position;
-
-public:
-    Employee(const char* name = "", int age = 0, const char* position = ""); // Constructor
     Employee(const Employee& other); // Copy constructor
-    Employee(Employee&& other) noexcept; // Move constructor
-    virtual ~Employee(); // Destructor
-
     Employee& operator=(const Employee& other); // Copy assignment operator
-    Employee& operator=(Employee&& other) noexcept; // Move assignment operator
+public:
+    Employee(const char* name, int age, const char* position); // Constructor
+    Employee(Employee&& other) = delete; // Move constructor
+    ~Employee(); // Destructor
 
-    const char* getPosition() const; // Getter for position
-    void setPosition(const char* position); // Setter for position
+    Employee& operator=(Employee&& other) = delete; // Move assignment operator
+
+    const char* getPosition() const;// Getter for position
+    bool setPosition(const char* position); // Setter for position
+    
+    bool operator==(const Employee& other) const;
+    friend ostream& operator<<(ostream& os, const Employee& employee); // Output operator
+    friend class RegularBranch;
 };
 
 #endif // EMPLOYEE_H

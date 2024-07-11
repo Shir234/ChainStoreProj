@@ -9,14 +9,14 @@ using namespace std;
 // Default c'tor
 ChainStore::ChainStore(const char* name, int maxNumBranches) : maxNumBranches(maxNumBranches), numBranches(0)
 {
-    this->name = strdup(name);      //later: check if not null etc...
-    branches = new Branch[maxNumBranches];
+    setName(name);      
+    branches = new Branch*[maxNumBranches];
 }
 
 // copy c'tor
 ChainStore::ChainStore(const ChainStore& other) : name(nullptr), branches(nullptr), numBranches(0)
 {
-    *this = other;  //ca; operator=
+    *this = other;  // operator=
 }
 
 // move c'tor
@@ -29,6 +29,8 @@ ChainStore::ChainStore(ChainStore&& other) : name(nullptr), branches(nullptr), n
 ChainStore::~ChainStore()
 {
     delete[] name;
+    for (int i = 0; i < numBranches; i++)
+        delete branches[i];
     delete[] branches;
 }
 
@@ -38,12 +40,15 @@ const ChainStore& ChainStore::operator=(const ChainStore& other)
     if (this != &other)
     {
         setName(other.name);
-        delete[] branches;                      //free current array
+        for (int i = 0; i < numBranches; i++)
+            delete branches[i];
+        delete[] branches;
+
         maxNumBranches = other.maxNumBranches;
         numBranches = other.numBranches;        //get new array size
-        branches = new Branch[maxNumBranches];    //allocate memory for branches array
+        branches = new Branch*[maxNumBranches];    //allocate memory for branches array
         for (int i = 0; i < numBranches; ++i)
-            branches[i] = other.branches[i];
+            branches[i] = new Branch(*other.branches[i]);
     }
     return *this;
 }
@@ -61,11 +66,18 @@ const ChainStore& ChainStore::operator=(ChainStore&& other)
     return *this;
 }
 
-//set name ----> change to bool and check input (validate)
-void ChainStore::setName(const char* name)
+//set name 
+bool ChainStore::setName(const char* name)
 {
-    delete[]this->name;
-    this->name = strdup(name);
+    if (name != nullptr)
+    {
+        delete[] this->name; // Release existing name if any
+        int len = strlen(name) + 1; // +1 for null terminator
+        this->name = new char[len];
+        strcpy(this->name, name); // Copy the new name
+        return true;
+    }
+    return false;
 }
 
 bool ChainStore::addBranch(const Branch& branch)
@@ -73,7 +85,27 @@ bool ChainStore::addBranch(const Branch& branch)
     if (numBranches == maxNumBranches)
         return false;
 
-    branches[numBranches] = Branch(branch);
+    branches[numBranches] = new Branch(branch);
     numBranches++;
     return true;
+}
+
+// Method to display all items in the department
+void ChainStore::displayChainStoreDetails() const
+{
+    cout << "Chain Store Name: " << name << "\nNumber of Branches: " << numBranches;
+    for (int i = 0; i < numBranches; ++i) 
+        cout << *branches[i] << "\n"; // Use Branch's operator<<
+    
+    cout << endl;
+}
+
+// Output operator (ostream operator<<)
+ostream& operator<<(ostream& os, const ChainStore& chainStore)
+{
+    os << "Chain Store Name: " << chainStore.name << "\nNumber of Branches: " << chainStore.numBranches;
+    for (int i = 0; i < chainStore.numBranches; ++i)
+        os << chainStore.branches[i] << "\n"; // Use Branch's operator<<
+
+    return os;
 }

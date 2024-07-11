@@ -1,13 +1,15 @@
-#pragma once
 #ifndef CHAINSTORE_H
 #define CHAINSTORE_H
+
+#include <iostream>
+using namespace std;
 
 class Branch;
 
 class ChainStore {
 private:
     char* name;
-    Branch* branches;
+    Branch** branches;
     int numBranches;
     int maxNumBranches;
 public:
@@ -19,16 +21,15 @@ public:
     const ChainStore& operator=(const ChainStore& other);   //operator=
     const ChainStore& operator=(ChainStore&& other);        //move operator
 
-    void setName(const char* name);
-    //set all others?
-
+    bool setName(const char* name);
     char* getName() { return name; }
+
     bool addBranch(const Branch& branch);
 
-    //void addBranch(Branch* branch);
-    //std::string getName() const;
-    //void setName(const std::string& name);
-    //void displayChainStoreDetails() const;
+
+    void displayChainStoreDetails() const;
+    friend ostream& operator<<(ostream& os, const ChainStore& chainStore);
+
 };
 
 #endif // CHAINSTORE_H

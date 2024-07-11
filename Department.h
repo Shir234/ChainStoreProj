@@ -1,33 +1,47 @@
 #ifndef DEPARTMENT_H
 #define DEPARTMENT_H
 
+#include <iostream>
+using namespace std;
+
 class Item;
 
 class Department {
 private:
-    Item** items;
-    int numItems;
-    int maxNumItems;
+    Item** inventory;
+    int inventorySize;
+    int inventoryMaxSize;
     char* name;
+
 public:
-    Department(const char* name, int maxNumItems = 50); // Constructor
+    Department(const char* name, int inventoryMaxSize = 50); // Constructor
     Department(const Department& other); // Copy constructor
     Department(Department&& other); // Move constructor
     ~Department(); // Destructor
 
     Department& operator=(const Department& other); // Copy assignment operator
     Department& operator=(Department&& other); // Move assignment operator
+    
+    // Methods to add and remove items
+    bool addItem(const Item& item); // Calls operator+  -> or not?
+    bool removeItem(Item& item); // Calls operator-   --> i dont think?
 
-    bool addItem(const Item& item); // Method to add an item
-    bool removeItem(const char* itemName); // Method to remove an item by name
-    void showInventory() const; // Method to display all items in the department
+    // Method to display all items - the inventory
+    void showInventory() const; 
 
-    //Department(const std::string& name);
-    //virtual ~Department();
-    //void addItem(const Item& item);
-    //void removeItem(const Item& item);
-    //std::string getName() const;
-    //virtual void displayInventoryDetails() const;
+    const char* getName() const { return name; }; // Getter for name
+    bool setName(const char* name); // Setter for name
+    int getNumItems() const { return inventorySize; }; // Getter for numItems
+    int getMaxNumItems() const { return inventoryMaxSize; }; // Getter for maxNumItems
+
+
+    // Operator overloads
+    Department& operator+(const Item& item); // Add item to inventory           Department + Item
+    Department& operator-(const Item& item); // Remove item from inventory      Department - Item
+    Item& operator[](int index); // Access item in inventory                   Item* item = Department[index]
+
+    friend ostream& operator<<(ostream& os, const Department& dp);
+
 };
 
 #endif // DEPARTMENT_H

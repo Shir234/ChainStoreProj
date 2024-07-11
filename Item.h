@@ -1,6 +1,8 @@
-#pragma once
 #ifndef ITEM_H
 #define ITEM_H
+
+#include <iostream>
+using namespace std;
 
 class Item {
 private:
@@ -8,7 +10,7 @@ private:
     double price;
 
 public:
-    Item(const char* name); // Constructor
+    Item(const char* name, double price); // Constructor
     Item(const Item& other); // Copy constructor
     Item(Item&& other); // Move constructor
     ~Item(); // Destructor
@@ -17,15 +19,14 @@ public:
     Item& operator=(Item&& other); // Move assignment operator
 
     const char* getName() const { return name; }; // Getter for name
-    void setName(const char* name); // Setter for name
-
+    bool setName(const char* name); // Setter for name
+ 
     double getPrice() const { return price; }; // Getter for price
+    bool setPrice(double price); // Setter for price
 
-
-    //Item(const std::string& name);
-    //std::string getName() const;
-    //void setName(const std::string& name);
-    //bool operator==(const Item& other) const;
+    // Operator overloads
+    bool operator==(const Item& other) const;
+    friend ostream& operator<<(ostream& os, const Item& item);
 };
 
 #endif // ITEM_H

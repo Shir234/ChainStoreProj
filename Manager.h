@@ -1,23 +1,26 @@
 #ifndef MANAGER_H
 #define MANAGER_H
 
-#include "Person.h"
+#include "Employee.h"
 
-class Manager : public Person {
+class Manager : public Employee {
 private:
     char* manageDepartment;
 
 public:
-    Manager(const char* name, int age, const char* manageDepartment); // Constructor
-    Manager(const Manager& other); // Copy constructor
-    Manager(Manager&& other) noexcept; // Move constructor
-    virtual ~Manager(); // Destructor
+    Manager(const char* name, int age, const char* position, const char* manageDepartment); // Constructor
+    Manager(const Manager& other) = delete; // Copy constructor
+    Manager(Manager&& other) = delete; // Move constructor
+    ~Manager(); // Destructor
 
-    Manager& operator=(const Manager& other); // Copy assignment operator
-    Manager& operator=(Manager&& other) noexcept; // Move assignment operator
+    Manager& operator=(const Manager& other) = delete; // Copy assignment operator
+    Manager& operator=(Manager&& other) = delete; // Move assignment operator
 
-    const char* getManageDepartment() const; // Getter for manageDepartment
-    void setManageDepartment(const char* manageDepartment); // Setter for manageDepartment
+    const char* getManageDepartment() const { return manageDepartment; } // Getter for manageDepartment
+    bool setManageDepartment(const char* manageDepartment); // Setter for manageDepartment
+
+    friend ostream& operator<<(ostream& os, const Manager& manager); // Output operator
+
 };
 
 #endif // MANAGER_H

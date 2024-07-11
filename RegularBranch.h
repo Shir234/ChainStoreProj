@@ -1,4 +1,3 @@
-#pragma once
 #ifndef REGULARBRANCH_H
 #define REGULARBRANCH_H
 
@@ -7,24 +6,33 @@
 
 class RegularBranch : virtual public Branch {
 private:
-    Employee* employees;
+    Employee** employees;
     int numEmployees;
     int maxNumEmployees;
     char* address;
 
 public:
-    RegularBranch(const char* name, int maxNumDepartments = 10, int maxNumEmployees = 50, const char* address = ""); // Constructor
+    RegularBranch(const char* name, int maxNumDepartments, const char* address, int maxNumEmployees = 50); // Constructor
     RegularBranch(const RegularBranch& other); // Copy constructor
-    RegularBranch(RegularBranch&& other) noexcept; // Move constructor
+    RegularBranch(RegularBranch&& other); // Move constructor
     virtual ~RegularBranch(); // Destructor
 
     RegularBranch& operator=(const RegularBranch& other); // Copy assignment operator
-    RegularBranch& operator=(RegularBranch&& other) noexcept; // Move assignment operator
+    RegularBranch& operator=(RegularBranch&& other); // Move assignment operator
 
     bool addEmployee(const Employee& employee); // Method to add an employee
-    bool removeEmployee(const char* employeeName); // Method to remove an employee by name
-    const char* getAddress() const; // Getter for address
-    void setAddress(const char* address); // Setter for address
+    bool removeEmployee(Employee& employee); // Method to remove an employee by name
+    const char* getAddress() const { return address; } // Getter for address
+    bool setAddress(const char* address); // Setter for address
+    int getNumEmployees() const { return numEmployees; }
+    Employee* getEmployee(int index) const; 
+
+    virtual void displayBranchDetails();       
+
+    // Operator overloads
+ //NOT SURE ABOUT THE IMPLEMENATION
+    friend ostream& operator<<(ostream& os, const RegularBranch& branch);
+
 };
 
 #endif // REGULARBRANCH_H

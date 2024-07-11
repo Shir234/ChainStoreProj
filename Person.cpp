@@ -1,67 +1,69 @@
 #pragma warning (disable: 4996)
 #include <iostream>
 using namespace std;
+
 #include "Person.h"
 #include <string> // For string operations
 
+int Person::nextId = 1; // Initialize static member variable
+
+
 // Constructor
-Person::Person(const char* name, int age)
-    : name(nullptr), age(age) {
+Person::Person(const char* name, int age) : name(nullptr), age(age), id(nextId++)
+{
     setName(name);
 }
 
 // Copy constructor
-Person::Person(const Person& other)
-    : name(nullptr), age(other.age) {
-    setName(other.name);
-}
-
-// Move constructor
-Person::Person(Person&& other) 
-    : name(other.name), age(other.age) {
-    other.name = nullptr;
-}
-
-// Destructor
-Person::~Person() {
-    delete[] name;
+Person::Person(const Person& other): name(nullptr), id(nextId++)
+{
+    *this = other; // Call copy assignment operator
 }
 
 // Copy assignment operator
-Person& Person::operator=(const Person& other) {
-    if (this != &other) {
+Person& Person::operator=(const Person& other)
+{
+    if (this != &other)
+    {
+        setAge(other.age);
         setName(other.name);
-        age = other.age;
     }
     return *this;
 }
 
-// Move assignment operator
-Person& Person::operator=(Person&& other) {
-    if (this != &other) {
-        std::swap(name, other.name);
-        std::swap(age, other.age);
-    }
-    return *this;
-}
-
-// Getter for name
-const char* Person::getName() const {
-    return name;
+// Destructor
+Person::~Person() 
+{
+    delete[] name;
 }
 
 // Setter for name
-void Person::setName(const char* name) {
-    delete[] this->name;
-    this->name = strdup(name);
-}
-
-// Getter for age
-int Person::getAge() const {
-    return age;
+bool Person::setName(const char* name) 
+{
+    if (name != nullptr)
+    {
+        delete[] this->name; // Release existing name if any
+        int len = strlen(name) + 1; // +1 for null terminator
+        this->name = new char[len];
+        strcpy(this->name, name); // Copy the new name
+        return true;
+    }
+    return false;
 }
 
 // Setter for age
-void Person::setAge(int age) {
-    this->age = age;
+bool Person::setAge(int age) 
+{
+    if (age > 0 && age <= 120) {
+        this->age = age;
+        return true;
+    }
+    return false;
+}
+
+// Output operator 
+ostream& operator<<(ostream& os, const Person& person)
+{
+    os << "ID: " << person.getId() << "\tName: " << person.getName() << "\tage: " << person.getAge();
+    return os;
 }
