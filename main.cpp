@@ -1,9 +1,9 @@
 //ChainStoreProj repository shared with anat?
 #include <iostream>
-#include <vector>
+using namespace std;
+
 #include <string>
-#include <algorithm>
-#include <limits>
+
 #include "Item.h"
 #include "Department.h"
 #include "Person.h"
@@ -14,7 +14,7 @@
 #include "OnlineBranch.h"
 #include "OnlineRegularBranch.h"
 #include "ChainStore.h"
-//#include "FunctionDeclarations.h"
+
 
 void establishNetwork();
 void addNewBranch();
@@ -26,36 +26,44 @@ void displayBranchDetails();
 void displayInventoryDetails();
 
 // Function to clear the input stream
-void clearInputStream() {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+void cleanBuffer() 
+{
+    int c;
+    do
+    {
+        c = getchar();
+    } while (c != EOF && c != '\n');
 }
 
-int main() {
+int main() 
+{
     bool running = true;
 
-    while (running) {
-        std::cout << "\nMenu:\n";
-        std::cout << "1. Establishing a network\n";
-        std::cout << "2. Adding a new branch\n";
-        std::cout << "3. Adding a department to a branch\n";
-        std::cout << "4. Adding an employee to a branch\n";
-        std::cout << "5. Adding an item to inventory\n";
-        std::cout << "6. Removing an item from inventory\n";
-        std::cout << "7. Displaying branch details\n";
-        std::cout << "8. Displaying inventory details\n";
-        std::cout << "9. Exit\n";
-        std::cout << "Enter your choice: ";
+    while (running) 
+    {
+        cout << "\nMenu:\n";
+        cout << "1. Establishing a network\n";
+        cout << "2. Adding a new branch\n";
+        cout << "3. Adding a department to a branch\n";
+        cout << "4. Adding an employee to a branch\n";
+        cout << "5. Adding an item to inventory\n";
+        cout << "6. Removing an item from inventory\n";
+        cout << "7. Displaying branch details\n";
+        cout << "8. Displaying inventory details\n";
+        cout << "9. Exit\n";
+        cout << "Enter your choice: ";
 
         int choice;
-        if (!(std::cin >> choice)) {
-            std::cout << "Invalid input. Please enter a number between 1 and 9.\n";
-            clearInputStream();
+        if (!(cin >> choice)) 
+        {
+            cout << "Invalid input. Please enter a number between 1 and 9.\n";
+            cleanBuffer();
             continue;
         }
-        clearInputStream();
+        cleanBuffer();
 
-        switch (choice) {
+        switch (choice) 
+        {
         case 1:
             establishNetwork();
             break;
@@ -84,7 +92,7 @@ int main() {
             running = false;
             break;
         default:
-            std::cout << "Invalid choice. Please enter a number between 1 and 9.\n";
+            cout << "Invalid choice. Please enter a number between 1 and 9.\n";
             break;
         }
     }
@@ -94,142 +102,161 @@ int main() {
 
 // Function definitions
 
-void establishNetwork() {
-    std::string networkName;
-    std::cout << "Enter the name of the network: ";
-    std::getline(std::cin, networkName);
-    std::cout << "Network '" << networkName << "' established.\n";
+void establishNetwork() 
+{
+    string networkName;
+    cout << "Enter the name of the network: ";
+    getline(cin, networkName);
+    cout << "Network '" << networkName << "' established.\n";
 }
 
-void addNewBranch() {
+void addNewBranch() 
+{
     int branchType;
-    std::cout << "Enter the type of branch (1: Regular, 2: Online, 3: Both): ";
-    if (!(std::cin >> branchType) || branchType < 1 || branchType > 3) {
-        std::cout << "Invalid branch type. Please enter a number between 1 and 3.\n";
-        clearInputStream();
+    cout << "Enter the type of branch (1: Regular, 2: Online, 3: Both): ";
+    if (!(cin >> branchType) || branchType < 1 || branchType > 3) 
+    {
+        cout << "Invalid branch type. Please enter a number between 1 and 3.\n";
+        cleanBuffer();
         return;
     }
-    clearInputStream();
+    cleanBuffer();
 
-    if (branchType == 1) {
-        std::string branchAddress;
-        std::cout << "Enter the address for the new regular branch: ";
-        std::getline(std::cin, branchAddress);
-        std::cout << "Regular branch at '" << branchAddress << "' added.\n";
+    if (branchType == 1) 
+    {
+        string branchAddress;
+        cout << "Enter the address for the new regular branch: ";
+        getline(cin, branchAddress);
+        cout << "Regular branch at '" << branchAddress << "' added.\n";
     }
-    else if (branchType == 2) {
-        std::string branchUrl;
-        std::cout << "Enter the URL for the new online branch: ";
-        std::getline(std::cin, branchUrl);
-        std::cout << "Online branch with URL '" << branchUrl << "' added.\n";
+    else if (branchType == 2) 
+    {
+        string branchUrl;
+        cout << "Enter the URL for the new online branch: ";
+        getline(cin, branchUrl);
+        cout << "Online branch with URL '" << branchUrl << "' added.\n";
     }
-    else if (branchType == 3) {
-        std::string branchAddress, branchUrl;
-        std::cout << "Enter the address for the new combined branch: ";
-        std::getline(std::cin, branchAddress);
-        std::cout << "Enter the URL for the new combined branch: ";
-        std::getline(std::cin, branchUrl);
-        std::cout << "Combined branch at '" << branchAddress << "' with URL '" << branchUrl << "' added.\n";
+    else if (branchType == 3) 
+    {
+        string branchAddress, branchUrl;
+        cout << "Enter the address for the new combined branch: ";
+        getline(cin, branchAddress);
+        cout << "Enter the URL for the new combined branch: ";
+        getline(cin, branchUrl);
+        cout << "Combined branch at '" << branchAddress << "' with URL '" << branchUrl << "' added.\n";
     }
 }
 
-void addDepartmentToBranch() {
+void addDepartmentToBranch() 
+{
     int branchIndex;
-    std::cout << "Select the branch to add a department to (enter index): ";
-    if (!(std::cin >> branchIndex)) {
-        std::cout << "Invalid branch selection.\n";
-        clearInputStream();
+    cout << "Select the branch to add a department to (enter index): ";
+    if (!(cin >> branchIndex)) 
+    {
+        cout << "Invalid branch selection.\n";
+        cleanBuffer();
         return;
     }
-    clearInputStream();
+    cleanBuffer();
 
-    std::string departmentName;
-    std::cout << "Enter the name of the department to add: ";
-    std::getline(std::cin, departmentName);
-    std::cout << "Department '" << departmentName << "' added to branch " << branchIndex << ".\n";
+    string departmentName;
+    cout << "Enter the name of the department to add: ";
+    getline(cin, departmentName);
+    cout << "Department '" << departmentName << "' added to branch " << branchIndex << ".\n";
 }
 
-void addEmployeeToBranch() {
+void addEmployeeToBranch() 
+{
     int branchIndex;
-    std::cout << "Select the branch to add an employee to (enter index): ";
-    if (!(std::cin >> branchIndex)) {
-        std::cout << "Invalid branch selection.\n";
-        clearInputStream();
+    cout << "Select the branch to add an employee to (enter index): ";
+    if (!(cin >> branchIndex)) 
+    {
+        cout << "Invalid branch selection.\n";
+        cleanBuffer();
         return;
     }
-    clearInputStream();
+    cleanBuffer();
 
-    std::string employeeName;
+    string employeeName;
     int employeeAge;
-    std::string employeePosition;
+    string employeePosition;
 
-    std::cout << "Enter the name of the employee to add: ";
-    std::getline(std::cin, employeeName);
-    std::cout << "Enter the age of the employee: ";
-    if (!(std::cin >> employeeAge)) {
-        std::cout << "Invalid input for age.\n";
-        clearInputStream();
+    cout << "Enter the name of the employee to add: ";
+    getline(cin, employeeName);
+    cout << "Enter the age of the employee: ";
+    if (!(cin >> employeeAge)) 
+    {
+        cout << "Invalid input for age.\n";
+        cleanBuffer();
         return;
     }
-    clearInputStream();
-    std::cout << "Enter the position of the employee: ";
-    std::getline(std::cin, employeePosition);
+    cleanBuffer();
+    cout << "Enter the position of the employee: ";
+    getline(cin, employeePosition);
 
-    std::cout << "Employee '" << employeeName << "' aged " << employeeAge << " added as " << employeePosition << " to branch " << branchIndex << ".\n";
+    cout << "Employee '" << employeeName << "' aged " << employeeAge << " added as " << employeePosition << " to branch " << branchIndex << ".\n";
 }
 
-void addItemToInventory() {
+void addItemToInventory() 
+{
     int branchIndex, departmentIndex;
-    std::cout << "Select the branch to add an item to (enter index): ";
-    if (!(std::cin >> branchIndex)) {
-        std::cout << "Invalid branch selection.\n";
-        clearInputStream();
+    cout << "Select the branch to add an item to (enter index): ";
+    if (!(cin >> branchIndex)) 
+    {
+        cout << "Invalid branch selection.\n";
+        cleanBuffer();
         return;
     }
-    clearInputStream();
+    cleanBuffer();
 
-    std::cout << "Select the department to add an item to (enter index): ";
-    if (!(std::cin >> departmentIndex)) {
-        std::cout << "Invalid department selection.\n";
-        clearInputStream();
+    cout << "Select the department to add an item to (enter index): ";
+    if (!(cin >> departmentIndex)) 
+    {
+        cout << "Invalid department selection.\n";
+        cleanBuffer();
         return;
     }
-    clearInputStream();
+    cleanBuffer();
 
-    std::string itemName;
-    std::cout << "Enter the name of the item to add to the inventory: ";
-    std::getline(std::cin, itemName);
-    std::cout << "Item '" << itemName << "' added to department " << departmentIndex << " in branch " << branchIndex << ".\n";
+    string itemName;
+    cout << "Enter the name of the item to add to the inventory: ";
+    getline(cin, itemName);
+    cout << "Item '" << itemName << "' added to department " << departmentIndex << " in branch " << branchIndex << ".\n";
 }
 
-void removeItemFromInventory() {
+void removeItemFromInventory() 
+{
     int branchIndex, departmentIndex;
-    std::cout << "Select the branch to remove an item from (enter index): ";
-    if (!(std::cin >> branchIndex)) {
-        std::cout << "Invalid branch selection.\n";
-        clearInputStream();
+    cout << "Select the branch to remove an item from (enter index): ";
+    if (!(cin >> branchIndex)) 
+    {
+        cout << "Invalid branch selection.\n";
+        cleanBuffer();
         return;
     }
-    clearInputStream();
+    cleanBuffer();
 
-    std::cout << "Select the department to remove an item from (enter index): ";
-    if (!(std::cin >> departmentIndex)) {
-        std::cout << "Invalid department selection.\n";
-        clearInputStream();
+    cout << "Select the department to remove an item from (enter index): ";
+    if (!(cin >> departmentIndex)) 
+    {
+        cout << "Invalid department selection.\n";
+        cleanBuffer();
         return;
     }
-    clearInputStream();
+    cleanBuffer();
 
-    std::string itemName;
-    std::cout << "Enter the name of the item to remove from the inventory: ";
-    std::getline(std::cin, itemName);
-    std::cout << "Item '" << itemName << "' removed from department " << departmentIndex << " in branch " << branchIndex << ".\n";
+    string itemName;
+    cout << "Enter the name of the item to remove from the inventory: ";
+    getline(cin, itemName);
+    cout << "Item '" << itemName << "' removed from department " << departmentIndex << " in branch " << branchIndex << ".\n";
 }
 
-void displayBranchDetails() {
-    std::cout << "Displaying branch details.\n";
+void displayBranchDetails() 
+{
+    cout << "Displaying branch details.\n";
 }
 
-void displayInventoryDetails() {
-    std::cout << "Displaying inventory details.\n";
+void displayInventoryDetails() 
+{
+    cout << "Displaying inventory details.\n";
 }
