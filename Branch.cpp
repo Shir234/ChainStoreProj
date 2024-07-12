@@ -41,6 +41,7 @@ Branch& Branch::operator=(const Branch& other)
 {
     if (this != &other) 
     {
+        cout << "in branch =";
         delete[] name;
         for (int i = 0; i < numDepartments; i++)
             delete departments[i];
@@ -53,6 +54,7 @@ Branch& Branch::operator=(const Branch& other)
         for (int i = 0; i < numDepartments; i++) 
             departments[i] = new Department(*other.departments[i]); 
     }
+    cout << "end branch =";
     return *this;
 }
 
@@ -122,6 +124,6 @@ ostream& operator<<(ostream& os, const Branch& branch)
     os << "Branch name: " << branch.name << " with: " << branch.numDepartments << " department(s) : \n";
     for (int i = 0; i < branch.numDepartments; ++i) 
         os << *branch.departments[i] << "\n"; // Department has operator<<
-   
     return os;
 }
+

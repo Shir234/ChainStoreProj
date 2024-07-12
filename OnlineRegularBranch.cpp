@@ -19,7 +19,7 @@ void OnlineRegularBranch::displayBranchDetails()
 {
     Branch::displayBranchDetails();
     cout << "Online Details:\n";
-    cout << "UML: " << getUml();    
+    cout << "UML: " << getUrl();    
     cout << "\nRegular Details:\n";
     cout << "Address: " << getAddress();
     cout << "\nNumber of employees: " << getNumEmployees() << " employee(s):\n";
@@ -28,12 +28,12 @@ void OnlineRegularBranch::displayBranchDetails()
 }
 
 // Output operator (ostream operator<<)
-ostream& operator<<(ostream& os, const OnlineRegularBranch& branch)
+ostream& operator<<(ostream& os, OnlineRegularBranch& branch)
 {
     os << "Branch with:" << branch.getNumDepartments() << " department(s):\n";
     for (int i = 0; i < branch.getNumDepartments(); ++i)
         os << branch.getDepartment(i) << "\n"; // Department has operator<<
-    os << "UML: " << branch.getUml() << "\n";
+    os << "UML: " << branch.getUrl() << "\n";
     os << "Address: " << branch.getAddress();
     os << "\nNumber of employees: " << branch.getNumEmployees() << " employee(s):\n";
     for (int i = 0; i < branch.getNumEmployees(); ++i)

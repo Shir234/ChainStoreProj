@@ -9,13 +9,16 @@ using namespace std;
 OnlineBranch::OnlineBranch(const char* name, int maxNumDepartments, const char* url)
     : Branch(name, maxNumDepartments), url(nullptr) 
 {
+    cout << "in online c'tor\n";
     setUrl(url);
 }
 
 // Copy constructor
 OnlineBranch::OnlineBranch(const OnlineBranch& other): Branch(other), url(nullptr) 
 {
-    *this = other; // Call copy assignment operator
+    cout << "in online copy c'tor\n";
+    setUrl(other.url);
+    //*this = other; // Call copy assignment operator
 }
 
 // Move constructor
@@ -27,7 +30,7 @@ OnlineBranch::OnlineBranch(OnlineBranch&& other) : Branch(std::move(other)), url
 // Destructor
 OnlineBranch::~OnlineBranch() 
 {
-    cout << "int online d'tor";
+    cout << "int online d'tor\n";
     delete[] url;
 }
 
@@ -37,8 +40,10 @@ OnlineBranch& OnlineBranch::operator=(const OnlineBranch& other)
     if (this != &other) 
     {
         Branch::operator=(other); // Call base class assignment operator
+        cout << "after barnch call online = operator";
         setUrl(other.url);
     }
+    cout << "end online = operator";
     return *this;
 }
 
@@ -68,7 +73,7 @@ bool OnlineBranch::setUrl(const char* url)
 }
 
 // Display branch details
-void OnlineBranch::displayBranchDetails()  
+void OnlineBranch::displayBranchDetails()
 {
     Branch::displayBranchDetails();
     cout << "Online Branch Details:\n";

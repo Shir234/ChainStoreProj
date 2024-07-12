@@ -18,7 +18,18 @@ RegularBranch::RegularBranch(const char* name, int maxNumDepartments, const char
 RegularBranch::RegularBranch(const RegularBranch& other)
     : Branch(other), employees(nullptr), numEmployees(0), maxNumEmployees(0), address(nullptr) 
 {
-    *this = other; // Call copy assignment operator
+    //*this = other; // Call copy assignment operator
+    setAddress(other.address);
+
+    for (int i = 0; i < numEmployees; i++)
+        delete employees[i];
+    delete[] employees;
+
+    maxNumEmployees = other.maxNumEmployees;
+    numEmployees = other.numEmployees;
+    employees = new Employee * [maxNumEmployees];
+    for (int i = 0; i < numEmployees; i++)
+        employees[i] = new Employee(*other.employees[i]);    
 }
 
 // Move constructor

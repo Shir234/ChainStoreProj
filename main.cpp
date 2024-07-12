@@ -37,6 +37,70 @@ void cleanBuffer()
 
 int main()
 {
+    //OnlineBranch o = OnlineBranch("shir", 8, "www");
+    //OnlineBranch o1 = o;
+    //cout << "\n\n"<<o << "\n\n" << o1;
+    //ChainStore store = ChainStore("ampm", 34);
+    //cout << o << "\n" << store << "\n";
+    //store.addBranch(o);
+//    int size = 10;
+//    int actSize = 1;
+//    Branch** branches = new Branch * [size];
+//    
+// //   Branch* b = new OnlineBranch("branch ptr", 10, "WWW");
+////    OnlineBranch* online = dynamic_cast<OnlineBranch*>(b);
+////    cout << "\n"<< * b;
+////    cout <<"\n\n" << *online;
+//    
+//    OnlineBranch b = OnlineBranch("branch ptr", 10, "WWW");
+//    if (add(b))
+//        cout << "yes";
+
+
+
+    // Create an OnlineBranch object and add it to the array
+    //branches[0] = new OnlineBranch("Darom", 10, "WWW");
+    //for (int i = 0; i < 1; ++i)
+    //    cout << *branches[i] << "\n"; // Use Branch's operator<<
+
+  
+    
+    //branches[1] = new OnlineBranch(b);
+   // branches[1] = new OnlineBranch(dynamic_cast<const OnlineBranch&>(*b));
+
+    //OnlineBranch on = OnlineBranch("Darom", 10, "WWW");
+    //branches[0] = new OnlineBranch(on);
+
+
+    //Branch* ptr = nullptr;
+    //Branch* n;
+    //Branch* b = new OnlineBranch("Darom", 10, "WWW");
+    //cout << *b;
+
+    //ptr = dynamic_cast<OnlineBranch*>(b);
+    //if (ptr)
+    //{
+    //    n = new OnlineBranch(ptr);
+    //    cout << *n;
+    //}
+        //cout << *ptr;
+ /*   if (dynamic_cast<OnlineBranch*>(b))
+    {
+        ptr = new OnlineBranch(dynamic_cast<const OnlineBranch&>(*b));
+    }
+    else if (dynamic_cast<const RegularBranch*>(b))
+    {
+        ptr = new RegularBranch(dynamic_cast<const RegularBranch&>(*b));
+    }
+    cout << *ptr;*/
+
+
+    //OnlineBranch on = OnlineBranch("Darom", 10, "WWW");
+    //cout << on;
+
+    //Branch* b = new OnlineBranch(on);
+    //cout << b;
+
     Item item = Item("kenny", 100);
     Item item2 = Item("rose", 3);
     //cout << item << item2 << endl;
@@ -48,7 +112,7 @@ int main()
     dp.addItem(item2);
     dp + item3;
     
-    cout << dp;
+   // cout << dp;
     // //   //dp - item2;
     // //   //cout << dp;
     //
@@ -60,29 +124,29 @@ int main()
     // //   //cout << "\n\n";
     // //   //cout << *br[0];
     OnlineBranch on = OnlineBranch("Darom", 10, "WWW");
-    cout << on;
     on.addDepartment(dp);
-    on.displayBranchDetails();
-    
+    cout << on;
+    //on.displayBranchDetails();
+    //
     RegularBranch rb = RegularBranch("Zafon", 12, "Hadera", 34);
-    cout << rb;
+    //cout << rb;
     
     Employee* emp = new Employee("Nati", 34, "Developer");
     //cout << *emp;
     Manager* mng = new Manager("Maya", 2, "manager", "Anat department");
     
-    //rb.addEmployee(Employee("Nati", 34, "Developer"));
+    rb.addEmployee(Employee("Nati", 34, "Developer"));
     rb.addEmployee(*emp);
 /*    rb.addEmployee(*mng);  */ 
     rb.addDepartment(dp);
-    rb.displayBranchDetails();
+    //rb.displayBranchDetails();
     OnlineRegularBranch onrb = OnlineRegularBranch("Unnesecary", "www", "ramat-gan");
     onrb.addDepartment(dp);
     onrb.addEmployee(*mng);
     onrb.addEmployee(*emp);
-    onrb.displayBranchDetails();
-    
-    cout << "test \n";
+    //onrb.displayBranchDetails();
+    //
+    //cout << "test \n";
     //OnlineBranch tmp("Shit", 12, "SitShow");
     //cout << tmp << "\n";
     //Branch* clonedBranch = tmp.clone();
@@ -91,12 +155,14 @@ int main()
    // 
     ChainStore store = ChainStore("AM-PM");
     store.addBranch(on);
-   // cout << store;
-
-    //store.addBranch(onrb);
-    //store.addBranch(rb);
-
     //cout << store;
+
+    store.addBranch(onrb);
+    store.addBranch(rb);
+
+    cout << "\n" << store << "\n\n";
+
+    store.displayChainStoreDetails();
 }
 //
 // //   store[0]->addDepartment(dp);

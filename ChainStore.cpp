@@ -54,7 +54,7 @@ const ChainStore& ChainStore::operator=(const ChainStore& other)
         for (int i = 0; i < numBranches; ++i)
         {
             // Use the clone function
-            branches[i] = other.branches[i]->clone();
+           branches[i] = other.branches[i]->clone();
         }
     }
     return *this;
@@ -87,54 +87,41 @@ bool ChainStore::setName(const char* name)
     return false;
 }
 
-//bool ChainStore::addBranch(const Branch& branch)
-//{
-//    if (numBranches == maxNumBranches)
-//        return false;
-//
-//    //branches[numBranches] = new Branch(branch);
-//    branches[numBranches] = branch.clone();
-//    numBranches++;
-//    return true;
-//}
-//bool ChainStore::addBranch(const Branch& branch)
-//{
-//    if (numBranches == maxNumBranches)
-//        return false;
-//
-//    // Create a new Branch object of the appropriate type and add it
-//    if (dynamic_cast<const OnlineBranch*>(&branch)) 
-//    {
-//        branches[numBranches] = new OnlineBranch(dynamic_cast<const OnlineBranch&>(branch));
-//    }
-//    else if (dynamic_cast<const RegularBranch*>(&branch)) 
-//    {
-//        branches[numBranches] = new RegularBranch(dynamic_cast<const RegularBranch&>(branch));
-//    }
-//    numBranches++;
-//    return true;
-//}
-
-// Function to add a branch based on an existing Branch object
-bool ChainStore::addBranch(const Branch& b)
+bool ChainStore::addBranch(const RegularBranch& branch)
 {
-    if (numBranches < maxNumBranches)
-    {
-        // Create a new Branch object of the appropriate type and add it
-        if (dynamic_cast<const OnlineBranch*>(&b)) {
-            branches[numBranches] = new OnlineBranch(dynamic_cast<const OnlineBranch&>(b));
-        }
-        else if (dynamic_cast<const RegularBranch*>(&b)) {
-            branches[numBranches] = new RegularBranch(dynamic_cast<const RegularBranch&>(b));
-        }
-        ++numBranches;
-        return true;
-    }
-    else {
-        cout << "Cannot add more branches. Store capacity reached.\n";
-    }
-    return false;
+    if (numBranches == maxNumBranches)
+        return false;
+
+ //   branches[numBranches] = new RegularBranch(branch);
+    branches[numBranches] = branch.clone();
+    numBranches++;
+    return true;
 }
+
+bool ChainStore::addBranch(const OnlineBranch& branch)
+{
+    cout << "\nin online add\n";
+    if (numBranches == maxNumBranches)
+        return false;
+
+    branches[numBranches] = branch.clone();
+    numBranches++;
+    cout << "\nend online add\n";
+    return true;
+}
+
+bool ChainStore::addBranch(const OnlineRegularBranch& branch)
+{
+    cout << "\nin online add\n";
+    if (numBranches == maxNumBranches)
+        return false;
+
+    branches[numBranches] = branch.clone();
+    numBranches++;
+    cout << "\nend online add\n";
+    return true;
+}
+
 // Getter for branch
 Branch* ChainStore::getBranch(int index) const
 {
@@ -154,21 +141,23 @@ Branch* ChainStore::operator[](int index)
 }
 
 // Method to display all items in the department
+    ///// DISPLAY PRINT EACH BRANCH AND SON DETAILS
 void ChainStore::displayChainStoreDetails() const
 {
     cout << "Chain Store Name: " << name << "\nNumber of Branches: " << numBranches << "\n";
-    for (int i = 0; i < numBranches; ++i) 
-        cout << *branches[i] << "\n"; // Use Branch's operator<<
+    for (int i = 0; i < numBranches; ++i)
+        branches[i]->displayBranchDetails() ; 
     
     cout << endl;
 }
 
 // Output operator (ostream operator<<)
+    //// OS PRINT ONLY BRANCH DETAILS (no online or regular details)
 ostream& operator<<(ostream& os, const ChainStore& chainStore)
 {
     os << "Chain Store Name: " << chainStore.name << "\nNumber of Branches: " << chainStore.numBranches << "\n";
     for (int i = 0; i < chainStore.numBranches; ++i)
         os << *chainStore.branches[i] << "\n"; // Use Branch's operator<<
-
+    
     return os;
 }

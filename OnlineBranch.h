@@ -18,7 +18,7 @@ public:
     OnlineBranch& operator=(const OnlineBranch& other); // Copy assignment operator
     OnlineBranch& operator=(OnlineBranch&& other); // Move assignment operator
 
-    const char* getUml() const { return url; } // Getter for url
+    const char* getUrl() const { return url; } // Getter for url
     bool setUrl(const char* url); // Setter for url
 
     virtual void displayBranchDetails() ;

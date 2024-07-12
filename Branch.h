@@ -31,7 +31,7 @@ public:
     const char* getName() const { return name; }; // Getter for name
     bool setName(const char* name); // Setter for name
 
-    virtual void displayBranchDetails();        
+    virtual void displayBranchDetails();
     virtual Branch* clone() const = 0; // Pure virtual clone method
 
     // Operator overloads
