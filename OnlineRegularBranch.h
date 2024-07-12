@@ -8,8 +8,10 @@
 class OnlineRegularBranch : public OnlineBranch, public RegularBranch 
 {
 public:
-    OnlineRegularBranch(const char* name, const char* uml, const char* address, int maxNumDepartments = 10, int maxNumEmployees = 50); // Constructor
+    OnlineRegularBranch(const char* name, const char* url, const char* address, int maxNumDepartments = 10, int maxNumEmployees = 50); // Constructor
+    ~OnlineRegularBranch();
     virtual void displayBranchDetails();
+    Branch* clone() const override; // Implement clone method
 
 };
 

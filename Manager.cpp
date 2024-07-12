@@ -9,13 +9,51 @@ using namespace std;
 Manager::Manager(const char* name, int age, const char* position, const char* manageDepartment)
     : Employee(name, age, position), manageDepartment(nullptr)
 {
+    cout << "in Manager c'tor\n";
     setManageDepartment(manageDepartment);
+}
+
+// Copy constructor
+Manager::Manager(const Manager& other) : Employee(other), manageDepartment(nullptr)
+{
+    //setManageDepartment(other.manageDepartment);
+    *this = other;
+}
+
+// Move constructor
+Manager::Manager(Manager&& other) : Employee(std::move(other)), manageDepartment(nullptr)
+{
+    *this = std::move(other); // Call move assignment operator
 }
 
 // Destructor
 Manager::~Manager() 
 {
+    cout << "in Manager d'tor\n";
     delete[] manageDepartment;
+}
+
+// Copy assignment operator
+Manager& Manager::operator=(const Manager& other)
+{
+    if (this != &other)
+    {
+        Employee::operator=(other); // Call base class assignment operator
+        setManageDepartment(other.manageDepartment);
+    }
+    return *this;
+}
+
+// Move assignment operator
+Manager& Manager::operator=(Manager&& other)
+{
+    if (this != &other)
+    {
+        Employee::operator=(std::move(other)); // Call base class move assignment operator
+        delete[] manageDepartment;
+        std::swap(manageDepartment, other.manageDepartment);
+    }
+    return *this;
 }
 
 // Setter for manageDepartment
@@ -36,6 +74,6 @@ bool Manager::setManageDepartment(const char* manageDepartment)
 ostream& operator<<(ostream& os, const Manager& manager)
 {
     os << static_cast<const Employee&>(manager); // Use Employee's operator<<
-    os << "\nmanager department: " << manager.getManageDepartment() << "\n";
+    os << "manager department: " << manager.getManageDepartment() << "\n";
     return os;
 }

@@ -20,6 +20,12 @@ Person::Person(const Person& other): name(nullptr), id(nextId++)
     *this = other; // Call copy assignment operator
 }
 
+// Move constructor
+Person::Person(Person&& other) : name(nullptr), id(nextId++)
+{
+    *this = std::move(other); // Call move assignment operator
+}
+
 // Copy assignment operator
 Person& Person::operator=(const Person& other)
 {
@@ -27,6 +33,17 @@ Person& Person::operator=(const Person& other)
     {
         setAge(other.age);
         setName(other.name);
+    }
+    return *this;
+}
+
+// Move assignment operator
+Person& Person::operator=(Person&& other)
+{
+    if (this != &other)
+    {
+        setAge(other.age);
+        std::swap(name, other.name);
     }
     return *this;
 }

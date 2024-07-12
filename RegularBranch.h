@@ -27,10 +27,10 @@ public:
     int getNumEmployees() const { return numEmployees; }
     Employee* getEmployee(int index) const; 
 
-    virtual void displayBranchDetails();       
+    void displayBranchDetails();
+    Branch* clone() const override; // Implement clone method
 
     // Operator overloads
- //NOT SURE ABOUT THE IMPLEMENATION
     friend ostream& operator<<(ostream& os, const RegularBranch& branch);
 
 };

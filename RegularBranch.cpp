@@ -8,7 +8,7 @@ using namespace std;
 
 // Constructor
 RegularBranch::RegularBranch(const char* name, int maxNumDepartments, const char* address, int maxNumEmployees)
-    : Branch(maxNumDepartments), employees(nullptr), numEmployees(0), maxNumEmployees(maxNumEmployees), address(nullptr) 
+    : Branch(name, maxNumDepartments), employees(nullptr), numEmployees(0), maxNumEmployees(maxNumEmployees), address(nullptr) 
 {
     setAddress(address);
     employees = new Employee*[maxNumEmployees];
@@ -53,8 +53,7 @@ RegularBranch& RegularBranch::operator=(const RegularBranch& other)
         employees = new Employee*[maxNumEmployees];
  
         for (int i = 0; i < numEmployees; i++) 
-            employees[i] = new Employee(*other.employees[i]);
-        
+            employees[i] = new Employee(*other.employees[i]);  
     }
     return *this;
 }
@@ -91,6 +90,7 @@ bool RegularBranch::removeEmployee(Employee& employee)
     {
         if (*employees[i] == employee) 
         {
+            delete employees[i];
             // Shift elements to fill the gap
             for (int j = i; j < numEmployees - 1; ++j) 
             {
@@ -102,8 +102,6 @@ bool RegularBranch::removeEmployee(Employee& employee)
     }
     return false; // Employee not found
 }
-
-
 
 // Setter for address
 bool RegularBranch::setAddress(const char* address) 
@@ -132,20 +130,24 @@ void RegularBranch::displayBranchDetails()
 {
     Branch::displayBranchDetails();
     cout << "Address: " <<address << endl;
-    cout << "\nNumber of employees: " << numEmployees << " employee(s):\n";
+    cout << "Number of employees: " << numEmployees << " employee(s):\n";
     for (int i = 0; i < numEmployees; ++i)
-        cout << *employees[i] << "\n"; // Employee has operator<<
+        cout << *employees[i]; // Employee has operator<<
 }
 
 // Output operator (ostream operator<<)
-   //NOT SURE ABOUT THE IMPLEMENATION
 ostream& operator<<(ostream& os, const RegularBranch& branch)
 {
     os << static_cast<const Branch&>(branch); // Use Branch's operator<<
     os << "Address: " << branch.address << endl;
-    os << "\nNumber of employees: " << branch.numEmployees << " employee(s):\n";
+    os << "Number of employees: " << branch.numEmployees << " employee(s):\n";
     for (int i = 0; i < branch.numEmployees; ++i)
-        os << *branch.employees[i] << "\n"; // Employee has operator<<
+        os << *branch.employees[i]; // Employee has operator<<
 
     return os;
+}
+
+Branch* RegularBranch::clone() const 
+{
+    return new RegularBranch(*this);
 }

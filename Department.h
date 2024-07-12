@@ -23,8 +23,8 @@ public:
     Department& operator=(Department&& other); // Move assignment operator
     
     // Methods to add and remove items
-    bool addItem(const Item& item); // Calls operator+  -> or not?
-    bool removeItem(Item& item); // Calls operator-   --> i dont think?
+    bool addItem(const Item& item); // Calls operator+
+    bool removeItem(Item& item); // Calls operator-
 
     // Method to display all items - the inventory
     void showInventory() const; 
@@ -37,8 +37,8 @@ public:
 
     // Operator overloads
     Department& operator+(const Item& item); // Add item to inventory           Department + Item
-    Department& operator-(const Item& item); // Remove item from inventory      Department - Item
-    Item& operator[](int index); // Access item in inventory                   Item* item = Department[index]
+    Department& operator-(Item& item); // Remove item from inventory      Department - Item
+    Item* operator[](int index); // Access item in inventory                   Item* item = Department[index]
 
     friend ostream& operator<<(ostream& os, const Department& dp);
 

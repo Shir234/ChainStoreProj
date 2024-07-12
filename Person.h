@@ -9,15 +9,9 @@ private:
     int id; // Unique ID for each Person
     static int nextId; // Static variable to track next available ID
 
-    Person(const Person& other); // Copy constructor
-    Person& operator=(const Person& other); // Copy assignment operator
-
 public:
     Person(const char* name, int age); // Constructor
-    Person(Person&& other) = delete; // Move constructor
     ~Person(); // Destructor
-
-    Person& operator=(Person&& other) = delete; // Move assignment operator
 
     const char* getName() const { return name; } // Getter for name
     bool setName(const char* name); // Setter for name
@@ -28,7 +22,11 @@ public:
 
     friend ostream& operator<<(ostream& os, const Person& person); // Output operator
     friend class Employee;
-
+private:
+    Person(const Person& other); // Copy constructor
+    Person& operator=(const Person& other); // Copy assignment operator
+    Person(Person&& other); // Move constructor
+    Person& operator=(Person&& other); // Move assignment operator
 };
 
 #endif // PERSON_H

@@ -5,6 +5,8 @@ using namespace std;
 #include <string>
 #include "ChainStore.h"
 #include "Branch.h"
+#include "RegularBranch.h"
+#include "OnlineBranch.h"
 
 // Default c'tor
 ChainStore::ChainStore(const char* name, int maxNumBranches) : maxNumBranches(maxNumBranches), numBranches(0)
@@ -47,8 +49,13 @@ const ChainStore& ChainStore::operator=(const ChainStore& other)
         maxNumBranches = other.maxNumBranches;
         numBranches = other.numBranches;        //get new array size
         branches = new Branch*[maxNumBranches];    //allocate memory for branches array
+        //for (int i = 0; i < numBranches; ++i)
+        //    branches[i] = new Branch(*other.branches[i]);
         for (int i = 0; i < numBranches; ++i)
-            branches[i] = new Branch(*other.branches[i]);
+        {
+            // Use the clone function
+            branches[i] = other.branches[i]->clone();
+        }
     }
     return *this;
 }
@@ -80,20 +87,76 @@ bool ChainStore::setName(const char* name)
     return false;
 }
 
-bool ChainStore::addBranch(const Branch& branch)
-{
-    if (numBranches == maxNumBranches)
-        return false;
+//bool ChainStore::addBranch(const Branch& branch)
+//{
+//    if (numBranches == maxNumBranches)
+//        return false;
+//
+//    //branches[numBranches] = new Branch(branch);
+//    branches[numBranches] = branch.clone();
+//    numBranches++;
+//    return true;
+//}
+//bool ChainStore::addBranch(const Branch& branch)
+//{
+//    if (numBranches == maxNumBranches)
+//        return false;
+//
+//    // Create a new Branch object of the appropriate type and add it
+//    if (dynamic_cast<const OnlineBranch*>(&branch)) 
+//    {
+//        branches[numBranches] = new OnlineBranch(dynamic_cast<const OnlineBranch&>(branch));
+//    }
+//    else if (dynamic_cast<const RegularBranch*>(&branch)) 
+//    {
+//        branches[numBranches] = new RegularBranch(dynamic_cast<const RegularBranch&>(branch));
+//    }
+//    numBranches++;
+//    return true;
+//}
 
-    branches[numBranches] = new Branch(branch);
-    numBranches++;
-    return true;
+// Function to add a branch based on an existing Branch object
+bool ChainStore::addBranch(const Branch& b)
+{
+    if (numBranches < maxNumBranches)
+    {
+        // Create a new Branch object of the appropriate type and add it
+        if (dynamic_cast<const OnlineBranch*>(&b)) {
+            branches[numBranches] = new OnlineBranch(dynamic_cast<const OnlineBranch&>(b));
+        }
+        else if (dynamic_cast<const RegularBranch*>(&b)) {
+            branches[numBranches] = new RegularBranch(dynamic_cast<const RegularBranch&>(b));
+        }
+        ++numBranches;
+        return true;
+    }
+    else {
+        cout << "Cannot add more branches. Store capacity reached.\n";
+    }
+    return false;
+}
+// Getter for branch
+Branch* ChainStore::getBranch(int index) const
+{
+    return this->branches[index];
+}
+
+// Getter for branch
+Branch* ChainStore::operator[](int index)
+{
+    if (index < 0 || index >= numBranches)
+    {
+        cout << "Invalid index, return null";
+        return nullptr;
+    }   
+
+    return branches[index];
 }
 
 // Method to display all items in the department
 void ChainStore::displayChainStoreDetails() const
 {
-    cout << "Chain Store Name: " << name << "\nNumber of Branches: " << numBranches;
+    cout << "Chain Store Name: " << name << "\nNumber of Branches: " << numBranches << "\n";
     for (int i = 0; i < numBranches; ++i) 
         cout << *branches[i] << "\n"; // Use Branch's operator<<
     
@@ -103,9 +166,9 @@ void ChainStore::displayChainStoreDetails() const
 // Output operator (ostream operator<<)
 ostream& operator<<(ostream& os, const ChainStore& chainStore)
 {
-    os << "Chain Store Name: " << chainStore.name << "\nNumber of Branches: " << chainStore.numBranches;
+    os << "Chain Store Name: " << chainStore.name << "\nNumber of Branches: " << chainStore.numBranches << "\n";
     for (int i = 0; i < chainStore.numBranches; ++i)
-        os << chainStore.branches[i] << "\n"; // Use Branch's operator<<
+        os << *chainStore.branches[i] << "\n"; // Use Branch's operator<<
 
     return os;
 }

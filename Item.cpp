@@ -8,6 +8,7 @@ using namespace std;
 // Constructor
 Item::Item(const char* name, double price) : name(nullptr)
 {
+    cout << "in item c'tor\n";
     setName(name);
     setPrice(price);
 }
@@ -15,24 +16,28 @@ Item::Item(const char* name, double price) : name(nullptr)
 // Copy constructor
 Item::Item(const Item& other) : name(nullptr)
 {
+    cout << "in item copy c'tor\n";
     *this = other; // Call copy assignment operator
 }
 
 // Move constructor
 Item::Item(Item&& other) : name(nullptr)
 {
+    cout << "in item move c'tor\n";
     *this = std::move(other); // Call move assignment operator
 }
 
 // Destructor
 Item::~Item()
 {
+    cout << "in item d'tor\n";
     delete[] name;
 }
 
 // Copy assignment operator
 Item& Item::operator=(const Item& other)
 {
+    cout << "in item operator =\n";
     if (this != &other) 
     {
         setName(other.name);
@@ -44,6 +49,7 @@ Item& Item::operator=(const Item& other)
 // Move assignment operator
 Item& Item::operator=(Item&& other)
 {
+    cout << "in item move operator =\n";
     if (this != &other) 
     {
         std::swap(name, other.name);
@@ -70,7 +76,7 @@ bool Item::setName(const char* name)
 // Setter for price
 bool Item::setPrice(double price)
 {
-    if (price >= 0) 
+    if (price > 0) 
     {
         this->price = price;
         return true;
@@ -84,8 +90,10 @@ bool Item::operator==(const Item& other) const
     return (strcmp(name, other.name) == 0 && price == other.price);
 }
 
+
 ostream& operator<<(ostream& os, const Item& item)
 {
-    os << "Item: " << item.name << "\tPrice: $: " << item.price;
+    os << "Item: " << item.name << "\tPrice: $: " << item.price << "\n";
     return os;
 }
+

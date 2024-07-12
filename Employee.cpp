@@ -17,6 +17,12 @@ Employee::Employee(const Employee& other): Person(other), position(nullptr)
     *this = other;
 }
 
+// Move constructor
+Employee::Employee(Employee&& other) : Person(other), position(nullptr)
+{
+    *this = std::move(other); // Call move assignment operator
+}
+
 // Destructor
 Employee::~Employee() 
 {
@@ -29,7 +35,19 @@ Employee& Employee::operator=(const Employee& other)
     if (this != &other)
     {
         Person::operator=(other); // Call base class assignment operator
-        setPosition(position);
+        setPosition(other.position);
+    }
+    return *this;
+}
+
+// Move assignment operator
+Employee& Employee::operator=(Employee&& other)
+{
+    if (this != &other)
+    {
+        Person::operator=(std::move(other)); // Call base class assignment operator
+        
+        std::swap(position, other.position);
     }
     return *this;
 }

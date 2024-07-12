@@ -8,12 +8,13 @@ class Department;
 
 class Branch {
 private:
+    char* name;
     Department** departments;
     int numDepartments;
     int maxNumDepartments;
 
 public:
-    Branch(int maxNumDepartments = 10); // Constructor
+    Branch(const char* name, int maxNumDepartments = 10); // Constructor
     Branch(const Branch& other); // Copy constructor
     Branch(Branch&& other); // Move constructor
     virtual ~Branch(); // Destructor
@@ -27,9 +28,12 @@ public:
     int getNumDepartments() const { return numDepartments; }
     int getMaxNumDepartments() const { return maxNumDepartments; }
     Department* getDepartment(int index) const; //DO WE NEED THIS?
+    const char* getName() const { return name; }; // Getter for name
+    bool setName(const char* name); // Setter for name
 
-    virtual void displayBranchDetails();        //CANNOT BE PURE VIRTUAL FUNCTION!!
-   
+    virtual void displayBranchDetails();        
+    virtual Branch* clone() const = 0; // Pure virtual clone method
+
     // Operator overloads
     friend ostream& operator<<(ostream& os, const Branch& branch);
     Department* operator[](int index); // Access department from array

@@ -25,7 +25,8 @@ public:
     char* getName() { return name; }
 
     bool addBranch(const Branch& branch);
-
+    Branch* getBranch(int index) const;
+    Branch* operator[](int index);
 
     void displayChainStoreDetails() const;
     friend ostream& operator<<(ostream& os, const ChainStore& chainStore);
