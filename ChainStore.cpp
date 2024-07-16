@@ -87,40 +87,51 @@ bool ChainStore::setName(const char* name)
     return false;
 }
 
-bool ChainStore::addBranch(const RegularBranch& branch)
+bool ChainStore::addBranch(const Branch& branch)
 {
     if (numBranches == maxNumBranches)
         return false;
 
- //   branches[numBranches] = new RegularBranch(branch);
+    //   branches[numBranches] = new RegularBranch(branch);
     branches[numBranches] = branch.clone();
     numBranches++;
     return true;
 }
 
-bool ChainStore::addBranch(const OnlineBranch& branch)
-{
-    cout << "\nin online add\n";
-    if (numBranches == maxNumBranches)
-        return false;
-
-    branches[numBranches] = branch.clone();
-    numBranches++;
-    cout << "\nend online add\n";
-    return true;
-}
-
-bool ChainStore::addBranch(const OnlineRegularBranch& branch)
-{
-    cout << "\nin online add\n";
-    if (numBranches == maxNumBranches)
-        return false;
-
-    branches[numBranches] = branch.clone();
-    numBranches++;
-    cout << "\nend online add\n";
-    return true;
-}
+//bool ChainStore::addBranch(const RegularBranch& branch)
+//{
+//    if (numBranches == maxNumBranches)
+//        return false;
+//
+// //   branches[numBranches] = new RegularBranch(branch);
+//    branches[numBranches] = branch.clone();
+//    numBranches++;
+//    return true;
+//}
+//
+//bool ChainStore::addBranch(const OnlineBranch& branch)
+//{
+//    cout << "\nin online add\n";
+//    if (numBranches == maxNumBranches)
+//        return false;
+//
+//    branches[numBranches] = branch.clone();
+//    numBranches++;
+//    cout << "\nend online add\n";
+//    return true;
+//}
+//
+//bool ChainStore::addBranch(const OnlineRegularBranch& branch)
+//{
+//    cout << "\nin online add\n";
+//    if (numBranches == maxNumBranches)
+//        return false;
+//
+//    branches[numBranches] = branch.clone();
+//    numBranches++;
+//    cout << "\nend online add\n";
+//    return true;
+//}
 
 // Getter for branch
 Branch* ChainStore::getBranch(int index) const
@@ -140,16 +151,16 @@ Branch* ChainStore::operator[](int index)
     return branches[index];
 }
 
-// Method to display all items in the department
-    ///// DISPLAY PRINT EACH BRANCH AND SON DETAILS
-void ChainStore::displayChainStoreDetails() const
-{
-    cout << "Chain Store Name: " << name << "\nNumber of Branches: " << numBranches << "\n";
-    for (int i = 0; i < numBranches; ++i)
-        branches[i]->displayBranchDetails() ; 
-    
-    cout << endl;
-}
+//// Method to display all items in the department
+//    ///// DISPLAY PRINT EACH BRANCH AND SON DETAILS
+//void ChainStore::displayChainStoreDetails() const
+//{
+//    cout << "Chain Store Name: " << name << "\nNumber of Branches: " << numBranches << "\n";
+//    for (int i = 0; i < numBranches; ++i)
+//        branches[i]->displayBranchDetails() ; 
+//    
+//    cout << endl;
+//}
 
 // Output operator (ostream operator<<)
     //// OS PRINT ONLY BRANCH DETAILS (no online or regular details)

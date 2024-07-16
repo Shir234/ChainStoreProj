@@ -5,7 +5,7 @@
 #include "Employee.h"
 
 class RegularBranch : virtual public Branch {
-private:
+protected:
     Employee** employees;
     int numEmployees;
     int maxNumEmployees;
@@ -27,12 +27,13 @@ public:
     int getNumEmployees() const { return numEmployees; }
     Employee* getEmployee(int index) const; 
 
-    void displayBranchDetails();
-    Branch* clone() const override; // Implement clone method
+    ////void displayBranchDetails();
+    virtual Branch* clone() const override { return new RegularBranch(*this); }// Implement clone method
 
     // Operator overloads
-    friend ostream& operator<<(ostream& os, const RegularBranch& branch);
+    //friend ostream& operator<<(ostream& os, const RegularBranch& branch);
 
+    virtual void toOs(ostream& os) const override;
 };
 
 #endif // REGULARBRANCH_H

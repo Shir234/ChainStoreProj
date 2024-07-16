@@ -6,7 +6,7 @@
 
 class OnlineBranch : virtual public Branch
 {
-private:
+protected:
     char* url;          
 
 public:
@@ -21,11 +21,14 @@ public:
     const char* getUrl() const { return url; } // Getter for url
     bool setUrl(const char* url); // Setter for url
 
-    virtual void displayBranchDetails() ;
-    Branch* clone() const override; // Implement clone method
+   // virtual void displayBranchDetails() ;
+    Branch* clone() const override { return new OnlineBranch(*this); } // Implement clone method
 
     // Operator overloads
-    friend ostream& operator<<(ostream& os, const OnlineBranch& branch);
+   // friend ostream& operator<<(ostream& os, const OnlineBranch& branch);
+    virtual void toOs(ostream& os) const override;
+
+
 };
 
 #endif // ONLINEBRANCH_H

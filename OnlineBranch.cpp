@@ -72,24 +72,30 @@ bool OnlineBranch::setUrl(const char* url)
     return false;
 }
 
-// Display branch details
-void OnlineBranch::displayBranchDetails()
+//// Display branch details
+//void OnlineBranch::displayBranchDetails()
+//{
+//    Branch::displayBranchDetails();
+//    cout << "Online Branch Details:\n";
+//    cout << "URL: " << (url ? url : "N/A") << endl;
+//}
+//
+//// Output operator (ostream operator<<)
+//ostream& operator<<(ostream& os, const OnlineBranch& branch) 
+//{
+//    os << static_cast<const Branch&>(branch); // Use Branch's operator<<
+//    os << "URL: " << (branch.url ? branch.url : "N/A") << endl;
+//    return os;
+//}
+
+void OnlineBranch::toOs(ostream& os) const
 {
-    Branch::displayBranchDetails();
-    cout << "Online Branch Details:\n";
-    cout << "URL: " << (url ? url : "N/A") << endl;
+    os << "URL: " << (url ? url : "N/A") << endl;
+
 }
 
-// Output operator (ostream operator<<)
-ostream& operator<<(ostream& os, const OnlineBranch& branch) 
-{
-    os << static_cast<const Branch&>(branch); // Use Branch's operator<<
-    os << "URL: " << (branch.url ? branch.url : "N/A") << endl;
-    return os;
-}
-
-Branch* OnlineBranch::clone() const 
-{
-    cout << "in online clone";
-    return new OnlineBranch(*this);
-}
+//Branch* OnlineBranch::clone() const 
+//{
+//    cout << "in online clone";
+//    return new OnlineBranch(*this);
+//}

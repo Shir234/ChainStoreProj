@@ -15,17 +15,17 @@ OnlineRegularBranch::~OnlineRegularBranch()
 {
 
 }
-void OnlineRegularBranch::displayBranchDetails()
-{
-    Branch::displayBranchDetails();
-    cout << "Online Details:\n";
-    cout << "UML: " << getUrl();    
-    cout << "\nRegular Details:\n";
-    cout << "Address: " << getAddress();
-    cout << "\nNumber of employees: " << getNumEmployees() << " employee(s):\n";
-    for (int i = 0; i < getNumEmployees(); ++i)
-        cout << *getEmployee(i) << "\n"; // Employee has operator<<
-}
+//void OnlineRegularBranch::displayBranchDetails()
+//{
+//    Branch::displayBranchDetails();
+//    cout << "Online Details:\n";
+//    cout << "UML: " << getUrl();    
+//    cout << "\nRegular Details:\n";
+//    cout << "Address: " << getAddress();
+//    cout << "\nNumber of employees: " << getNumEmployees() << " employee(s):\n";
+//    for (int i = 0; i < getNumEmployees(); ++i)
+//        cout << *getEmployee(i) << "\n"; // Employee has operator<<
+//}
 
 // Output operator (ostream operator<<)
 ostream& operator<<(ostream& os, OnlineRegularBranch& branch)
@@ -42,7 +42,16 @@ ostream& operator<<(ostream& os, OnlineRegularBranch& branch)
     return os;
 }
 
-Branch* OnlineRegularBranch::clone() const
+void OnlineRegularBranch::toOs(ostream& os) const
 {
-    return new OnlineRegularBranch(*this);
+    os << "Address: " << address << endl;
+    os << "Number of employees: " << numEmployees << " employee(s):\n";
+    for (int i = 0; i < numEmployees; ++i)
+        os << *employees[i]; // Employee has operator<<
+    os << "URL: " << (url ? url : "N/A") << endl;
 }
+
+//Branch* OnlineRegularBranch::clone() const
+//{
+//    return new OnlineRegularBranch(*this);
+//}

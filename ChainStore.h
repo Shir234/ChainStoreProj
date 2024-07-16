@@ -26,15 +26,15 @@ public:
 
     bool setName(const char* name);
     char* getName() { return name; }
-
-   // bool addBranch(const Branch& branch);
-    bool addBranch(const RegularBranch& branch);
-    bool addBranch(const OnlineBranch& branch);
-    bool addBranch(const OnlineRegularBranch& branch);
+    
+    bool addBranch(const Branch& branch);
+    //bool addBranch(const RegularBranch& branch);
+    //bool addBranch(const OnlineBranch& branch);
+    //bool addBranch(const OnlineRegularBranch& branch);
     Branch* getBranch(int index) const;
     Branch* operator[](int index);
 
-    void displayChainStoreDetails() const;
+  ////  void displayChainStoreDetails() const;
     friend ostream& operator<<(ostream& os, const ChainStore& chainStore);
 
 };

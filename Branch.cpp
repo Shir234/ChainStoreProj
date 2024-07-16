@@ -110,20 +110,29 @@ bool Branch::setName(const char* name)
     }
     return false;
 }
+//
+//void Branch::displayBranchDetails()
+//{
+//    cout << "Branch name: " << name << " with: " << numDepartments << " department(s) : \n";
+//    for (int i = 0; i < numDepartments; ++i)
+//        cout << *departments[i] << "\n"; // Department has operator<<
+//}
 
-void Branch::displayBranchDetails()
-{
-    cout << "Branch name: " << name << " with: " << numDepartments << " department(s) : \n";
-    for (int i = 0; i < numDepartments; ++i)
-        cout << *departments[i] << "\n"; // Department has operator<<
-}
+//// Output operator (ostream operator<<)
+//ostream& operator<<(ostream& os, const Branch& branch) 
+//{
+//    os << "Branch name: " << branch.name << " with: " << branch.numDepartments << " department(s) : \n";
+//    for (int i = 0; i < branch.numDepartments; ++i) 
+//        os << *branch.departments[i] << "\n"; // Department has operator<<
+//    return os;
+//}
 
 // Output operator (ostream operator<<)
-ostream& operator<<(ostream& os, const Branch& branch) 
+ostream& operator<<(ostream& os, const Branch& branch)
 {
     os << "Branch name: " << branch.name << " with: " << branch.numDepartments << " department(s) : \n";
-    for (int i = 0; i < branch.numDepartments; ++i) 
+    for (int i = 0; i < branch.numDepartments; ++i)
         os << *branch.departments[i] << "\n"; // Department has operator<<
+    branch.toOs(os);
     return os;
 }
-

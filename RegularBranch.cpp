@@ -137,28 +137,38 @@ Employee* RegularBranch::getEmployee(int index) const
     return employees[index];
 }
 
-void RegularBranch::displayBranchDetails()
+//void RegularBranch::displayBranchDetails()
+//{
+//    Branch::displayBranchDetails();
+//    cout << "Address: " <<address << endl;
+//    cout << "Number of employees: " << numEmployees << " employee(s):\n";
+//    for (int i = 0; i < numEmployees; ++i)
+//        cout << *employees[i]; // Employee has operator<<
+//}
+
+//// Output operator (ostream operator<<)
+//ostream& operator<<(ostream& os, const RegularBranch& branch)
+//{
+//    os << static_cast<const Branch&>(branch); // Use Branch's operator<<
+//    os << "Address: " << branch.address << endl;
+//    os << "Number of employees: " << branch.numEmployees << " employee(s):\n";
+//    for (int i = 0; i < branch.numEmployees; ++i)
+//        os << *branch.employees[i]; // Employee has operator<<
+//
+//    return os;
+//}
+
+
+void RegularBranch::toOs(ostream& os) const
 {
-    Branch::displayBranchDetails();
-    cout << "Address: " <<address << endl;
-    cout << "Number of employees: " << numEmployees << " employee(s):\n";
+    os << "Address: " << address << endl;
+    os << "Number of employees: " << numEmployees << " employee(s):\n";
     for (int i = 0; i < numEmployees; ++i)
-        cout << *employees[i]; // Employee has operator<<
+        os << *employees[i]; // Employee has operator<<
 }
 
-// Output operator (ostream operator<<)
-ostream& operator<<(ostream& os, const RegularBranch& branch)
-{
-    os << static_cast<const Branch&>(branch); // Use Branch's operator<<
-    os << "Address: " << branch.address << endl;
-    os << "Number of employees: " << branch.numEmployees << " employee(s):\n";
-    for (int i = 0; i < branch.numEmployees; ++i)
-        os << *branch.employees[i]; // Employee has operator<<
+//Branch* RegularBranch::clone() const 
+//{
+//    return new RegularBranch(*this);
+//}
 
-    return os;
-}
-
-Branch* RegularBranch::clone() const 
-{
-    return new RegularBranch(*this);
-}

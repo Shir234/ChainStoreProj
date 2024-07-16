@@ -31,13 +31,15 @@ public:
     const char* getName() const { return name; }; // Getter for name
     bool setName(const char* name); // Setter for name
 
-    virtual void displayBranchDetails();
+    ////virtual void displayBranchDetails();
     virtual Branch* clone() const = 0; // Pure virtual clone method
 
     // Operator overloads
     friend ostream& operator<<(ostream& os, const Branch& branch);
     Department* operator[](int index); // Access department from array
 
+    //////////TRY TO DO THIS INSTEAD DISPLAY
+    virtual void toOs(ostream& os) const{}
 };
 
 #endif // BRANCH_H
