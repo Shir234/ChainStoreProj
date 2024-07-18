@@ -172,3 +172,7 @@ ostream& operator<<(ostream& os, const ChainStore& chainStore)
     
     return os;
 }
+bool ChainStore::isArrayFull()
+{
+    return numBranches >= maxNumBranches;
+}

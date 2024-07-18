@@ -136,3 +136,7 @@ ostream& operator<<(ostream& os, const Branch& branch)
     branch.toOs(os);
     return os;
 }
+bool Branch:: isDepArrayFull()
+{
+    return numDepartments >= maxNumDepartments;
+}
