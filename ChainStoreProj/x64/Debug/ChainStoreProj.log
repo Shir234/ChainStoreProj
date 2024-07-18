@@ -1,2 +1,22 @@
-﻿  main.cpp
-  ChainStoreProj.vcxproj -> C:\CPP_Course\chainStoregitproj\x64\Debug\ChainStoreProj.exe
+﻿  Branch.cpp
+C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\Branch.cpp(106,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  ChainStore.cpp
+C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\ChainStore.cpp(82,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Department.cpp
+C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\Department.cpp(158,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Employee.cpp
+C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\Employee.cpp(60,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Item.cpp
+C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\Item.cpp(68,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  main.cpp
+  Manager.cpp
+C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\Manager.cpp(65,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  OnlineBranch.cpp
+C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\OnlineBranch.cpp(67,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  OnlineRegularBranch.cpp
+  Person.cpp
+C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\Person.cpp(63,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  RegularBranch.cpp
+C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\RegularBranch.cpp(123,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+LINK : fatal error LNK1104: cannot open file 'C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\x64\Debug\ChainStoreProj.exe'

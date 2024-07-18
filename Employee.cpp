@@ -82,5 +82,6 @@ ostream& operator<<(ostream& os, const Employee& employee)
 {
     os << static_cast<const Person&>(employee); // Use Person's operator<<
     os << "\nemployee position: " << employee.getPosition() << "\n";
+    employee.toOs(os);
     return os;
 }

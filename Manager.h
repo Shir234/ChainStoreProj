@@ -19,7 +19,8 @@ public:
     const char* getManageDepartment() const { return manageDepartment; } // Getter for manageDepartment
     bool setManageDepartment(const char* manageDepartment); // Setter for manageDepartment
 
-    friend ostream& operator<<(ostream& os, const Manager& manager); // Output operator
+   // friend ostream& operator<<(ostream& os, const Manager& manager); // Output operator
+    virtual void toOs(ostream& os) const override;
 
 private:
     Manager(const Manager& other); // Copy constructor

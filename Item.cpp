@@ -93,7 +93,7 @@ bool Item::operator==(const Item& other) const
 
 ostream& operator<<(ostream& os, const Item& item)
 {
-    os << "Item: " << item.name << "\tPrice: $: " << item.price;
+    os << "Item: " << item.name << "\tPrice: $: " << item.price << "\n";
     return os;
 }
 

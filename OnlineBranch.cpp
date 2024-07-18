@@ -7,7 +7,7 @@ using namespace std;
 
 // Constructor
 OnlineBranch::OnlineBranch(const char* name, int maxNumDepartments, const char* url)
-    : Branch(name, maxNumDepartments), url(nullptr) 
+    : Branch(name, maxNumDepartments), url(nullptr)
 {
     cout << "in online c'tor\n";
     setUrl(url);

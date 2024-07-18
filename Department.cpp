@@ -144,7 +144,7 @@ void Department::showInventory() const
     cout << "Inventory of Department " << name << ":\n";
     for (int i = 0; i < inventorySize; ++i) 
     {
-        cout << *inventory[i]; // Use Item's operator<<
+        cout << i +1 << "." << * inventory[i]; // Use Item's operator<<
     }
     cout <<endl;
 }
@@ -179,7 +179,7 @@ Item* Department::operator[](int index)
 // Output operator (ostream operator<<)
 ostream& operator<<(ostream& os, const Department& department)
 {
-    os << "Name: " << department.name << "\tInventory Size: " << department.inventorySize
+    os << "Department Name: " << department.name << "\tInventory Size: " << department.inventorySize
         << "\tInventory Max Size: " << department.inventoryMaxSize
         << "\nInventory:\n";
     for (int i = 0; i < department.inventorySize; i++)

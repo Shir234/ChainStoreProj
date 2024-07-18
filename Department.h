@@ -25,6 +25,7 @@ public:
     // Methods to add and remove items
     bool addItem(const Item& item); // Calls operator+
     bool removeItem(Item& item); // Calls operator-
+    Item* getItem(int index) { return this->inventory[index]; }
 
     // Method to display all items - the inventory
     void showInventory() const; 
@@ -34,14 +35,13 @@ public:
     int getNumItems() const { return inventorySize; }; // Getter for numItems
     int getMaxNumItems() const { return inventoryMaxSize; }; // Getter for maxNumItems
 
-
     // Operator overloads
     Department& operator+(const Item& item); // Add item to inventory           Department + Item
     Department& operator-(Item& item); // Remove item from inventory      Department - Item
     Item* operator[](int index); // Access item in inventory                   Item* item = Department[index]
 
     friend ostream& operator<<(ostream& os, const Department& dp);
-
+    bool isInventoryFull() const { return inventorySize >= inventoryMaxSize; }
 };
 
 #endif // DEPARTMENT_H

@@ -70,10 +70,16 @@ bool Manager::setManageDepartment(const char* manageDepartment)
     return false;
 }
 
-// Output operator 
-ostream& operator<<(ostream& os, const Manager& manager)
+//// Output operator 
+//ostream& operator<<(ostream& os, const Manager& manager)
+//{
+//    os << static_cast<const Employee&>(manager); // Use Employee's operator<<
+//    os << "manager department: " << manager.getManageDepartment() << "\n";
+//    return os;
+//}
+
+
+void Manager::toOs(ostream& os) const
 {
-    os << static_cast<const Employee&>(manager); // Use Employee's operator<<
-    os << "manager department: " << manager.getManageDepartment() << "\n";
-    return os;
+    os << "\t\tmanager department: " << manageDepartment << "\n";
 }

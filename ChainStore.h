@@ -36,8 +36,8 @@ public:
 
   ////  void displayChainStoreDetails() const;
     friend ostream& operator<<(ostream& os, const ChainStore& chainStore);
-    bool isArrayFull();
-
+    bool isArrayFull() const { return numBranches >= maxNumBranches; }
+    void showBranchesArray() const;
 };
 
 #endif // CHAINSTORE_H

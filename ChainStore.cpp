@@ -151,6 +151,8 @@ Branch* ChainStore::operator[](int index)
     return branches[index];
 }
 
+
+
 //// Method to display all items in the department
 //    ///// DISPLAY PRINT EACH BRANCH AND SON DETAILS
 //void ChainStore::displayChainStoreDetails() const
@@ -166,13 +168,16 @@ Branch* ChainStore::operator[](int index)
     //// OS PRINT ONLY BRANCH DETAILS (no online or regular details)
 ostream& operator<<(ostream& os, const ChainStore& chainStore)
 {
+    os << "--------------------------------------------------------------------------------------------------------------------\n";
     os << "Chain Store Name: " << chainStore.name << "\nNumber of Branches: " << chainStore.numBranches << "\n";
     for (int i = 0; i < chainStore.numBranches; ++i)
         os << *chainStore.branches[i] << "\n"; // Use Branch's operator<<
-    
+    os << "--------------------------------------------------------------------------------------------------------------------\n";
     return os;
 }
-bool ChainStore::isArrayFull()
+
+void ChainStore::showBranchesArray() const
 {
-    return numBranches >= maxNumBranches;
+    for (int i = 0; i < numBranches; i++)
+        cout << i + 1 << ". " << getBranch(i)->getName() << "\n";
 }

@@ -34,6 +34,7 @@ public:
     //friend ostream& operator<<(ostream& os, const RegularBranch& branch);
 
     virtual void toOs(ostream& os) const override;
+    bool isEmployeeArrFull() const { return numEmployees >= maxNumEmployees; }
 };
 
 #endif // REGULARBRANCH_H

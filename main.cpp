@@ -19,318 +19,416 @@ void establishNetwork(ChainStore*& store);
 void addNewBranch(ChainStore*& store);
 void addDepartmentToBranch(ChainStore*& store);
 void addEmployeeToBranch(ChainStore*& store);
-void addItemToInventory();
-void removeItemFromInventory();
+void addItemToInventory(ChainStore*& store);
+void removeItemFromInventory(ChainStore*& store);
 void displayBranchDetails(ChainStore*& store);
-void displayInventoryDetails();
+void displayInventoryDetails(ChainStore*& store);
 Branch* getBranchFromStore(ChainStore*& store);
+Department* getDepartmentFromBranch(Branch*& branch);
 
-//// Function to clear the input stream
-void cleanBuffer() 
+void cleanBuffer()
 {
-    int c;
-    do
-    {
-        c = getchar();
-    } while (c != EOF && c != '\n');
+	int c;
+	do
+	{
+		c = getchar();
+	} while (c != EOF && c != '\n');
 }
 
 int main()
 {
-    ChainStore* store = nullptr;
- 
-    bool running = true;
+	ChainStore* store = nullptr;
+	establishNetwork(store);
+	bool running = true;
 
-    while (running) 
-    {
-        cout << "\nMenu:\n";
-        cout << "1. Establishing a network\n";
-        cout << "2. Adding a new branch\n";
-        cout << "3. Adding a department to a branch\n";
-        cout << "4. Adding an employee to a branch\n";
-        cout << "5. Adding an item to inventory\n";
-        cout << "6. Removing an item from inventory\n";
-        cout << "7. Displaying branch details\n";
-        cout << "8. Displaying inventory details\n";
-        cout << "9. Exit\n";
-        cout << "Enter your choice: ";
+	while (running)
+	{
+		cout << "\nMenu:\n";
+		//cout << "1. Establishing a network\n";
+		cout << "1. Adding a new branch\n";
+		cout << "2. Adding a department to a branch\n";
+		cout << "3. Adding an employee to a branch\n";
+		cout << "4. Adding an item to inventory\n";
+		cout << "5. Removing an item from inventory\n";
+		cout << "6. Displaying branch details\n";
+		cout << "7. Displaying inventory details\n";
+		cout << "8. Displaying Chain Store Details\n";
+		cout << "9. Exit\n";
+		cout << "Enter your choice: ";
 
-        int choice;
-        if (!(cin >> choice)) 
-        {
-            cout << "Invalid input. Please enter a number between 1 and 9.\n";
-            cleanBuffer();
-            continue;
-        }
-        cleanBuffer();
+		int choice;
+		if (!(cin >> choice))
+		{
+			cout << "Invalid input. Please enter a number between 1 and 9.\n";
+			continue;
+		}
 
-        switch (choice) 
-        {
-        case 1:
-            establishNetwork(store);
-            break;
-        case 2:
-            addNewBranch(store);
-            break;
-        case 3:
-            addDepartmentToBranch(store);
-            break;
-        case 4:
-            addEmployeeToBranch(store);
-            break;
-        case 5:
-            addItemToInventory();
-            break;
-        case 6:
-            removeItemFromInventory();
-            break;
-        case 7:
-            displayBranchDetails(store);
-            break;
-        case 8:
-            displayInventoryDetails();
-            break;
-        case 9:
-            running = false;
-            break;
-        default:
-            cout << "Invalid choice. Please enter a number between 1 and 9.\n";
-            break;
-        }
-    }
+		switch (choice)
+		{
+		case 1:
+			addNewBranch(store);
+			break;
+		case 2:
+			addDepartmentToBranch(store);
+			break;
+		case 3:
+			addEmployeeToBranch(store);
+			break;
+		case 4:
+			addItemToInventory(store);
+			break;
+		case 5:
+			removeItemFromInventory(store);
+			break;
+		case 6:
+			displayBranchDetails(store);
+			break;
+		case 7:
+			displayInventoryDetails(store);
+			break;
+		case 8:
+			cout << *store << "\n";
+		case 9:
+			running = false;
+			break;
+		default:
+			cout << "Invalid choice. Please enter a number between 1 and 9.\n";
+			break;
+		}
+	}
 
-    return 0;
+	return 0;
 }
 
 void establishNetwork(ChainStore*& store)
 {
-    char storeName[SIZE];
-    int maxNumBranches = 0;
-    cout << "Enter the name of the store: ";
-    cin.getline(storeName, SIZE);
-    cout << "Enter maximum number of branches: ";
-    cin >> maxNumBranches;
-    cleanBuffer();
-    store = new ChainStore(storeName, maxNumBranches);
-    cout << *store << "\n";
-
-
+	char storeName[SIZE];
+	int maxNumBranches = 0;
+	cout << "Enter the name of the store: ";
+	cin.getline(storeName, SIZE);
+	cout << "Enter maximum number of branches: ";
+	cin >> maxNumBranches;
+	store = new ChainStore(storeName, maxNumBranches);
+	cout << *store << "\n";
 }
+
 void addNewBranch(ChainStore*& store)
 {
-    char branchName[SIZE];
-    int maxNumDepartments = 0;
-    Branch* newBranch = nullptr;
-    int branchType;
+	Branch* newBranch = nullptr;
+	char branchName[SIZE];
+	int branchType, maxNumDepartments;
 
-    if (store->isArrayFull())
-    {
-        cout << "Branch array is full - cannot add any more branches\n";
-        return;
-    }
-    cout << "\nEnter the name of the branch: ";
-    cin.getline(branchName, SIZE);
+	if (store->isArrayFull())
+	{
+		cout << "Branch array is full - cannot add any more branches\n";
+		return;
+	}
+	cout << "\nEnter the name of the branch: ";
+	cleanBuffer();
+	cin.getline(branchName, SIZE);
 
-    cout << "\nEnter maximum number of departments: ";
-    cin >> maxNumDepartments;
-    if (maxNumDepartments < 1)
-        maxNumDepartments = 10;
-    cleanBuffer();
+	cout << "\nEnter maximum number of departments: ";
+	cin >> maxNumDepartments;
+	if (maxNumDepartments < 1)
+		maxNumDepartments = 10;
 
-    do {
-        cout << "Enter the type of branch (1: Regular, 2: Online, 3: Both): ";
-        if (!(cin >> branchType) || branchType < 1 || branchType > 3)
-        {
-            cout << "Invalid branch type. Please enter a number between 1 and 3.\n";
-            cleanBuffer(); // Assuming cleanBuffer is a function to clear the input buffer
-        }
-    } while (branchType < 1 || branchType > 3);
+	do
+	{
+		cout << "\nEnter the type of branch (1: Regular, 2: Online, 3: Both): ";
+		if (!(cin >> branchType) || branchType < 1 || branchType > 3)
+			cout << "Invalid branch type. Please enter a number between 1 and 3.\n";
+	} while (branchType < 1 || branchType > 3);
 
-    char address[SIZE] = "";
-    int numOfEmployees = 0;
-    char urlBranch[SIZE] = "";
+	char address[SIZE] = "";
+	int numOfEmployees = 0;
+	char urlBranch[SIZE] = "";
 
-    if (branchType == 1 || branchType == 3)
-    {
-        cleanBuffer();
-        cout << "\nEnter the address of the branch: ";
-        cin.getline(address, SIZE);
-  
-        cout << "Please type the number of employees: ";
-        cin >> numOfEmployees;
-        if (numOfEmployees < 1)
-            numOfEmployees = 1;
+	if (branchType == 1 || branchType == 3)
+	{
+		cout << "\nEnter the address of the branch: ";
+		cleanBuffer();
+		cin.getline(address, SIZE);
 
-    }
+		cout << "Enter the number of employees: ";
+		cin >> numOfEmployees;
+		if (numOfEmployees < 1)
+			numOfEmployees = 10;
+	}
 
-    if (branchType == 2 || branchType == 3)
-    {
-        cleanBuffer();
-        cout << "\nEnter the branch's URL: ";
-        cin.getline(urlBranch, SIZE);
-    }
+	if (branchType == 2 || branchType == 3)
+	{
+		cout << "\nEnter the branch's URL: ";
+		cleanBuffer();
+		cin.getline(urlBranch, SIZE);
+	}
 
-    switch (branchType)
-    {
-    case 1:
-        newBranch = new RegularBranch(branchName, maxNumDepartments, address, numOfEmployees);
-        break;
-    case 2:
-        newBranch = new OnlineBranch(branchName, maxNumDepartments, urlBranch);
-        break;
-    case 3:
-        newBranch = new OnlineRegularBranch(branchName, urlBranch, address, maxNumDepartments, numOfEmployees);
-        break;
-    }
+	switch (branchType)
+	{
+	case 1:
+		newBranch = new RegularBranch(branchName, maxNumDepartments, address, numOfEmployees);
+		break;
+	case 2:
+		newBranch = new OnlineBranch(branchName, maxNumDepartments, urlBranch);
+		break;
+	case 3:
+		newBranch = new OnlineRegularBranch(branchName, urlBranch, address, maxNumDepartments, numOfEmployees);
+		break;
+	}
 
-    if (newBranch != nullptr)
-    {
-        if(store->addBranch(*newBranch))    
-            cout << "Branch was successfully added to store\n";
-        else
-        {
-            cout << "Branch was not added\n";
-        }
-    }
-    return;
-    
-    
+	if (newBranch != nullptr)
+	{
+		if (store->addBranch(*newBranch))
+			cout << "Branch was successfully added to store\n";
+		else
+			cout << "Branch was not added\n";
+	}
+	return;
 }
 
 void addDepartmentToBranch(ChainStore*& store)
 {
-  Branch* selectedBranch = getBranchFromStore(store);
-  if (!selectedBranch)
-  {
-      return;
-  }
-        if (selectedBranch->isDepArrayFull())
-        {
-            cout << "Department array is full - cannot add any more departments\n";
-            return;
-        }
-        // Get department details
-        char departmentName[SIZE];
-        int inventoryMaxSize = 0;
-        cleanBuffer();
-        cout << "\nEnter department name: ";
-        cin.getline(departmentName, SIZE);
+	Branch* selectedBranch = getBranchFromStore(store);
+	if (!selectedBranch)
+		return;
 
-        cout << "\nEnter department's inventory max size: ";
-        cin >> inventoryMaxSize;
-       
+	if (selectedBranch->isDepArrayFull())
+	{
+		cout << "Department array is full - cannot add any more departments\n";
+		return;
+	}
 
-        // Create and add department
-        Department newDepartment(departmentName, inventoryMaxSize);
+	char departmentName[SIZE];
+	int inventoryMaxSize;
 
-        if (selectedBranch->addDepartment(newDepartment)) {
-            cout << "Department added successfully.\n";
-        }
-        else {
-            cout << "Failed to add department. The branch may be full.\n";
-        }
-    }
+	cout << "\nEnter department name: ";
+	cleanBuffer();
+	cin.getline(departmentName, SIZE);
 
+	cout << "\nEnter department's inventory max size: ";
+	cin >> inventoryMaxSize;
+
+	Department newDepartment(departmentName, inventoryMaxSize);
+
+	if (selectedBranch->addDepartment(newDepartment)) 
+	{
+		cout << "Department added successfully.\n";
+	}
+	else {
+		cout << "Failed to add department. The branch may be full.\n";
+	}
+	return;
+}
 
 void addEmployeeToBranch(ChainStore*& store)
 {
-    Branch* selectedBranch = getBranchFromStore(store);
-    if (!selectedBranch)
-    {
-        return;
-    }
+	RegularBranch* selectedBranch = dynamic_cast<RegularBranch*>(getBranchFromStore(store));
+	if (!selectedBranch)
+	{
+		cout << "Cannot add employees to Online Branch!\n";
+		return;
+	}
 
+	if (selectedBranch->isDepArrayFull())
+	{
+		cout << "Employees array is full - cannot hire more employees\n";
+		return;
+	}
+
+	int employeeType;
+	do
+	{
+		cout << "Enter the type of employee to add (1: Employee, 2: Manager): ";
+		if (!(cin >> employeeType) || employeeType < 1 || employeeType > 2)
+		{
+			cout << "Invalid employee type. Please enter 1 or 2.\n";
+		}
+	} while (employeeType < 1 || employeeType > 3);
+
+	char employeeName[SIZE];
+	char position[SIZE];
+	char manageDepartment[SIZE];
+	int age;
+
+	if (employeeType == 1 || employeeType == 2)
+	{
+		cout << "\nEnter employee name: ";
+		cleanBuffer();
+		cin.getline(employeeName, SIZE);
+
+		cout << "\nEnter employee's age: ";
+		cin >> age;
+
+		cout << "\nEnter employee position: ";
+		cleanBuffer();
+		cin.getline(position, SIZE);
+	}
+
+	if (employeeType == 2)
+	{
+		cout << "\nEnter manager department name to manage: ";
+		cin.getline(manageDepartment, SIZE);
+	}
+
+	Employee* employee = nullptr;
+	switch (employeeType)
+	{
+	case 1:
+		employee = new Employee(employeeName, age, position);
+		break;
+	case 2:
+		employee = new Manager(employeeName, age, position, manageDepartment);
+		break;
+	}
+
+	if (employee != nullptr)
+	{
+		if(selectedBranch->addEmployee(*employee))
+			cout << "Employee added successfully\n";
+		else
+		{
+			cout << "Employee was not added\n";
+		}
+	}
+	return;
 }
 
-void addItemToInventory() 
+void addItemToInventory(ChainStore*& store)
 {
-    int branchIndex, departmentIndex;
-    cout << "Select the branch to add an item to (enter index): ";
-    if (!(cin >> branchIndex)) 
-    {
-        cout << "Invalid branch selection.\n";
-        cleanBuffer();
-        return;
-    }
-    cleanBuffer();
+	Branch* selectedBranch = getBranchFromStore(store);
+	if (!selectedBranch)
+		return;
 
-    cout << "Select the department to add an item to (enter index): ";
-    if (!(cin >> departmentIndex)) 
-    {
-        cout << "Invalid department selection.\n";
-        cleanBuffer();
-        return;
-    }
-    cleanBuffer();
+	Department* selectedDepartment = getDepartmentFromBranch(selectedBranch);
+	if (!selectedDepartment)
+		return;
 
-    string itemName;
-    cout << "Enter the name of the item to add to the inventory: ";
-    getline(cin, itemName);
-    cout << "Item '" << itemName << "' added to department " << departmentIndex << " in branch " << branchIndex << ".\n";
+	if (selectedDepartment->isInventoryFull())
+	{
+		cout << "The inventory is full - cannot add more items\n";
+		return;
+	}
+
+	char itemName[SIZE];
+	double price;
+
+	cout << "\nEnter item's name: ";
+	cleanBuffer();
+	cin.getline(itemName, SIZE);
+
+	cout << "\nEnter item's price: ";
+	cin >> price;
+	Item newItem(itemName, price);
+
+	if(selectedDepartment->addItem(newItem))
+		cout << "Item added successfully!\n";
+	else
+		cout << "Item was not added\n"; 
+	return;
 }
 
-void removeItemFromInventory() 
+void removeItemFromInventory(ChainStore*& store)
 {
-    int branchIndex, departmentIndex;
-    cout << "Select the branch to remove an item from (enter index): ";
-    if (!(cin >> branchIndex)) 
-    {
-        cout << "Invalid branch selection.\n";
-        cleanBuffer();
-        return;
-    }
-    cleanBuffer();
+	Branch * selectedBranch = getBranchFromStore(store);
+	if (!selectedBranch)
+		return;
 
-    cout << "Select the department to remove an item from (enter index): ";
-    if (!(cin >> departmentIndex)) 
-    {
-        cout << "Invalid department selection.\n";
-        cleanBuffer();
-        return;
-    }
-    cleanBuffer();
+	Department* selectedDepartment = getDepartmentFromBranch(selectedBranch);
+	if (!selectedDepartment)
+		return;
 
-    string itemName;
-    cout << "Enter the name of the item to remove from the inventory: ";
-    getline(cin, itemName);
-    cout << "Item '" << itemName << "' removed from department " << departmentIndex << " in branch " << branchIndex << ".\n";
+	if (selectedDepartment->getNumItems() == 0)
+	{
+		cout << "The inventory is empty - cannot remove items\n";
+		return;
+	}
+	
+	cout << "Select an item to remove:\n";
+	selectedDepartment->showInventory();
+
+	int itemIndex;
+	do
+	{
+		cout << "Enter item number: ";
+		cin >> itemIndex;
+		if (itemIndex < 1 || itemIndex > selectedDepartment->getNumItems())
+			cout << "Invalid item selection. Please enter a valid item index\n";
+	} while (itemIndex < 1 || itemIndex > selectedDepartment->getNumItems());
+
+	Item* item = selectedDepartment->getItem(itemIndex - 1);
+	if (!selectedDepartment->removeItem(*item))
+	{
+		cout << "Cannot remove item\n";
+			return;
+	}
+	cout << "Item removed successfully!\n";
+	return;
 }
 
-void displayBranchDetails(ChainStore*& store) 
+void displayBranchDetails(ChainStore*& store)
 {
-    cout << "Chain store details: \n" << *store;
+	Branch* selectedBranch = getBranchFromStore(store);
+	if (!selectedBranch)
+		return;
+	cout << *selectedBranch;
 }
 
-void displayInventoryDetails() 
+void displayInventoryDetails(ChainStore*& store)
 {
-    cout << "Displaying inventory details.\n";
+	Branch* selectedBranch = getBranchFromStore(store);
+	if (!selectedBranch)
+		return;
+
+	Department* selectedDepartment = getDepartmentFromBranch(selectedBranch);
+	if (!selectedDepartment)
+		return;
+
+	selectedDepartment->showInventory();
 }
 
 Branch* getBranchFromStore(ChainStore*& store)
 {
-    if (store->getNumBranches() == 0)
-    {
-        cout << "No branches available in the store.\n";
-        return nullptr;
-    }
+	if (store->getNumBranches() == 0)
+	{
+		cout << "No branches in the store.\n";
+		return nullptr;
+	}
 
-    // List all branches
-    cout << "Select a branch:\n";
-    for (int i = 0; i < store->getNumBranches(); i++)
-    {
-        cout << i + 1 << ". " << store->getBranch(i)->getName() << "\n";
-    }
+	cout << "Select a branch:\n";
+	store->showBranchesArray();
 
-    // Get branch selection
-    int branchIndex;
-    do
-    {
-        cout << "Enter branch number: ";
-        cin >> branchIndex;
-        if (branchIndex < 1 || branchIndex > store->getNumBranches())
-            cout << "Invalid branch selection. Please enter a valid branch index\n";
-    } while (branchIndex < 1 || branchIndex > store->getNumBranches());
+	int branchIndex;
+	do
+	{
+		cout << "Enter branch number: ";
+		cin >> branchIndex;
+		if (branchIndex < 1 || branchIndex > store->getNumBranches())
+			cout << "Invalid branch selection. Please enter a valid branch index\n";
+	} while (branchIndex < 1 || branchIndex > store->getNumBranches());
 
-    Branch* selectedBranch = store->getBranch(branchIndex - 1);
-    return selectedBranch;
+	Branch* selectedBranch = store->getBranch(branchIndex - 1);
+	return selectedBranch;
+}
+
+Department* getDepartmentFromBranch(Branch*& branch)
+{
+	if (branch->getNumDepartments() == 0)
+	{
+		cout << "No departments available in the branch.\n";
+		return nullptr;
+	}
+
+	cout << "Select a department:\n";
+	branch->showDepArray();
+
+	int departmentIndex;
+	do
+	{
+		cout << "Enter department number: ";
+		cin >> departmentIndex;
+		if (departmentIndex < 1 || departmentIndex > branch->getNumDepartments())
+			cout << "Invalid branch selection. Please enter a valid branch index\n";
+	} while (departmentIndex < 1 || departmentIndex > branch->getNumDepartments());
+
+	Department* selectedDepartment = branch->getDepartment(departmentIndex - 1);
+	return selectedDepartment;
 }

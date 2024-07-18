@@ -16,6 +16,7 @@ public:
     
     bool operator==(const Employee& other) const;
     friend ostream& operator<<(ostream& os, const Employee& employee); // Output operator
+    virtual void toOs(ostream& os) const {}
     friend class RegularBranch;
     friend class Manager;
 
