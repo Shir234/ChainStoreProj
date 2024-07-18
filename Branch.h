@@ -30,7 +30,7 @@ public:
     Department* getDepartment(int index) const; //DO WE NEED THIS?
     const char* getName() const { return name; }; // Getter for name
     bool setName(const char* name); // Setter for name
-
+ 
     ////virtual void displayBranchDetails();
     virtual Branch* clone() const = 0; // Pure virtual clone method
 
@@ -40,6 +40,7 @@ public:
 
     //////////TRY TO DO THIS INSTEAD DISPLAY
     virtual void toOs(ostream& os) const{}
+    bool isDepArrayFull();
 };
 
 #endif // BRANCH_H

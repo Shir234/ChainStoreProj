@@ -1,3 +1,2 @@
-﻿  Item.cpp
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\Item.cpp(68,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  ChainStoreProj.vcxproj -> C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\x64\Debug\ChainStoreProj.exe
+﻿  main.cpp
+  ChainStoreProj.vcxproj -> C:\CPP_Course\chainStoregitproj\x64\Debug\ChainStoreProj.exe

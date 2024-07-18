@@ -26,7 +26,7 @@ public:
 
     bool setName(const char* name);
     char* getName() { return name; }
-    
+    int getNumBranches() { return numBranches; }
     bool addBranch(const Branch& branch);
     //bool addBranch(const RegularBranch& branch);
     //bool addBranch(const OnlineBranch& branch);
@@ -36,6 +36,7 @@ public:
 
   ////  void displayChainStoreDetails() const;
     friend ostream& operator<<(ostream& os, const ChainStore& chainStore);
+    bool isArrayFull();
 
 };
 
