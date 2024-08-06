@@ -23,7 +23,7 @@ void addDepartmentToBranch(ChainStore*& store);
 //void removeItemFromInventory(ChainStore*& store);
 //void displayBranchDetails(ChainStore*& store);
 //void displayInventoryDetails(ChainStore*& store);
-//Branch* getBranchFromStore(ChainStore*& store);
+Branch* getBranchFromStore(ChainStore*& store);
 //Department* getDepartmentFromBranch(Branch*& branch);
 
 void cleanBuffer()
@@ -628,39 +628,39 @@ void addDepartmentToBranch(ChainStore*& store)
 //	}
 //}
 //
-//Branch* getBranchFromStore(ChainStore*& store)
-//{
-//	if (store->getNumBranches() == 0)
-//		throw BranchNotFoundException();
-//
-//	cout << "\n--------- Select a branch ---------" << endl;
-//	store->showBranchesArray();
-//	Branch* selectedBranch = nullptr;
-//
-//	bool validIndex = false;
-//
-//	while (true)
-//	{
-//		int branchIndex;
-//		cout << "Enter branch number: ";
-//		cin >> branchIndex;
-//
-//		try
-//		{
-//			selectedBranch = (*store)[branchIndex - 1];
-//			return selectedBranch;
-//		}
-//		catch (BranchIndexOutOfRangeException& e)
-//		{
-//			cout << e.what() << endl;
-//			cout << "Please enter a valid branch index\n";
-//		}
-//		catch (...)
-//		{
-//			cout << "Unknown error occurred." << endl;
-//		}
-//	}
-//}
+Branch* getBranchFromStore(ChainStore*& store)
+{
+	if (store->getNumBranches() == 0)
+		throw BranchNotFoundException();
+
+	cout << "\n--------- Select a branch ---------" << endl;
+	store->showBranchesArray();
+	Branch* selectedBranch = nullptr;
+
+	bool validIndex = false;
+
+	while (true)
+	{
+		int branchIndex;
+		cout << "Enter branch number: ";
+		cin >> branchIndex;
+
+		try
+		{
+			selectedBranch = (*store)[branchIndex - 1];
+			return selectedBranch;
+		}
+		catch (BranchIndexOutOfRangeException& e)
+		{
+			cout << e.what() << endl;
+			cout << "Please enter a valid branch index\n";
+		}
+		catch (...)
+		{
+			cout << "Unknown error occurred." << endl;
+		}
+	}
+}
 //
 //Department* getDepartmentFromBranch(Branch*& branch)
 //{
