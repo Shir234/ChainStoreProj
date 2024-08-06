@@ -26,6 +26,10 @@ void addDepartmentToBranch(ChainStore*& store);
 Branch* getBranchFromStore(ChainStore*& store);
 //Department* getDepartmentFromBranch(Branch*& branch);
 
+//HELPERS OR MINI FUNCTIONS TO USE IN THE MAIN FUNCTIONS
+bool isValidInteger(const char* str);
+
+
 void cleanBuffer()
 {
 	int c;
@@ -170,12 +174,20 @@ void addNewBranch(ChainStore*& store)
 			do
 			{
 				cout << "Enter the type of branch (1: Regular, 2: Online, 3: Both): ";
-				if (!(cin >> branchType) || branchType < 1 || branchType > 3)
+				char input[SIZE];
+				//cleanBuffer();
+				cin.getline(input, SIZE);
+
+				if (!isValidInteger(input))
+					throw invalid_argument("Invalid input. Please enter a number.");
+
+				branchType = atoi(input);
+				if (branchType < 1 || branchType > 3)
 					throw invalid_argument("Invalid branch type. Please enter a number between 1 and 3.");
 			} while (branchType < 1 || branchType > 3);
 
 			cout << "Enter the name of the branch: ";
-			cleanBuffer();
+		//	cleanBuffer();
 			cin.getline(branchName, SIZE);
 
 			cout << "Enter maximum number of departments: ";
@@ -193,7 +205,7 @@ void addNewBranch(ChainStore*& store)
 			if (branchType == 2 || branchType == 3)
 			{
 				cout << "Enter the branch's URL: ";
-				cleanBuffer();
+			//	cleanBuffer();
 				cin.getline(urlBranch, SIZE);
 			}
 			switch (branchType)
@@ -694,7 +706,29 @@ Branch* getBranchFromStore(ChainStore*& store)
 //	}
 //}
 
+bool isValidInteger(const char* str)
+{
+	if (str == nullptr || *str == '\0')
+		return false;
 
+	// Check for optional sign
+	if (*str == '+' || *str == '-')
+		str++;
+
+	// Check for at least one digit
+	if (*str == '\0')
+		return false;
+
+	// Check remaining characters
+	while (*str != '\0')
+	{
+		if (*str < '0' || *str > '9')
+			return false;
+		str++;
+	}
+
+	return true;
+}
 
 //int main()
 //{
