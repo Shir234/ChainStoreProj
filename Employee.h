@@ -12,7 +12,7 @@ public:
     ~Employee(); // Destructor
 
     const char* getPosition() const;// Getter for position
-    bool setPosition(const char* position); // Setter for position
+    void setPosition(const char* position); // Setter for position
     
     bool operator==(const Employee& other) const;
     virtual void toOs(ostream& os) const override;
@@ -21,9 +21,9 @@ public:
 
 protected:
     Employee(const Employee& other); // Copy constructor
-    Employee(Employee&& other); // Move constructor
+    Employee(Employee&& other) noexcept; // Move constructor
     Employee& operator=(const Employee& other); // Copy assignment operator
-    Employee& operator=(Employee&& other); // Move assignment operator
+    Employee& operator=(Employee&& other) noexcept; // Move assignment operator
 
 };
 

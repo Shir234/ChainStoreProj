@@ -46,12 +46,11 @@ Item& Item::operator=(const Item& other)
             setPrice(other.price);
 
         }
-        catch (const InvalidItemNameException& e)
+        catch (...)
         {
-            throw;
-        }
-        catch (const InvalidItemPriceException& e)
-        {
+            delete[] name;
+            name = nullptr;
+            price = 0;
             throw;
         }
     }
@@ -70,15 +69,12 @@ Item& Item::operator=(Item&& other) noexcept
     return *this;
 }
 
-
 // Setter for name
 void Item::setName(const char* name) 
 {
     if (name == nullptr || name[0] == '\0')
-    {
-        throw InvalidItemNameException();
-    }
-    
+        throw InvalidNameException("Item name cannot be null or empty");
+
     delete[] this->name; // Release existing name if any
     this->name = new char[strlen(name) + 1];
     strcpy(this->name, name); // Copy the new name

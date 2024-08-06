@@ -7,9 +7,8 @@ ChainStore::ChainStore(const char* name, int maxNumBranches)
 {
     //check max number of branches and also throw
     if (maxNumBranches <= 0)
-    {
         throw InvalidMaxBranchesException();
-    }
+
     try
     {
         setName(name);
@@ -22,7 +21,7 @@ ChainStore::ChainStore(const char* name, int maxNumBranches)
     }
     catch (const MemoryAllocationException& e)
     {
-        delete[] name;
+        delete[] this->name;
         delete[] branches;
         throw MemoryAllocationException("Failed to allocate memory for branches");
     }
@@ -44,10 +43,14 @@ ChainStore::ChainStore(ChainStore&& other) noexcept : name(nullptr), branches(nu
 //d'tor
 ChainStore::~ChainStore()
 {
+    cout << "\nBEFORE DTOR STORE\n";
     delete[] name;
+    cout << "after name delete\n";
     for (int i = 0; i < numBranches; i++)
         delete branches[i];
+    cout << "after branches delete\n";
     delete[] branches;
+    cout << "end of dtor\n";
 }
 
 ////operator=
@@ -95,17 +98,10 @@ const ChainStore& ChainStore::operator=(const ChainStore& other)
                 newBranches[successfulClones] = other.branches[successfulClones]->clone();
             }
 
-            //for (int i = 0; i < other.numBranches; ++i)
-            //{
-            //    newBranches[i] = other.branches[i]->clone();
-            //}
-
             setName(other.name);
-
             for (int j = 0; j < numBranches; j++)
                 delete branches[j];
             delete[] branches;
-
 
             branches = newBranches;
             numBranches = other.numBranches;
@@ -162,7 +158,7 @@ const ChainStore& ChainStore::operator=(ChainStore&& other) noexcept
 void ChainStore::setName(const char* name)
 {
     if (name == nullptr || name[0] == '\0')
-        throw InvalidNameException();
+        throw InvalidNameException("Chain Store's name cannot be null or empty");
     
     delete[] this->name; // Release existing name if any
     this->name = new char[strlen(name) + 1];

@@ -14,16 +14,15 @@ protected:
 public:
     RegularBranch(const char* name, int maxNumDepartments, const char* address, int maxNumEmployees = 50); // Constructor
     RegularBranch(const RegularBranch& other); // Copy constructor
-    RegularBranch(RegularBranch&& other); // Move constructor
+    RegularBranch(RegularBranch&& other) noexcept; // Move constructor
     virtual ~RegularBranch(); // Destructor
-
     RegularBranch& operator=(const RegularBranch& other); // Copy assignment operator
-    RegularBranch& operator=(RegularBranch&& other); // Move assignment operator
+    RegularBranch& operator=(RegularBranch&& other) noexcept; // Move assignment operator
 
-    bool addEmployee(const Employee& employee); // Method to add an employee
-    bool removeEmployee(Employee& employee); // Method to remove an employee by name
+    void addEmployee(const Employee& employee); // Method to add an employee
+    void removeEmployee(Employee& employee); // Method to remove an employee by name
     const char* getAddress() const { return address; } // Getter for address
-    bool setAddress(const char* address); // Setter for address
+    void setAddress(const char* address); // Setter for address
     int getNumEmployees() const { return numEmployees; }
     Employee* getEmployee(int index) const; 
 

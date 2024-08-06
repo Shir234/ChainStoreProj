@@ -23,7 +23,30 @@ Department::Department(const Department& other)
     : inventory(nullptr), inventorySize(0), inventoryMaxSize(0), name(nullptr)
 {
     cout << "in depar copy c'tor\n";
-    *this = other; // Call copy assignment operator
+//    *this = other; // Call copy assignment operator
+    try
+    {
+        setName(other.name);
+        inventoryMaxSize = other.inventoryMaxSize;
+        inventory = new Item * [inventoryMaxSize];
+
+        for (int i = 0; i < other.inventorySize; ++i)
+        {
+            inventory[i] = new Item(*other.inventory[i]);
+            ++inventorySize;
+        }
+    }
+    catch (...)
+    {
+        // Clean up if an exception occurs
+        for (int i = 0; i < inventorySize; ++i)
+        {
+            delete inventory[i];
+        }
+        delete[] inventory;
+        delete[] name;
+        throw;
+    }
 }
 
 // Move constructor
@@ -51,23 +74,29 @@ Department& Department::operator=(const Department& other)
     cout << "in depar operator =\n";
     if (this != &other) 
     {
-        setName(other.name);
+        Department temp(other);  // This might throw, but *this is still intact
+        swap(name, temp.name);
+        swap(inventory, temp.inventory);
+        swap(inventorySize, temp.inventorySize);
+        swap(inventoryMaxSize, temp.inventoryMaxSize);
 
-       // delete[] name;
-        for (int i = 0; i < inventorySize; ++i)
-            delete inventory[i];
-        delete[] inventory;
 
-        // Copy data from other Department
-        inventoryMaxSize = other.inventoryMaxSize;
-        inventorySize = other.inventorySize;
-        setName(other.name);
-        inventory = new Item*[inventoryMaxSize];
+     //   setName(other.name);
 
-        for (int i = 0; i < inventorySize; i++) 
-        {
-            inventory[i] = new Item(*other.inventory[i]);
-        }
+     //  // delete[] name;
+     //   for (int i = 0; i < inventorySize; ++i)
+     //       delete inventory[i];
+     //   delete[] inventory;
+
+     //   // Copy data from other Department
+     //   inventoryMaxSize = other.inventoryMaxSize;
+     //   inventorySize = other.inventorySize;
+     ////   setName(other.name);
+     //   inventory = new Item*[inventoryMaxSize];
+
+     //   for (int i = 0; i < inventorySize; i++) 
+     //       inventory[i] = new Item(*other.inventory[i]);
+
     }
     return *this;
 }
@@ -103,7 +132,7 @@ void Department::addItem(const Item& item)
         inventory[inventorySize] = new Item(item);
         inventorySize++;
     }
-    catch (const InvalidItemNameException& e)
+    catch (const InvalidNameException& e)
     {
         throw DepartmentItemException("Failed to add item: " + string(e.what()));
     }
@@ -111,7 +140,7 @@ void Department::addItem(const Item& item)
     {
         throw DepartmentItemException("Failed to add item: " + string(e.what()));
     }
-    catch (const std::bad_alloc& e)
+    catch (const bad_alloc& e)
     {
         throw DepartmentMemoryException("Failed to allocate memory for new item");
     }
@@ -154,7 +183,7 @@ void Department::showInventory() const
 void  Department::setName(const char* name)
 {
     if (name == nullptr || name[0] == '\0')
-        throw InvalidDepartmentNameException();
+        throw InvalidNameException("Department name cannot be null or empty");
 
     delete[] this->name;
     this->name = new char[strlen(name) + 1];
@@ -202,11 +231,11 @@ Department& Department::operator-(Item& item)
 Item* Department::operator[](int index) 
 {
     if (index < 0 || index >= inventorySize)
-        throw InvalidInventoryIndexException();
+        throw BranchIndexOutOfRangeException();
 
     return inventory[index];
 
-    cout << "in operator []\n";
+    //cout << "in operator []\n";
     //if (index < 0 || index > inventorySize)
     //{
     //    cout << "invalid index, returned null";

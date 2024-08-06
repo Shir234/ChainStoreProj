@@ -12,14 +12,13 @@ protected:
 public:
     OnlineBranch(const char* name, int maxNumDepartments, const char* url); // Constructor
     OnlineBranch(const OnlineBranch& other); // Copy constructor
-    OnlineBranch(OnlineBranch&& other); // Move constructor
+    OnlineBranch(OnlineBranch&& other) noexcept; // Move constructor
     virtual ~OnlineBranch(); // Destructor
-
     OnlineBranch& operator=(const OnlineBranch& other); // Copy assignment operator
-    OnlineBranch& operator=(OnlineBranch&& other); // Move assignment operator
+    OnlineBranch& operator=(OnlineBranch&& other) noexcept; // Move assignment operator
 
     const char* getUrl() const { return url; } // Getter for url
-    bool setUrl(const char* url); // Setter for url
+    void setUrl(const char* url); // Setter for url
 
    // virtual void displayBranchDetails() ;
     Branch* clone() const override { return new OnlineBranch(*this); } // Implement clone method

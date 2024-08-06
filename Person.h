@@ -1,6 +1,8 @@
 #ifndef PERSON_H
 #define PERSON_H
 
+#include "ChaineStoreExceptions.h"
+
 class Person {
 private:
     char* name;
@@ -14,10 +16,10 @@ public:
     ~Person(); // Destructor
 
     const char* getName() const { return name; } // Getter for name
-    bool setName(const char* name); // Setter for name
+    void setName(const char* name); // Setter for name
 
     int getAge() const { return age; } // Getter for age
-    bool setAge(int age); // Setter for age
+    void setAge(int age); // Setter for age
     int getId() const { return id; }   // Getter for ID
 
     virtual void toOs(ostream& os) const {}
@@ -25,8 +27,8 @@ public:
 protected:
     Person(const Person& other); // Copy constructor
     Person& operator=(const Person& other); // Copy assignment operator
-    Person(Person&& other); // Move constructor
-    Person& operator=(Person&& other); // Move assignment operator
+    Person(Person&& other) noexcept; // Move constructor
+    Person& operator=(Person&& other) noexcept; // Move assignment operator
 };
 
 #endif // PERSON_H

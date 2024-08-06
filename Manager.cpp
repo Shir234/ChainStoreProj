@@ -21,7 +21,7 @@ Manager::Manager(const Manager& other) : Employee(other), manageDepartment(nullp
 }
 
 // Move constructor
-Manager::Manager(Manager&& other) : Employee(std::move(other)), manageDepartment(nullptr)
+Manager::Manager(Manager&& other) noexcept : Employee(std::move(other)), manageDepartment(nullptr)
 {
     *this = std::move(other); // Call move assignment operator
 }
@@ -45,7 +45,7 @@ Manager& Manager::operator=(const Manager& other)
 }
 
 // Move assignment operator
-Manager& Manager::operator=(Manager&& other)
+Manager& Manager::operator=(Manager&& other) noexcept
 {
     if (this != &other)
     {
@@ -59,15 +59,12 @@ Manager& Manager::operator=(Manager&& other)
 // Setter for manageDepartment
 bool Manager::setManageDepartment(const char* manageDepartment)
 {
-    if (manageDepartment != nullptr)
-    {
-        delete[] this->manageDepartment;
-        int len = strlen(manageDepartment) + 1;
-        this->manageDepartment = new char[len];
-        strcpy(this->manageDepartment, manageDepartment);
-        return true;
-    }
-    return false;
+    if (manageDepartment == nullptr || manageDepartment[0] == '\0')
+        throw InvalidNameException("Manage department cannot be null or empty");
+    
+    delete[] this->manageDepartment;
+    this->manageDepartment = new char[strlen(manageDepartment) + 1];
+    strcpy(this->manageDepartment, manageDepartment);
 }
 
 void Manager::toOs(ostream& os) const

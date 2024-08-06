@@ -5,7 +5,9 @@ using namespace std;
 
 // Constructor
 OnlineRegularBranch::OnlineRegularBranch(const char* name, const char* uml, const char* address, int maxNumDepartments, int maxNumEmployees)
-    : Branch(name, maxNumDepartments), OnlineBranch(name, maxNumDepartments, uml), RegularBranch(name, maxNumDepartments, address, maxNumEmployees)
+    : Branch(name, maxNumDepartments), 
+    OnlineBranch(name, maxNumDepartments, uml), 
+    RegularBranch(name, maxNumDepartments, address, maxNumEmployees)
 {
     
 }
@@ -15,17 +17,6 @@ OnlineRegularBranch::~OnlineRegularBranch()
 {
 
 }
-//void OnlineRegularBranch::displayBranchDetails()
-//{
-//    Branch::displayBranchDetails();
-//    cout << "Online Details:\n";
-//    cout << "UML: " << getUrl();    
-//    cout << "\nRegular Details:\n";
-//    cout << "Address: " << getAddress();
-//    cout << "\nNumber of employees: " << getNumEmployees() << " employee(s):\n";
-//    for (int i = 0; i < getNumEmployees(); ++i)
-//        cout << *getEmployee(i) << "\n"; // Employee has operator<<
-//}
 
 //// Output operator (ostream operator<<)
 //ostream& operator<<(ostream& os, OnlineRegularBranch& branch)

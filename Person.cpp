@@ -12,6 +12,7 @@ int Person::nextId = 1; // Initialize static member variable
 Person::Person(const char* name, int age) : name(nullptr), age(age), id(nextId++)
 {
     setName(name);
+    setAge(age);
 }
 
 // Copy constructor
@@ -21,7 +22,7 @@ Person::Person(const Person& other): name(nullptr), id(nextId++)
 }
 
 // Move constructor
-Person::Person(Person&& other) : name(nullptr), id(nextId++)
+Person::Person(Person&& other) noexcept : name(nullptr), id(nextId++)
 {
     *this = std::move(other); // Call move assignment operator
 }
@@ -38,7 +39,7 @@ Person& Person::operator=(const Person& other)
 }
 
 // Move assignment operator
-Person& Person::operator=(Person&& other)
+Person& Person::operator=(Person&& other) noexcept
 {
     if (this != &other)
     {
@@ -55,27 +56,23 @@ Person::~Person()
 }
 
 // Setter for name
-bool Person::setName(const char* name) 
+void Person::setName(const char* name)
 {
-    if (name != nullptr)
-    {
-        delete[] this->name; // Release existing name if any
-        int len = strlen(name) + 1; // +1 for null terminator
-        this->name = new char[len];
-        strcpy(this->name, name); // Copy the new name
-        return true;
-    }
-    return false;
+    if (name == nullptr || name[0] == '\0')
+        throw InvalidNameException("Person name cannot be null or empty");
+
+    delete[] this->name;
+    this->name = new char[strlen(name) + 1];
+    strcpy(this->name, name);
 }
 
 // Setter for age
-bool Person::setAge(int age) 
+void Person::setAge(int age)
 {
-    if (age > 0 && age <= 120) {
-        this->age = age;
-        return true;
-    }
-    return false;
+    if (age < 1 || age > 120)
+        throw InvalidPersonAgeException();
+
+    this->age = age;
 }
 
 // Output operator 

@@ -1,9 +1,2 @@
-﻿  ChainStore.cpp
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\ChainStore.cpp(18,40): warning C4101: 'e': unreferenced local variable
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\ChainStore.cpp(23,45): warning C4101: 'e': unreferenced local variable
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\ChainStore.cpp(103,44): warning C4101: 'e': unreferenced local variable
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\ChainStore.cpp(113,33): warning C4101: 'e': unreferenced local variable
-  main.cpp
-  Generating Code...
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\main.cpp(475,1): warning C4715: 'getBranchFromStore': not all control paths return a value
+﻿  main.cpp
   ChainStoreProj.vcxproj -> C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\x64\Debug\ChainStoreProj.exe

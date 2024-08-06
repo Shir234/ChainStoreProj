@@ -18,7 +18,7 @@ Employee::Employee(const Employee& other): Person(other), position(nullptr)
 }
 
 // Move constructor
-Employee::Employee(Employee&& other) : Person(other), position(nullptr)
+Employee::Employee(Employee&& other) noexcept : Person(other), position(nullptr)
 {
     *this = std::move(other); // Call move assignment operator
 }
@@ -41,7 +41,7 @@ Employee& Employee::operator=(const Employee& other)
 }
 
 // Move assignment operator
-Employee& Employee::operator=(Employee&& other)
+Employee& Employee::operator=(Employee&& other) noexcept
 {
     if (this != &other)
     {
@@ -51,18 +51,17 @@ Employee& Employee::operator=(Employee&& other)
     }
     return *this;
 }
+
 // Setter for position
-bool Employee::setPosition(const char* position)
+void Employee::setPosition(const char* position)
 {
-    if (position != nullptr) 
-    {
-        delete[] this->position;
-        int len = strlen(position) + 1;
-        this->position = new char[len];
-        strcpy(this->position, position);
-        return true;
-    }
-    return false;
+    if (position == nullptr || position[0] == '\0')
+        throw InvalidNameException("Position cannot be null or empty");
+   
+    delete[] this->position;
+    int len = strlen(position) + 1;
+    this->position = new char[strlen(position) + 1];
+    strcpy(this->position, position);
 }
 
 // Getter for position

@@ -18,9 +18,9 @@ public:
 
 private:
     Manager(const Manager& other); // Copy constructor
-    Manager(Manager&& other); // Move constructor
+    Manager(Manager&& other) noexcept; // Move constructor
     Manager& operator=(const Manager& other); // Copy assignment operator
-    Manager& operator=(Manager&& other); // Move assignment operator
+    Manager& operator=(Manager&& other) noexcept; // Move assignment operator
 
 };
 
