@@ -15,12 +15,11 @@ public:
     bool setPosition(const char* position); // Setter for position
     
     bool operator==(const Employee& other) const;
-    friend ostream& operator<<(ostream& os, const Employee& employee); // Output operator
-    virtual void toOs(ostream& os) const {}
-    friend class RegularBranch;
-    friend class Manager;
+    virtual void toOs(ostream& os) const override;
 
-private:
+    friend class RegularBranch;
+
+protected:
     Employee(const Employee& other); // Copy constructor
     Employee(Employee&& other); // Move constructor
     Employee& operator=(const Employee& other); // Copy assignment operator

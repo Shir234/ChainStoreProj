@@ -74,14 +74,10 @@ const char* Employee::getPosition() const
 // Equality operator
 bool Employee::operator==(const Employee& other) const
 {
-    return (id == other.getId());
+    return (this->getId() == other.getId());
 }
 
-// Output operator 
-ostream& operator<<(ostream& os, const Employee& employee)
+void Employee::toOs(ostream& os) const
 {
-    os << static_cast<const Person&>(employee); // Use Person's operator<<
-    os << "\nemployee position: " << employee.getPosition() << "\n";
-    employee.toOs(os);
-    return os;
+    os << "\n\t\tposition: " << getPosition() << "\n";
 }

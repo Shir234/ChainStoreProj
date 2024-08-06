@@ -159,12 +159,20 @@ Employee* RegularBranch::getEmployee(int index) const
 //}
 
 
+//void RegularBranch::toOs(ostream& os) const
+//{
+//    os << "Address: " << address << endl;
+//    os << "Number of employees: " << numEmployees << " employee(s):\n";
+//    for (int i = 0; i < numEmployees; ++i)
+//        os << *employees[i]; // Employee has operator<<
+//}
+
 void RegularBranch::toOs(ostream& os) const
 {
     os << "Address: " << address << endl;
-    os << "Number of employees: " << numEmployees << " employee(s):\n";
+    os << "Number of employees: " << numEmployees << endl;
     for (int i = 0; i < numEmployees; ++i)
-        os << *employees[i]; // Employee has operator<<
+        os << "\t" << i + 1 << ") " << *employees[i]; // Employee has operator<<
 }
 
 //Branch* RegularBranch::clone() const 

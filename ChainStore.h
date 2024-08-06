@@ -1,6 +1,9 @@
 #ifndef CHAINSTORE_H
 #define CHAINSTORE_H
 
+#pragma warning (disable: 4996)
+#include "ChaineStoreExceptions.h"
+
 #include <iostream>
 using namespace std;
 
@@ -9,6 +12,7 @@ class Branch;
 #include "OnlineBranch.h"
 #include "OnlineRegularBranch.h"
 
+
 class ChainStore {
 private:
     char* name;
@@ -16,25 +20,21 @@ private:
     int numBranches;
     int maxNumBranches;
 public:
-    ChainStore(const char* name, int maxNumBranches = 10);   //default c'tor
+    ChainStore(const char* name, int maxNumBranches = 10) noexcept(false);   //default c'tor
     ChainStore(const ChainStore& other);// copy c'tor
-    ChainStore(ChainStore&& other); // move c'tor
+    ChainStore(ChainStore&& other) noexcept; // move c'tor
     ~ChainStore();                  //d'tor
 
     const ChainStore& operator=(const ChainStore& other);   //operator=
-    const ChainStore& operator=(ChainStore&& other);        //move operator
+    const ChainStore& operator=(ChainStore&& other) noexcept;        //move operator
 
-    bool setName(const char* name);
-    char* getName() { return name; }
-    int getNumBranches() { return numBranches; }
-    bool addBranch(const Branch& branch);
-    //bool addBranch(const RegularBranch& branch);
-    //bool addBranch(const OnlineBranch& branch);
-    //bool addBranch(const OnlineRegularBranch& branch);
-    Branch* getBranch(int index) const;
-    Branch* operator[](int index);
+    void setName(const char* name) noexcept(false);
+    char* getName() const { return name; }
+    int getNumBranches() const { return numBranches; }
+    
+    void addBranch(const Branch& branch) noexcept(false);
+    Branch* operator[](int index) noexcept(false);
 
-  ////  void displayChainStoreDetails() const;
     friend ostream& operator<<(ostream& os, const ChainStore& chainStore);
     bool isArrayFull() const { return numBranches >= maxNumBranches; }
     void showBranchesArray() const;

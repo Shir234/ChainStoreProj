@@ -20,9 +20,9 @@ public:
     bool setAge(int age); // Setter for age
     int getId() const { return id; }   // Getter for ID
 
+    virtual void toOs(ostream& os) const {}
     friend ostream& operator<<(ostream& os, const Person& person); // Output operator
-    friend class Employee;
-private:
+protected:
     Person(const Person& other); // Copy constructor
     Person& operator=(const Person& other); // Copy assignment operator
     Person(Person&& other); // Move constructor

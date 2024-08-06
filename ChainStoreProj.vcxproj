@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Branch.h" />
+    <ClInclude Include="ChaineStoreExceptions.h" />
     <ClInclude Include="ChainStore.h" />
     <ClInclude Include="Department.h" />
     <ClInclude Include="Employee.h" />

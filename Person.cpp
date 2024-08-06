@@ -81,6 +81,7 @@ bool Person::setAge(int age)
 // Output operator 
 ostream& operator<<(ostream& os, const Person& person)
 {
-    os << "ID: " << person.getId() << "\tName: " << person.getName() << "\tage: " << person.getAge();
+    os << "id: " << person.getId() << "\t" << "Name: " << person.getName() << "\t" << "age : " << person.getAge();
+    person.toOs(os);
     return os;
 }

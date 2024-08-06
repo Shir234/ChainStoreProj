@@ -27,7 +27,6 @@ public:
     // Getters and Setters
     int getNumDepartments() const { return numDepartments; }
     int getMaxNumDepartments() const { return maxNumDepartments; }
-    Department* getDepartment(int index) const; 
     const char* getName() const { return name; }; // Getter for name
     bool setName(const char* name); // Setter for name
  
@@ -38,7 +37,6 @@ public:
     friend ostream& operator<<(ostream& os, const Branch& branch);
     Department* operator[](int index); // Access department from array
 
-    //////////TRY TO DO THIS INSTEAD DISPLAY
     virtual void toOs(ostream& os) const{}
     bool isDepArrayFull() const { return numDepartments >= maxNumDepartments; }
     void showDepArray() const;

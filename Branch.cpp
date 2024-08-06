@@ -83,12 +83,6 @@ bool Branch::addDepartment(const Department& department)
 }
 
 // Getter for department
-Department* Branch::getDepartment(int index) const
-{
-    return this->departments[index];
-}
-
-// Getter for department
 Department* Branch::operator[](int index)  
 {
     if (index < 0 || index >= numDepartments)
@@ -128,20 +122,36 @@ bool Branch::setName(const char* name)
 //}
 
 // Output operator (ostream operator<<)
+//ostream& operator<<(ostream& os, const Branch& branch)
+//{
+//    os << "----------------------------------------\n";
+//    os << "Branch name: " << branch.name << " with: " << branch.numDepartments << " department(s) : \n";
+//    for (int i = 0; i < branch.numDepartments; ++i)
+//        os << *branch.departments[i] << "\n"; // Department has operator<<
+//
+//    branch.toOs(os);
+//  //  os << "----------------------------------------\n";
+//    return os;
+//}
+
+// Output operator (ostream operator<<)
 ostream& operator<<(ostream& os, const Branch& branch)
 {
     os << "----------------------------------------\n";
-    os << "Branch name: " << branch.name << " with: " << branch.numDepartments << " department(s) : \n";
-    for (int i = 0; i < branch.numDepartments; ++i)
-        os << *branch.departments[i] << "\n"; // Department has operator<<
-
+    os << "Branch name: " << branch.name << " \n";
+    os << "Number of department(s): " << branch.numDepartments << endl;
     branch.toOs(os);
-  //  os << "----------------------------------------\n";
+    os << "department(s): \n";
+    for (int i = 0; i < branch.numDepartments; ++i)
+        os << i + 1 << ". "  << *branch.departments[i]; // Department has operator<<
+
+   // branch.toOs(os);
+    //  os << "----------------------------------------\n";
     return os;
 }
 
 void Branch::showDepArray() const
 {
     for (int i = 0; i < numDepartments; i++)
-        cout << i + 1 << ". " << getDepartment(i)->getName() << "\n";
+        cout << i + 1 << ". " << departments[i]->getName() << "\n";
 }

@@ -11,6 +11,9 @@ Department::Department(const char* name, int inventoryMaxSize)
     : inventoryMaxSize(inventoryMaxSize), inventorySize(0), name(nullptr)
 {
     cout << "in depar c'tor\n";
+    if (inventoryMaxSize <= 0)
+        throw InvalidInventorySizeException();
+    
     setName(name);
     inventory = new Item*[inventoryMaxSize];
 }
@@ -24,7 +27,7 @@ Department::Department(const Department& other)
 }
 
 // Move constructor
-Department::Department(Department&& other)
+Department::Department(Department&& other) noexcept
     : inventory(nullptr), inventorySize(0), inventoryMaxSize(0), name(nullptr)
 {
     cout << "in depar move c'tor\n";
@@ -37,9 +40,8 @@ Department::~Department()
     cout << "in depar d'tor\n";
     delete[] name;
     for (int i = 0; i < inventorySize; ++i)
-    {
         delete inventory[i];
-    }
+
     delete[] inventory;
 }
 
@@ -49,7 +51,9 @@ Department& Department::operator=(const Department& other)
     cout << "in depar operator =\n";
     if (this != &other) 
     {
-        delete[] name;
+        setName(other.name);
+
+       // delete[] name;
         for (int i = 0; i < inventorySize; ++i)
             delete inventory[i];
         delete[] inventory;
@@ -59,6 +63,7 @@ Department& Department::operator=(const Department& other)
         inventorySize = other.inventorySize;
         setName(other.name);
         inventory = new Item*[inventoryMaxSize];
+
         for (int i = 0; i < inventorySize; i++) 
         {
             inventory[i] = new Item(*other.inventory[i]);
@@ -68,7 +73,7 @@ Department& Department::operator=(const Department& other)
 }
 
 // Move assignment operator
-Department& Department::operator=(Department&& other)
+Department& Department::operator=(Department&& other) noexcept
 {
     cout << "in depar move operator =\n";
     if (this != &other) 
@@ -82,31 +87,38 @@ Department& Department::operator=(Department&& other)
 }
 
 // Method to add an item
-bool Department::addItem(const Item& item)
+void Department::addItem(const Item& item)
 {
-    if (inventorySize == inventoryMaxSize)
-        return false;
+    if (isInventoryFull())
+        throw InventoryFullException();
 
-    inventory[inventorySize] = new Item(item);
-    inventorySize++;
-    //*this + item; // Use operator+
-    return true;
-}
+    //if (inventorySize == inventoryMaxSize)
+    //    return false;
 
-// Add item to inventory      Department + Item
-Department& Department::operator+(const Item& item)
-{
-    if (!this->addItem(item))
+ /*   inventory[inventorySize] = new Item(item);
+    inventorySize++;*/
+
+    try
     {
-        cout << "Item was not added\n";
-        return *this;
+        inventory[inventorySize] = new Item(item);
+        inventorySize++;
     }
-    cout << "Item added successfully\n";
-    return *this;
+    catch (const InvalidItemNameException& e)
+    {
+        throw DepartmentItemException("Failed to add item: " + string(e.what()));
+    }
+    catch (const InvalidItemPriceException& e)
+    {
+        throw DepartmentItemException("Failed to add item: " + string(e.what()));
+    }
+    catch (const std::bad_alloc& e)
+    {
+        throw DepartmentMemoryException("Failed to allocate memory for new item");
+    }
 }
 
 // Method to remove an item
-bool Department::removeItem(Item& item)
+void Department::removeItem(Item& item)
 {
     for (int i = 0; i < inventorySize; i++) 
     {
@@ -115,75 +127,115 @@ bool Department::removeItem(Item& item)
             delete inventory[i];
             // Shift elements to fill the gap
             for (int j = i; j < inventorySize - 1; j++) 
-            {
                 inventory[j] = inventory[j + 1];
-            }
             inventorySize--;
-            return true;
+            return;
         }
     }
-    return false; // Item not found
-}
-
-// Remove item from inventory    Department - Item
-Department& Department::operator-(Item& item)
-{
-    if (!this->removeItem(item))
-    {
-        cout << "Item was not found to remove\n";
-        return *this;
-    }  
-
-    cout << "Item removed successfully\n";
-    return *this;
+    throw ItemNotFoundException(); // Item not found
 }
 
 // Method to display all items in the department
 void Department::showInventory() const
 {
-    cout << "Inventory of Department " << name << ":\n";
-    for (int i = 0; i < inventorySize; ++i) 
+    cout << "Inventory of Department- " << name << "- :\n";
+    if (inventorySize <= 0)
     {
-        cout << i +1 << "." << * inventory[i]; // Use Item's operator<<
+        cout << "Empty" << endl;
+        return;
     }
-    cout <<endl;
+    for (int i = 0; i < inventorySize; ++i)
+    {
+        cout << i + 1 << "." << *inventory[i]; // Use Item's operator<<
+    }
 }
 
 // Setter for name
-bool Department::setName(const char* name)
+void  Department::setName(const char* name)
 {
-    if (name != nullptr) 
-    {
-        delete[] this->name; // Release existing name if any
-        int len = strlen(name) + 1; // +1 for null terminator
-        this->name = new char[len];
-        strcpy(this->name, name); // Copy the new name
-        return true;
-    }
-    return false;
+    if (name == nullptr || name[0] == '\0')
+        throw InvalidDepartmentNameException();
+
+    delete[] this->name;
+    this->name = new char[strlen(name) + 1];
+    strcpy(this->name, name);
+    //if (name != nullptr)
+    //{
+    //    delete[] this->name; // Release existing name if any
+    //    int len = strlen(name) + 1; // +1 for null terminator
+    //    this->name = new char[len];
+    //    strcpy(this->name, name); // Copy the new name
+    //    return true;
+    //}
+    //return false;
 }
+
+// Add item to inventory      Department + Item
+Department& Department::operator+(const Item& item)
+{
+    //if (!this->addItem(item))
+    //{
+    //    cout << "Item was not added\n";
+    //    return *this;
+    //}
+    //cout << "Item added successfully\n";
+    addItem(item);
+    return *this;
+}
+
+// Remove item from inventory    Department - Item
+Department& Department::operator-(Item& item)
+{
+    //if (!this->removeItem(item))
+    //{
+    //    cout << "Item was not found to remove\n";
+    //    return *this;
+    //}  
+
+    //cout << "Item removed successfully\n";
+    removeItem(item);
+    return *this;
+}
+
 
 // Access item in inventory         item = Department[index]
 Item* Department::operator[](int index) 
 {
-    cout << "in operator []\n";
-    if (index < 0 || index > inventorySize)
-    {
-        cout << "invalid index, returned null";
-        return nullptr;
-    }
+    if (index < 0 || index >= inventorySize)
+        throw InvalidInventoryIndexException();
 
     return inventory[index];
+
+    cout << "in operator []\n";
+    //if (index < 0 || index > inventorySize)
+    //{
+    //    cout << "invalid index, returned null";
+    //    return nullptr;
+    //}
+
+    //return inventory[index];
 }
+
+// Output operator (ostream operator<<)
+//ostream& operator<<(ostream& os, const Department& department)
+//{
+//    os << "Department Name: " << department.name << "\tInventory Size: " << department.inventorySize
+//        << "\tInventory Max Size: " << department.inventoryMaxSize
+//        << "\nInventory:\n";
+//    for (int i = 0; i < department.inventorySize; i++)
+//        os << *(department.inventory[i]);  // Use Item's operator<<
+//
+//    return os;
+//}
 
 // Output operator (ostream operator<<)
 ostream& operator<<(ostream& os, const Department& department)
 {
-    os << "Department Name: " << department.name << "\tInventory Size: " << department.inventorySize
-        << "\tInventory Max Size: " << department.inventoryMaxSize
-        << "\nInventory:\n";
+    os << department.name << "\n\tInventory Size: " << department.inventorySize
+        << "\n\tInventory Max Size: " << department.inventoryMaxSize
+        << "\n\tInventory:\n";
     for (int i = 0; i < department.inventorySize; i++)
-        os << *(department.inventory[i]);  // Use Item's operator<<
+        os << "\t" << i+1 << "." << *(department.inventory[i]);  // Use Item's operator<<
 
     return os;
 }

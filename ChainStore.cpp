@@ -1,18 +1,32 @@
-#pragma warning (disable: 4996)
-#include <iostream>
-using namespace std;
-
-#include <string>
 #include "ChainStore.h"
 #include "Branch.h"
-#include "RegularBranch.h"
-#include "OnlineBranch.h"
 
 // Default c'tor
-ChainStore::ChainStore(const char* name, int maxNumBranches) : maxNumBranches(maxNumBranches), numBranches(0)
+ChainStore::ChainStore(const char* name, int maxNumBranches) 
+    : maxNumBranches(maxNumBranches), numBranches(0), name(nullptr), branches(nullptr)
 {
-    setName(name);      
-    branches = new Branch*[maxNumBranches];
+    //check max number of branches and also throw
+    if (maxNumBranches <= 0)
+    {
+        throw InvalidMaxBranchesException();
+    }
+    try
+    {
+        setName(name);
+        branches = new Branch * [maxNumBranches];
+    }
+    catch (const InvalidNameException& e)
+    {
+        delete[] branches;
+        throw;
+    }
+    catch (const MemoryAllocationException& e)
+    {
+        delete[] name;
+        delete[] branches;
+        throw MemoryAllocationException("Failed to allocate memory for branches");
+    }
+
 }
 
 // copy c'tor
@@ -22,7 +36,7 @@ ChainStore::ChainStore(const ChainStore& other) : name(nullptr), branches(nullpt
 }
 
 // move c'tor
-ChainStore::ChainStore(ChainStore&& other) : name(nullptr), branches(nullptr), numBranches(0)
+ChainStore::ChainStore(ChainStore&& other) noexcept : name(nullptr), branches(nullptr), numBranches(0)
 {
     *this = std::move(other); //call move operator
 }
@@ -36,32 +50,103 @@ ChainStore::~ChainStore()
     delete[] branches;
 }
 
+////operator=
+//const ChainStore& ChainStore::operator=(const ChainStore& other)
+//{
+//    if (this != &other)
+//    {
+//        setName(other.name);
+//        for (int i = 0; i < numBranches; i++)
+//            delete branches[i];
+//        delete[] branches;
+//
+//        maxNumBranches = other.maxNumBranches;
+//        numBranches = other.numBranches;        //get new array size
+//        branches = new Branch*[maxNumBranches];    //allocate memory for branches array
+//        //for (int i = 0; i < numBranches; ++i)
+//        //    branches[i] = new Branch(*other.branches[i]);
+//        for (int i = 0; i < numBranches; ++i)
+//        {
+//            // Use the clone function
+//           branches[i] = other.branches[i]->clone();
+//        }
+//    }
+//    return *this;
+//}
+
+
 //operator=
 const ChainStore& ChainStore::operator=(const ChainStore& other)
 {
     if (this != &other)
     {
-        setName(other.name);
-        for (int i = 0; i < numBranches; i++)
-            delete branches[i];
-        delete[] branches;
-
-        maxNumBranches = other.maxNumBranches;
-        numBranches = other.numBranches;        //get new array size
-        branches = new Branch*[maxNumBranches];    //allocate memory for branches array
-        //for (int i = 0; i < numBranches; ++i)
-        //    branches[i] = new Branch(*other.branches[i]);
-        for (int i = 0; i < numBranches; ++i)
+        Branch** newBranches = nullptr;
+        int successfulClones = 0;
+        try
         {
-            // Use the clone function
-           branches[i] = other.branches[i]->clone();
+            newBranches = new Branch * [other.maxNumBranches];
+            // Initialize all pointers to nullptr
+            for (int i = 0; i < other.maxNumBranches; ++i)
+                newBranches[i] = nullptr;
+            
+            // Clone branches
+            for (successfulClones = 0; successfulClones < other.numBranches; ++successfulClones)
+            {
+                newBranches[successfulClones] = other.branches[successfulClones]->clone();
+            }
+
+            //for (int i = 0; i < other.numBranches; ++i)
+            //{
+            //    newBranches[i] = other.branches[i]->clone();
+            //}
+
+            setName(other.name);
+
+            for (int j = 0; j < numBranches; j++)
+                delete branches[j];
+            delete[] branches;
+
+
+            branches = newBranches;
+            numBranches = other.numBranches;
+            maxNumBranches = other.maxNumBranches;
+        }
+        catch (const InvalidNameException& e)
+        {
+            if (newBranches)
+            {
+                for (int j = 0; j < successfulClones; j++)
+                    delete branches[j];
+                delete[] branches;
+            }
+            throw;
+        }
+        catch (const bad_alloc& e)
+        {
+            if (newBranches)
+            {
+                for (int i = 0; i < successfulClones; ++i)
+                    delete newBranches[i];
+                delete[] newBranches;
+            }
+            throw MemoryAllocationException("Failed to allocate memory in copy assignment");
+        }
+        catch (...)
+        {
+            if (newBranches)
+            {
+                for (int i = 0; i < successfulClones; ++i)
+                    delete newBranches[i];
+                delete[] newBranches;
+            }
+            throw;
         }
     }
     return *this;
 }
 
 //move operator
-const ChainStore& ChainStore::operator=(ChainStore&& other)
+const ChainStore& ChainStore::operator=(ChainStore&& other) noexcept
 {
     if (this != &other)
     {
@@ -74,98 +159,49 @@ const ChainStore& ChainStore::operator=(ChainStore&& other)
 }
 
 //set name 
-bool ChainStore::setName(const char* name)
+void ChainStore::setName(const char* name)
 {
-    if (name != nullptr)
+    if (name == nullptr || name[0] == '\0')
+        throw InvalidNameException();
+    
+    delete[] this->name; // Release existing name if any
+    this->name = new char[strlen(name) + 1];
+    strcpy(this->name, name); // Copy the new name
+}
+
+void ChainStore::addBranch(const Branch& branch)
+{
+    if (isArrayFull())
     {
-        delete[] this->name; // Release existing name if any
-        int len = strlen(name) + 1; // +1 for null terminator
-        this->name = new char[len];
-        strcpy(this->name, name); // Copy the new name
-        return true;
+        throw BranchArrayFullException();
     }
-    return false;
+    try
+    {
+        branches[numBranches] = branch.clone();
+        numBranches++;
+    }
+    catch (const bad_alloc& e)
+    {
+        throw MemoryAllocationException("Failed to allocate memory for new branch");
+    }
+    catch (...)
+    {
+        throw;
+    }
+    //branches[numBranches] = branch.clone();
+    //numBranches++;
 }
 
-bool ChainStore::addBranch(const Branch& branch)
-{
-    if (numBranches == maxNumBranches)
-        return false;
-
-    //   branches[numBranches] = new RegularBranch(branch);
-    branches[numBranches] = branch.clone();
-    numBranches++;
-    return true;
-}
-
-//bool ChainStore::addBranch(const RegularBranch& branch)
-//{
-//    if (numBranches == maxNumBranches)
-//        return false;
-//
-// //   branches[numBranches] = new RegularBranch(branch);
-//    branches[numBranches] = branch.clone();
-//    numBranches++;
-//    return true;
-//}
-//
-//bool ChainStore::addBranch(const OnlineBranch& branch)
-//{
-//    cout << "\nin online add\n";
-//    if (numBranches == maxNumBranches)
-//        return false;
-//
-//    branches[numBranches] = branch.clone();
-//    numBranches++;
-//    cout << "\nend online add\n";
-//    return true;
-//}
-//
-//bool ChainStore::addBranch(const OnlineRegularBranch& branch)
-//{
-//    cout << "\nin online add\n";
-//    if (numBranches == maxNumBranches)
-//        return false;
-//
-//    branches[numBranches] = branch.clone();
-//    numBranches++;
-//    cout << "\nend online add\n";
-//    return true;
-//}
-
-// Getter for branch
-Branch* ChainStore::getBranch(int index) const
-{
-    return this->branches[index];
-}
-
-// Getter for branch
+//// Getter for branch
 Branch* ChainStore::operator[](int index)
 {
     if (index < 0 || index >= numBranches)
-    {
-        cout << "Invalid index, return null";
-        return nullptr;
-    }   
+        throw BranchIndexOutOfRangeException();
 
     return branches[index];
 }
 
-
-
-//// Method to display all items in the department
-//    ///// DISPLAY PRINT EACH BRANCH AND SON DETAILS
-//void ChainStore::displayChainStoreDetails() const
-//{
-//    cout << "Chain Store Name: " << name << "\nNumber of Branches: " << numBranches << "\n";
-//    for (int i = 0; i < numBranches; ++i)
-//        branches[i]->displayBranchDetails() ; 
-//    
-//    cout << endl;
-//}
-
 // Output operator (ostream operator<<)
-    //// OS PRINT ONLY BRANCH DETAILS (no online or regular details)
 ostream& operator<<(ostream& os, const ChainStore& chainStore)
 {
     os << "--------------------------------------------------------------------------------------------------------------------\n";
@@ -179,5 +215,5 @@ ostream& operator<<(ostream& os, const ChainStore& chainStore)
 void ChainStore::showBranchesArray() const
 {
     for (int i = 0; i < numBranches; i++)
-        cout << i + 1 << ". " << getBranch(i)->getName() << "\n";
+        cout << i + 1 << ". " << branches[i]->getName() << "\n";
 }
