@@ -29,9 +29,9 @@ OnlineBranch::OnlineBranch(const OnlineBranch& other): Branch(other), url(nullpt
 }
 
 // Move constructor
-OnlineBranch::OnlineBranch(OnlineBranch&& other) noexcept : Branch(std::move(other)), url(nullptr)
+OnlineBranch::OnlineBranch(OnlineBranch&& other) noexcept : Branch(move(other)), url(nullptr)
 {
-    *this = std::move(other); // Call move assignment operator
+    *this = move(other); // Call move assignment operator
 }
 
 // Destructor
@@ -46,10 +46,9 @@ OnlineBranch& OnlineBranch::operator=(const OnlineBranch& other)
 {
     if (this != &other) 
     {
-        Branch::operator=(other); // Call base class assignment operator
-        OnlineBranch temp(other);  // This might throw, but *this is still intact
-        // Swap the contents of temp with this
-        swap(url, temp.url);
+        Branch::operator=(other);  
+        OnlineBranch temp(other);  
+        swap(url, temp.url);       
     }
     cout << "end online = operator";
     return *this;
@@ -60,12 +59,11 @@ OnlineBranch& OnlineBranch::operator=(OnlineBranch&& other) noexcept
 {
     if (this != &other) 
     {
-        Branch::operator=(std::move(other)); // Call base class move assignment operator
-        std::swap(url, other.url);
+        Branch::operator=(move(other)); // Call base class move assignment operator
+        swap(url, other.url);
     }
     return *this;
 }
-
 
 // Setter for URL
 void OnlineBranch::setUrl(const char* url) 
@@ -75,29 +73,13 @@ void OnlineBranch::setUrl(const char* url)
     
     char* newUrl = new char[strlen(url) + 1];
     strcpy(newUrl, url);
+
     delete[] this->url;
     this->url = newUrl;
-
-    //cout << "ONLINE SET URL BEFORE DELETE";
-    //delete[] this->url;
-    //cout << "ONLINE SET URL after DELETE";
-    //this->url = new char[strlen(url) + 1];
-    //strcpy(this->url, url);
     cout << "ONLINE SET URL end";
-    //if (url != nullptr)
-    //{
-    //    delete[] this->url; // Release existing name if any
-    //    int len = strlen(url) + 1; // +1 for null terminator
-    //    this->url = new char[len];
-    //    strcpy(this->url, url); // Copy the new name
-    //    return true;
-    //}
-    //return false;
 }
-
 
 void OnlineBranch::toOs(ostream& os) const
 {
     os << "URL: " << (url ? url : "N/A") << endl;
-
 }

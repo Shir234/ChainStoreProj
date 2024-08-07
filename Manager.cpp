@@ -16,7 +16,6 @@ Manager::Manager(const char* name, int age, const char* position, const char* ma
 // Copy constructor
 Manager::Manager(const Manager& other) : Employee(other), manageDepartment(nullptr)
 {
-    //setManageDepartment(other.manageDepartment);
     *this = other;
 }
 
@@ -57,7 +56,7 @@ Manager& Manager::operator=(Manager&& other) noexcept
 }
 
 // Setter for manageDepartment
-bool Manager::setManageDepartment(const char* manageDepartment)
+void Manager::setManageDepartment(const char* manageDepartment)
 {
     if (manageDepartment == nullptr || manageDepartment[0] == '\0')
         throw InvalidNameException("Manage department cannot be null or empty");

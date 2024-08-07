@@ -23,7 +23,6 @@ Department::Department(const Department& other)
     : inventory(nullptr), inventorySize(0), inventoryMaxSize(0), name(nullptr)
 {
     cout << "in depar copy c'tor\n";
-//    *this = other; // Call copy assignment operator
     try
     {
         setName(other.name);
@@ -38,7 +37,6 @@ Department::Department(const Department& other)
     }
     catch (...)
     {
-        // Clean up if an exception occurs
         for (int i = 0; i < inventorySize; ++i)
         {
             delete inventory[i];
@@ -54,7 +52,7 @@ Department::Department(Department&& other) noexcept
     : inventory(nullptr), inventorySize(0), inventoryMaxSize(0), name(nullptr)
 {
     cout << "in depar move c'tor\n";
-    *this = std::move(other); // Call move assignment operator
+    *this = move(other); // Call move assignment operator
 }
 
 // Destructor
@@ -74,29 +72,11 @@ Department& Department::operator=(const Department& other)
     cout << "in depar operator =\n";
     if (this != &other) 
     {
-        Department temp(other);  // This might throw, but *this is still intact
+        Department temp(other); 
         swap(name, temp.name);
         swap(inventory, temp.inventory);
         swap(inventorySize, temp.inventorySize);
         swap(inventoryMaxSize, temp.inventoryMaxSize);
-
-
-     //   setName(other.name);
-
-     //  // delete[] name;
-     //   for (int i = 0; i < inventorySize; ++i)
-     //       delete inventory[i];
-     //   delete[] inventory;
-
-     //   // Copy data from other Department
-     //   inventoryMaxSize = other.inventoryMaxSize;
-     //   inventorySize = other.inventorySize;
-     ////   setName(other.name);
-     //   inventory = new Item*[inventoryMaxSize];
-
-     //   for (int i = 0; i < inventorySize; i++) 
-     //       inventory[i] = new Item(*other.inventory[i]);
-
     }
     return *this;
 }
@@ -107,10 +87,10 @@ Department& Department::operator=(Department&& other) noexcept
     cout << "in depar move operator =\n";
     if (this != &other) 
     {
-        std::swap(name, other.name);
-        std::swap(inventory, other.inventory);
-        std::swap(inventorySize, other.inventorySize);
-        std::swap(inventoryMaxSize, other.inventoryMaxSize);
+        swap(name, other.name);
+        swap(inventory, other.inventory);
+        swap(inventorySize, other.inventorySize);
+        swap(inventoryMaxSize, other.inventoryMaxSize);
     }
     return *this;
 }
@@ -120,12 +100,6 @@ void Department::addItem(const Item& item)
 {
     if (isInventoryFull())
         throw InventoryFullException();
-
-    //if (inventorySize == inventoryMaxSize)
-    //    return false;
-
- /*   inventory[inventorySize] = new Item(item);
-    inventorySize++;*/
 
     try
     {
@@ -154,7 +128,6 @@ void Department::removeItem(Item& item)
         if (*inventory[i] == item) // Item has an equality operator (operator==)
         {
             delete inventory[i];
-            // Shift elements to fill the gap
             for (int j = i; j < inventorySize - 1; j++) 
                 inventory[j] = inventory[j + 1];
             inventorySize--;
@@ -188,26 +161,11 @@ void  Department::setName(const char* name)
     delete[] this->name;
     this->name = new char[strlen(name) + 1];
     strcpy(this->name, name);
-    //if (name != nullptr)
-    //{
-    //    delete[] this->name; // Release existing name if any
-    //    int len = strlen(name) + 1; // +1 for null terminator
-    //    this->name = new char[len];
-    //    strcpy(this->name, name); // Copy the new name
-    //    return true;
-    //}
-    //return false;
 }
 
 // Add item to inventory      Department + Item
 Department& Department::operator+(const Item& item)
 {
-    //if (!this->addItem(item))
-    //{
-    //    cout << "Item was not added\n";
-    //    return *this;
-    //}
-    //cout << "Item added successfully\n";
     addItem(item);
     return *this;
 }
@@ -215,13 +173,6 @@ Department& Department::operator+(const Item& item)
 // Remove item from inventory    Department - Item
 Department& Department::operator-(Item& item)
 {
-    //if (!this->removeItem(item))
-    //{
-    //    cout << "Item was not found to remove\n";
-    //    return *this;
-    //}  
-
-    //cout << "Item removed successfully\n";
     removeItem(item);
     return *this;
 }
@@ -234,28 +185,7 @@ Item* Department::operator[](int index)
         throw BranchIndexOutOfRangeException();
 
     return inventory[index];
-
-    //cout << "in operator []\n";
-    //if (index < 0 || index > inventorySize)
-    //{
-    //    cout << "invalid index, returned null";
-    //    return nullptr;
-    //}
-
-    //return inventory[index];
 }
-
-// Output operator (ostream operator<<)
-//ostream& operator<<(ostream& os, const Department& department)
-//{
-//    os << "Department Name: " << department.name << "\tInventory Size: " << department.inventorySize
-//        << "\tInventory Max Size: " << department.inventoryMaxSize
-//        << "\nInventory:\n";
-//    for (int i = 0; i < department.inventorySize; i++)
-//        os << *(department.inventory[i]);  // Use Item's operator<<
-//
-//    return os;
-//}
 
 // Output operator (ostream operator<<)
 ostream& operator<<(ostream& os, const Department& department)

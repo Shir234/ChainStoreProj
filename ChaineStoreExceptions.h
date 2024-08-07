@@ -1,8 +1,9 @@
-#ifndef _EXCEPTIONS_H_
-#define _EXCEPTIONS_H_
+#ifndef CHAIN_STORE_EXCEPTIONS_H_
+#define CHAIN_STORE_EXCEPTIONS_H_
 
 #include <iostream>
 using namespace std;
+
 
 class InvalidNameException : public exception
 {
@@ -25,11 +26,13 @@ public:
     InvalidMaxBranchesException() : invalid_argument("Branch maximum array size must be positive") {}
 };
 
+
 class BranchArrayFullException : public runtime_error 
 {
 public:
     BranchArrayFullException() : runtime_error("Branch array is full - cannot add any more branches") {}
 };
+
 
 class BranchIndexOutOfRangeException : public out_of_range 
 {
@@ -37,11 +40,13 @@ public:
     BranchIndexOutOfRangeException() : out_of_range("Index is out of range") {}
 };
 
+
 class BranchNotFoundException : public runtime_error
 {
 public:
     BranchNotFoundException() : runtime_error("No branches in the store") {}
 };
+
 
 class MemoryAllocationException : public exception 
 {
@@ -128,7 +133,7 @@ public:
 class DepartmentArrayFullException : public runtime_error 
 {
 public:
-    DepartmentArrayFullException() : runtime_error("Department array is full") {}
+    DepartmentArrayFullException() : runtime_error("Department array is full  - cannot add any more departments") {}
 };
 
 class EmployeeArrayFullException : public runtime_error 
@@ -143,9 +148,13 @@ public:
     DepartmentNotFoundException() : runtime_error("No departments in the branch") {}
 };
 
+class AddEmployeeToNonRegularBranchException : public runtime_error
+{
+public:
+    AddEmployeeToNonRegularBranchException() : runtime_error("Cannot add employees to Online Branch!") {}
+};
 
 ///EXCEPTIONS FOR PERSON
-//Added new exception for Person - age
 class InvalidPersonAgeException : public invalid_argument
 {
 public:

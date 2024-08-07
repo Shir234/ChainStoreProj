@@ -6,7 +6,7 @@ using namespace std;
 #include "Item.h"
 
 // Constructor
-Item::Item(const char* name, double price) : name(nullptr), price(0)
+Item::Item(const char* name, int price) : name(nullptr), price(0)
 {
     cout << "in item c'tor\n";
     setName(name);
@@ -75,13 +75,13 @@ void Item::setName(const char* name)
     if (name == nullptr || name[0] == '\0')
         throw InvalidNameException("Item name cannot be null or empty");
 
-    delete[] this->name; // Release existing name if any
+    delete[] this->name;
     this->name = new char[strlen(name) + 1];
-    strcpy(this->name, name); // Copy the new name
+    strcpy(this->name, name);
 }
 
 // Setter for price
-void Item::setPrice(double price)
+void Item::setPrice(int price)
 {
     if (price <= 0) 
         throw InvalidItemPriceException();
@@ -101,4 +101,3 @@ ostream& operator<<(ostream& os, const Item& item)
     os << "Item: " << item.name << "\tPrice: $: " << item.price << "\n";
     return os;
 }
-

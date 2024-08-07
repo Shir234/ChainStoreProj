@@ -9,22 +9,20 @@ using namespace std;
 class Item {
 private:
     char* name;
-    double price;
+    int price;
 
 public:
-    Item(const char* name, double price); // Constructor
-    Item(const Item& other); // Copy constructor
-    Item(Item&& other) noexcept; // Move constructor
-    ~Item(); // Destructor
-
-    Item& operator=(const Item& other); // Copy assignment operator
+    Item(const char* name, int price);      // Constructor
+    Item(const Item& other);                // Copy constructor
+    Item(Item&& other) noexcept;            // Move constructor
+    ~Item();                                // Destructor
+    Item& operator=(const Item& other);     // Copy assignment operator
     Item& operator=(Item&& other) noexcept; // Move assignment operator
 
-    const char* getName() const { return name; }; // Getter for name
-    void setName(const char* name); // Setter for name
- 
-    double getPrice() const { return price; }; // Getter for price
-    void setPrice(double price); // Setter for price
+    const char* getName() const { return name; };
+    void setName(const char* name);
+    int getPrice() const { return price; };
+    void setPrice(int price);
 
     // Operator overloads
     bool operator==(const Item& other) const;

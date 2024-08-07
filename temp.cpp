@@ -1,4 +1,111 @@
+
+
+
 //
+//// In the header file (e.g., BranchFunctions.h)
+//#ifndef BRANCH_FUNCTIONS_H
+//#define BRANCH_FUNCTIONS_H
+//
+//#include "ChainStore.h"
+//#include "Branch.h"
+//#include "RegularBranch.h"
+//#include "OnlineBranch.h"
+//#include "OnlineRegularBranch.h"
+//
+//void addNewBranch(ChainStore*& store);
+//int getBranchType();
+//void getBranchBasicInfo(char* name, int& maxDepartments);
+//void getRegularBranchInfo(char* address, int& numEmployees);
+//void getOnlineBranchInfo(char* url);
+//Branch* createBranch(int branchType, const char* name, int maxDepartments, const char* address, int numEmployees, const char* url);
+//
+//#endif
+//
+//// In the implementation file (e.g., BranchFunctions.cpp)
+//#include "BranchFunctions.h"
+//#include "HelperFunctions.h"
+//#include <iostream>
+//using namespace std;
+//
+//void addNewBranch(ChainStore*& store) {
+//    if (store->isArrayFull()) {
+//        cout << "Branch array is full. Cannot add more branches." << endl;
+//        return;
+//    }
+//
+//    char name[SIZE] = "";
+//    int maxDepartments = 0;
+//    char address[SIZE] = "";
+//    int numEmployees = 0;
+//    char url[SIZE] = "";
+//
+//    int branchType = getBranchType();
+//    getBranchBasicInfo(name, maxDepartments);
+//
+//    if (branchType == 1 || branchType == 3) {
+//        getRegularBranchInfo(address, numEmployees);
+//    }
+//    if (branchType == 2 || branchType == 3) {
+//        getOnlineBranchInfo(url);
+//    }
+//
+//    try {
+//        Branch* newBranch = createBranch(branchType, name, maxDepartments, address, numEmployees, url);
+//        store->addBranch(*newBranch);
+//        cout << "Branch was successfully added to store\n";
+//        delete newBranch;
+//    }
+//    catch (const exception& e) {
+//        cout << "Error: " << e.what() << endl;
+//        cout << "Branch was not added\n";
+//    }
+//}
+//
+//int getBranchType() {
+//    return getValidIntegerInput("Enter the type of branch (1: Regular, 2: Online, 3: Both): ", 1, 3);
+//}
+//
+//void getBranchBasicInfo(char* name, int& maxDepartments) {
+//    cout << "Enter the name of the branch: ";
+//    cin.getline(name, SIZE);
+//    maxDepartments = getValidIntegerInput("Enter maximum number of departments: ", 1);
+//}
+//
+//void getRegularBranchInfo(char* address, int& numEmployees) {
+//    cout << "Enter the address of the branch: ";
+//    cin.getline(address, SIZE);
+//    numEmployees = getValidIntegerInput("Enter the number of employees: ", 0);
+//}
+//
+//void getOnlineBranchInfo(char* url) {
+//    cout << "Enter the branch's URL: ";
+//    cin.getline(url, SIZE);
+//}
+//
+//Branch* createBranch(int branchType, const char* name, int maxDepartments, const char* address, int numEmployees, const char* url) {
+//    switch (branchType) {
+//    case 1:
+//        return new RegularBranch(name, maxDepartments, address, numEmployees);
+//    case 2:
+//        return new OnlineBranch(name, maxDepartments, url);
+//    case 3:
+//        return new OnlineRegularBranch(name, url, address, maxDepartments, numEmployees);
+//    default:
+//        throw invalid_argument("Invalid branch type");
+//    }
+//}
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
 //
 //void addNewBranch(ChainStore*& store)
 //{

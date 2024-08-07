@@ -59,7 +59,7 @@ void Employee::setPosition(const char* position)
         throw InvalidNameException("Position cannot be null or empty");
    
     delete[] this->position;
-    int len = strlen(position) + 1;
+    int len = (int)strlen(position) + 1;
     this->position = new char[strlen(position) + 1];
     strcpy(this->position, position);
 }

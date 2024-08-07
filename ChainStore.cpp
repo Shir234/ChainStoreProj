@@ -1,11 +1,10 @@
 #include "ChainStore.h"
 #include "Branch.h"
 
-// Default c'tor
+// Constructor
 ChainStore::ChainStore(const char* name, int maxNumBranches) 
     : maxNumBranches(maxNumBranches), numBranches(0), name(nullptr), branches(nullptr)
 {
-    //check max number of branches and also throw
     if (maxNumBranches <= 0)
         throw InvalidMaxBranchesException();
 
@@ -25,22 +24,21 @@ ChainStore::ChainStore(const char* name, int maxNumBranches)
         delete[] branches;
         throw MemoryAllocationException("Failed to allocate memory for branches");
     }
-
 }
 
-// copy c'tor
+// Copy constructor
 ChainStore::ChainStore(const ChainStore& other) : name(nullptr), branches(nullptr), numBranches(0)
 {
     *this = other;  // operator=
 }
 
-// move c'tor
+// Move constructor
 ChainStore::ChainStore(ChainStore&& other) noexcept : name(nullptr), branches(nullptr), numBranches(0)
 {
     *this = std::move(other); //call move operator
 }
 
-//d'tor
+// Destructor
 ChainStore::~ChainStore()
 {
     cout << "\nBEFORE DTOR STORE\n";
@@ -78,8 +76,8 @@ ChainStore::~ChainStore()
 //}
 
 
-//operator=
-const ChainStore& ChainStore::operator=(const ChainStore& other)
+// Copy assignment operator
+ChainStore& ChainStore::operator=(const ChainStore& other)
 {
     if (this != &other)
     {
@@ -88,15 +86,11 @@ const ChainStore& ChainStore::operator=(const ChainStore& other)
         try
         {
             newBranches = new Branch * [other.maxNumBranches];
-            // Initialize all pointers to nullptr
             for (int i = 0; i < other.maxNumBranches; ++i)
                 newBranches[i] = nullptr;
             
-            // Clone branches
             for (successfulClones = 0; successfulClones < other.numBranches; ++successfulClones)
-            {
                 newBranches[successfulClones] = other.branches[successfulClones]->clone();
-            }
 
             setName(other.name);
             for (int j = 0; j < numBranches; j++)
@@ -141,8 +135,8 @@ const ChainStore& ChainStore::operator=(const ChainStore& other)
     return *this;
 }
 
-//move operator
-const ChainStore& ChainStore::operator=(ChainStore&& other) noexcept
+// Move assignment operator
+ChainStore& ChainStore::operator=(ChainStore&& other) noexcept
 {
     if (this != &other)
     {
@@ -154,23 +148,22 @@ const ChainStore& ChainStore::operator=(ChainStore&& other) noexcept
     return *this;
 }
 
-//set name 
+//Setter for name 
 void ChainStore::setName(const char* name)
 {
     if (name == nullptr || name[0] == '\0')
         throw InvalidNameException("Chain Store's name cannot be null or empty");
     
-    delete[] this->name; // Release existing name if any
+    delete[] this->name;
     this->name = new char[strlen(name) + 1];
-    strcpy(this->name, name); // Copy the new name
+    strcpy(this->name, name);
 }
 
 void ChainStore::addBranch(const Branch& branch)
 {
     if (isArrayFull())
-    {
         throw BranchArrayFullException();
-    }
+
     try
     {
         branches[numBranches] = branch.clone();
@@ -184,11 +177,9 @@ void ChainStore::addBranch(const Branch& branch)
     {
         throw;
     }
-    //branches[numBranches] = branch.clone();
-    //numBranches++;
 }
 
-//// Getter for branch
+// Getter for branch
 Branch* ChainStore::operator[](int index)
 {
     if (index < 0 || index >= numBranches)

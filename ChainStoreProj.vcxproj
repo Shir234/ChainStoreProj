@@ -131,6 +131,7 @@
     <ClCompile Include="ChainStore.cpp" />
     <ClCompile Include="Department.cpp" />
     <ClCompile Include="Employee.cpp" />
+    <ClCompile Include="HelperFunctions.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="Person.cpp" />
     <ClCompile Include="RegularBranch.cpp" />
     <ClCompile Include="temp.cpp" />
+    <ClCompile Include="tempMainForStoring.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Branch.h" />
@@ -146,6 +148,7 @@
     <ClInclude Include="ChainStore.h" />
     <ClInclude Include="Department.h" />
     <ClInclude Include="Employee.h" />
+    <ClInclude Include="HelperFunctions.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="OnlineBranch.h" />

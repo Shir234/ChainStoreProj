@@ -12,8 +12,6 @@ Branch::Branch(const char* name, int maxNumDepartments) : name(nullptr), numDepa
     if (maxNumDepartments <= 0)
         throw InvalidMaxDepartmentException();
     
-    //setName(name);
-    //departments = new Department*[maxNumDepartments];
     try
     {
         setName(name);
@@ -52,7 +50,6 @@ Branch::Branch(Branch&& other) noexcept
 Branch::~Branch() 
 {
     cout << "BRANCG DTOR\n";
-
     if (departments)
     {
         for (int i = 0; i < numDepartments; i++)
@@ -62,7 +59,6 @@ Branch::~Branch()
         delete[] departments;
         cout << "after departments delete 2\n";
     }
-    
     delete[] name;
     cout << "after NAME delete\n";
     cout << "end of dtor\n";
@@ -71,65 +67,108 @@ Branch::~Branch()
 
 // Copy assignment operator
 Branch& Branch::operator=(const Branch& other)
-{  
-    if (this != &other) 
+{
+    if (this != &other)
     {
-        cout << "in branch =";
-        Department** newDepartments = nullptr;
+        for (int i = 0; i < numDepartments; ++i)
+            delete departments[i];
+        delete[] departments;
+
         try
         {
-            newDepartments = new Department * [other.maxNumDepartments];
-            
-            for (int i = 0; i < other.maxNumDepartments; ++i)
-                newDepartments[i] = nullptr;
-
-            for (int i = 0; i < other.numDepartments; i++)
-                newDepartments[i] = new Department(*other.departments[i]);
-        
             setName(other.name);
-            
-            for (int i = 0; i < numDepartments; i++)
-                delete departments[i];
-            delete[] departments;
-
-            departments = newDepartments;
             maxNumDepartments = other.maxNumDepartments;
             numDepartments = other.numDepartments;
+            departments = new Department * [maxNumDepartments];
+
+            for (int i = 0; i < numDepartments; ++i)
+                departments[i] = new Department(*other.departments[i]); // department have a copy constructor
+
+            for (int i = numDepartments; i < maxNumDepartments; ++i)
+                departments[i] = nullptr;
         }
         catch (const InvalidNameException& e)
         {
-            if (newDepartments)
-            {
-                for (int j = 0; j < numDepartments; j++)
-                    delete departments[j];
-                delete[] departments;
-            }
-            throw;
+            departments = nullptr; // avoid double deletion
+            numDepartments = 0;
+            maxNumDepartments = 0;
+            throw; // Re-throw exception
         }
         catch (const bad_alloc& e)
         {
-            if (newDepartments)
-            {
-                for (int j = 0; j < numDepartments; j++)
-                    delete departments[j];
-                delete[] departments;
-            }
+            delete[] departments;
+            departments = nullptr; // avoid double deletion
+            numDepartments = 0;
+            maxNumDepartments = 0;
             throw MemoryAllocationException("Failed to allocate memory in copy assignment");
         }
-        catch (...)
-        {
-            if (newDepartments)
-            {
-                for (int j = 0; j < numDepartments; j++)
-                    delete departments[j];
-                delete[] departments;
-            }
-            throw;
-        }
     }
-    cout << "end branch =";
     return *this;
 }
+
+
+//// Copy assignment operator
+//Branch& Branch::operator=(const Branch& other)
+//{  
+//    if (this != &other) 
+//    {
+//        cout << "in branch =";
+//        Department** newDepartments = nullptr;
+//        try
+//        {
+//            newDepartments = new Department * [other.maxNumDepartments];
+//            
+//            for (int i = 0; i < other.maxNumDepartments; ++i)
+//                newDepartments[i] = nullptr;
+//
+//            int i = other.getNumDepartments();
+//            for (int x = 0; x < i; ++x)
+//                newDepartments[x] = new Department(*other.departments[x]);
+//        
+//            setName(other.name);
+//            
+//            for (int i = 0; i < numDepartments; i++)
+//                delete departments[i];
+//            delete[] departments;
+//
+//            departments = newDepartments;
+//            maxNumDepartments = other.maxNumDepartments;
+//            numDepartments = other.numDepartments;
+//        }
+//        catch (const InvalidNameException& e)
+//        {
+//            if (newDepartments)
+//            {
+//                for (int j = 0; j < numDepartments; j++)
+//                    delete departments[j];
+//                delete[] departments;
+//            }
+//            throw;
+//        }
+//        catch (const bad_alloc& e)
+//        {
+//            if (newDepartments)
+//            {
+//                for (int j = 0; j < other.numDepartments; j++)
+//                    delete departments[j];
+//                delete[] departments;
+//            }
+//            throw MemoryAllocationException("Failed to allocate memory in copy assignment");
+//        }
+//        catch (...)
+//        {
+//            if (newDepartments)
+//            {
+//                for (int j = 0; j < numDepartments; j++)
+//                    delete departments[j];
+//                delete[] departments;
+//            }
+//            throw;
+//        }
+//    }
+//    cout << "end branch =";
+//    return *this;
+//}
 
 // Move assignment operator
 Branch& Branch::operator=(Branch&& other) noexcept
@@ -149,11 +188,10 @@ Branch& Branch::operator=(Branch&& other) noexcept
     return *this;
 }
 
-
 // Method to add a department
 void Branch::addDepartment(const Department& department)
 {
-    if (isDepArrayFull())
+    if (isDepartmentArrayFull())
         throw DepartmentArrayFullException();
 
     departments[numDepartments] = new Department(department); 
@@ -166,9 +204,9 @@ void Branch::setName(const char* name)
     if (name == nullptr || name[0] == '\0')
         throw InvalidNameException("Branch name cannot be null or empty");
     
-    delete[] this->name; // Release existing name if any
+    delete[] this->name;
     this->name = new char[strlen(name) + 1];
-    strcpy(this->name, name); // Copy the new name
+    strcpy(this->name, name);
 }
 
 // Getter for department
@@ -179,20 +217,6 @@ Department* Branch::operator[](int index)
 
     return departments[index];
 }
-
-
-// Output operator (ostream operator<<)
-//ostream& operator<<(ostream& os, const Branch& branch)
-//{
-//    os << "----------------------------------------\n";
-//    os << "Branch name: " << branch.name << " with: " << branch.numDepartments << " department(s) : \n";
-//    for (int i = 0; i < branch.numDepartments; ++i)
-//        os << *branch.departments[i] << "\n"; // Department has operator<<
-//
-//    branch.toOs(os);
-//  //  os << "----------------------------------------\n";
-//    return os;
-//}
 
 // Output operator (ostream operator<<)
 ostream& operator<<(ostream& os, const Branch& branch)
@@ -205,12 +229,10 @@ ostream& operator<<(ostream& os, const Branch& branch)
     for (int i = 0; i < branch.numDepartments; ++i)
         os << i + 1 << ". "  << *branch.departments[i]; // Department has operator<<
 
-   // branch.toOs(os);
-    //  os << "----------------------------------------\n";
     return os;
 }
 
-void Branch::showDepArray() const
+void Branch::showDepartmentArray() const
 {
     for (int i = 0; i < numDepartments; i++)
         cout << i + 1 << ". " << departments[i]->getName() << "\n";

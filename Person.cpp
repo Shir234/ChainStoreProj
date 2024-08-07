@@ -3,10 +3,9 @@
 using namespace std;
 
 #include "Person.h"
-#include <string> // For string operations
+#include <string> 
 
 int Person::nextId = 1; // Initialize static member variable
-
 
 // Constructor
 Person::Person(const char* name, int age) : name(nullptr), age(age), id(nextId++)
