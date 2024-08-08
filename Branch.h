@@ -3,12 +3,9 @@
 
 #include "ChaineStoreExceptions.h"
 
-#include <iostream>
-using namespace std;
-
 class Department;
 
-//Abstract class
+// Abstract class
 class Branch {
 private:
     char* name;

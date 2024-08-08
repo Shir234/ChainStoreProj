@@ -1,4 +1,3 @@
-#pragma once
 #ifndef ONLINEREGULARBRANCH_H
 #define ONLINEREGULARBRANCH_H
 

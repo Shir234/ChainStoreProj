@@ -1,6 +1,4 @@
 #pragma warning (disable: 4996)
-#include <iostream>
-using namespace std;
 
 #include <string>
 #include "Branch.h"
@@ -43,7 +41,7 @@ Branch::Branch(const Branch& other)
 Branch::Branch(Branch&& other) noexcept
     : name(nullptr), departments(nullptr), numDepartments(0), maxNumDepartments(0)
 {
-    *this = std::move(other); // Call move assignment operator
+    *this = move(other); // Call move assignment operator
 }
 
 // Destructor
@@ -106,79 +104,15 @@ Branch& Branch::operator=(const Branch& other)
     return *this;
 }
 
-
-//// Copy assignment operator
-//Branch& Branch::operator=(const Branch& other)
-//{  
-//    if (this != &other) 
-//    {
-//        cout << "in branch =";
-//        Department** newDepartments = nullptr;
-//        try
-//        {
-//            newDepartments = new Department * [other.maxNumDepartments];
-//            
-//            for (int i = 0; i < other.maxNumDepartments; ++i)
-//                newDepartments[i] = nullptr;
-//
-//            int i = other.getNumDepartments();
-//            for (int x = 0; x < i; ++x)
-//                newDepartments[x] = new Department(*other.departments[x]);
-//        
-//            setName(other.name);
-//            
-//            for (int i = 0; i < numDepartments; i++)
-//                delete departments[i];
-//            delete[] departments;
-//
-//            departments = newDepartments;
-//            maxNumDepartments = other.maxNumDepartments;
-//            numDepartments = other.numDepartments;
-//        }
-//        catch (const InvalidNameException& e)
-//        {
-//            if (newDepartments)
-//            {
-//                for (int j = 0; j < numDepartments; j++)
-//                    delete departments[j];
-//                delete[] departments;
-//            }
-//            throw;
-//        }
-//        catch (const bad_alloc& e)
-//        {
-//            if (newDepartments)
-//            {
-//                for (int j = 0; j < other.numDepartments; j++)
-//                    delete departments[j];
-//                delete[] departments;
-//            }
-//            throw MemoryAllocationException("Failed to allocate memory in copy assignment");
-//        }
-//        catch (...)
-//        {
-//            if (newDepartments)
-//            {
-//                for (int j = 0; j < numDepartments; j++)
-//                    delete departments[j];
-//                delete[] departments;
-//            }
-//            throw;
-//        }
-//    }
-//    cout << "end branch =";
-//    return *this;
-//}
-
 // Move assignment operator
 Branch& Branch::operator=(Branch&& other) noexcept
 {
     if (this != &other) 
     {
-        std::swap(name, other.name);
-        std::swap(departments, other.departments);
-        std::swap(numDepartments, other.numDepartments);
-        std::swap(maxNumDepartments, other.maxNumDepartments);
+        swap(name, other.name);
+        swap(departments, other.departments);
+        swap(numDepartments, other.numDepartments);
+        swap(maxNumDepartments, other.maxNumDepartments);
 
         other.name = nullptr;
         other.departments = nullptr;

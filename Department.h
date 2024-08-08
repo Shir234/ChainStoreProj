@@ -3,9 +3,6 @@
 
 #include "ChaineStoreExceptions.h"
 
-#include <iostream>
-using namespace std;
-
 class Item;
 
 class Department {

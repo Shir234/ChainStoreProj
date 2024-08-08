@@ -385,31 +385,8 @@ void addItemToInventory(ChainStore*& store)
 {
 	Branch* selectedBranch = nullptr;
 	Department* selectedDepartment = nullptr;
-	try
-	{
-		selectedBranch = getBranchFromStore(store);
-		selectedDepartment = getDepartmentFromBranch(selectedBranch);
-	}
-	catch (const BranchNotFoundException& e)
-	{
-		cout << e.what() << endl;
+	if (!getBranchAndDepartment(store, selectedBranch, selectedDepartment))
 		return;
-	}
-	catch (const DepartmentNotFoundException& e)
-	{
-		cout << e.what() << endl;
-		return;
-	}
-	catch (const runtime_error& e)
-	{
-		cout << e.what() << endl;
-		cout << "Cannot add item." << endl;
-	}
-	catch (...)
-	{
-		cout << "Unknown error occurred." << endl;
-		return;
-	}
 
 	cout << "\n--------- Add new item ---------" << endl;
 	char itemName[SIZE];
@@ -446,7 +423,7 @@ void addItemToInventory(ChainStore*& store)
 	{
 		try
 		{
-			selectedDepartment->addItem(*newItem);
+			*selectedDepartment + *newItem;
 			cout << "Item added successfully!\n";
 		}
 		catch (const InventoryFullException& e)
@@ -466,31 +443,8 @@ void removeItemFromInventory(ChainStore*& store)
 {
 	Branch* selectedBranch = nullptr;
 	Department* selectedDepartment = nullptr;
-	try
-	{
-		selectedBranch = getBranchFromStore(store);
-		selectedDepartment = getDepartmentFromBranch(selectedBranch);
-	}
-	catch (const BranchNotFoundException& e)
-	{
-		cout << e.what() << endl;
+	if (!getBranchAndDepartment(store, selectedBranch, selectedDepartment))
 		return;
-	}
-	catch (const DepartmentNotFoundException& e)
-	{
-		cout << e.what() << endl;
-		return;
-	}
-	catch (const runtime_error& e)
-	{
-		cout << e.what() << endl;
-		cout << "Cannot remove item." << endl;
-	}
-	catch (...)
-	{
-		cout << "Unknown error occurred." << endl;
-		return;
-	}
 
 	if (selectedDepartment->getNumItems() == 0)
 		throw InventoryEmptyException();
@@ -499,7 +453,6 @@ void removeItemFromInventory(ChainStore*& store)
 	int max = selectedDepartment->getNumItems();
 	int itemIndex;
 	itemIndex = getValidIntegerInput("\n--------- Select item number to remove: ", 1, max);
-
 
 	Item* item = nullptr;
 	while (true)
@@ -521,7 +474,7 @@ void removeItemFromInventory(ChainStore*& store)
 	}
 	try
 	{
-		selectedDepartment->removeItem(*item);
+		*selectedDepartment - *item;
 		cout << "Item removed successfully!\n";
 	}
 	catch (const ItemNotFoundException& e)
@@ -590,6 +543,34 @@ void cleanupAndExit(ChainStore*& store)
 }
 
 // Helper functions for operations
+bool getBranchAndDepartment(ChainStore*& store, Branch*& selectedBranch, Department*& selectedDepartment)
+{
+	try
+	{
+		selectedBranch = getBranchFromStore(store);
+		selectedDepartment = getDepartmentFromBranch(selectedBranch);
+		return true;
+	}
+	catch (const BranchNotFoundException& e)
+	{
+		cout << e.what() << endl;
+	}
+	catch (const DepartmentNotFoundException& e)
+	{
+		cout << e.what() << endl;
+	}
+	catch (const runtime_error& e)
+	{
+		cout << e.what() << endl;
+		cout << "Cannot add / remove item." << endl;
+	}
+	catch (...)
+	{
+		cout << "Unknown error occurred." << endl;
+	}
+	return false;
+}
+
 Branch* getBranchFromStore(ChainStore*& store)
 {
 	if (store->getNumBranches() == 0)
@@ -601,7 +582,6 @@ Branch* getBranchFromStore(ChainStore*& store)
 	Branch* selectedBranch = nullptr;
 	int attempts = 0;
 	
-	//bool validIndex = false;
 	while (attempts < MAX_ITERATIONS_LOOPS)
 	{
 		int max = store->getNumBranches();

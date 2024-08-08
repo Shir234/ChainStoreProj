@@ -51,31 +51,6 @@ ChainStore::~ChainStore()
     cout << "end of dtor\n";
 }
 
-////operator=
-//const ChainStore& ChainStore::operator=(const ChainStore& other)
-//{
-//    if (this != &other)
-//    {
-//        setName(other.name);
-//        for (int i = 0; i < numBranches; i++)
-//            delete branches[i];
-//        delete[] branches;
-//
-//        maxNumBranches = other.maxNumBranches;
-//        numBranches = other.numBranches;        //get new array size
-//        branches = new Branch*[maxNumBranches];    //allocate memory for branches array
-//        //for (int i = 0; i < numBranches; ++i)
-//        //    branches[i] = new Branch(*other.branches[i]);
-//        for (int i = 0; i < numBranches; ++i)
-//        {
-//            // Use the clone function
-//           branches[i] = other.branches[i]->clone();
-//        }
-//    }
-//    return *this;
-//}
-
-
 // Copy assignment operator
 ChainStore& ChainStore::operator=(const ChainStore& other)
 {
@@ -140,10 +115,10 @@ ChainStore& ChainStore::operator=(ChainStore&& other) noexcept
 {
     if (this != &other)
     {
-        std::swap(name, other.name);
-        std::swap(branches, other.branches);
-        std::swap(numBranches, other.numBranches);
-        std::swap(maxNumBranches, other.maxNumBranches);
+        swap(name, other.name);
+        swap(branches, other.branches);
+        swap(numBranches, other.numBranches);
+        swap(maxNumBranches, other.maxNumBranches);
     }
     return *this;
 }

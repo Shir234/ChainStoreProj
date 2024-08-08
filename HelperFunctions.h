@@ -20,7 +20,7 @@ const int MAX_ITERATIONS_LOOPS = 5;
 // Utility functions
 void cleanBuffer();
 bool isValidInteger(const char* str);
-int getValidIntegerInput(const char* prompt, int minValue = INT_MIN, int maxValue = INT_MAX);
+int getValidIntegerInput(const char* prompt, int minValue = 0, int maxValue = 100);
 
 // UI functions
 void displayMenu();
@@ -38,6 +38,7 @@ void displayChainStoreDetails(ChainStore*& store);
 void cleanupAndExit(ChainStore*& store);
 
 // Helper functions for operations
+bool getBranchAndDepartment(ChainStore*& store, Branch*& selectedBranch, Department*& selectedDepartment);
 Branch* getBranchFromStore(ChainStore*& store);
 Department* getDepartmentFromBranch(Branch*& branch);
 Branch* createBranch(int branchType, const char* name, int maxDepartments, const char* address, int numEmployees, const char* url);

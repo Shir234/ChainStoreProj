@@ -4,14 +4,10 @@
 #pragma warning (disable: 4996)
 #include "ChaineStoreExceptions.h"
 
-#include <iostream>
-using namespace std;
-
 class Branch;
 #include "RegularBranch.h"
 #include "OnlineBranch.h"
 #include "OnlineRegularBranch.h"
-
 
 class ChainStore {
 private:

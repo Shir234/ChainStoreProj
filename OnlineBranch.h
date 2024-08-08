@@ -1,7 +1,6 @@
 #ifndef ONLINEBRANCH_H
 #define ONLINEBRANCH_H
 
-#include <iostream>
 #include "Branch.h"
 
 class OnlineBranch : virtual public Branch

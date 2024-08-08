@@ -1,27 +1,3 @@
-﻿  Branch.cpp
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\Branch.cpp(22,40): warning C4101: 'e': unreferenced local variable
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\Branch.cpp(27,45): warning C4101: 'e': unreferenced local variable
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\Branch.cpp(90,44): warning C4101: 'e': unreferenced local variable
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\Branch.cpp(97,33): warning C4101: 'e': unreferenced local variable
-  ChainStore.cpp
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\ChainStore.cpp(16,40): warning C4101: 'e': unreferenced local variable
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\ChainStore.cpp(21,45): warning C4101: 'e': unreferenced local variable
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\ChainStore.cpp(104,44): warning C4101: 'e': unreferenced local variable
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\ChainStore.cpp(114,33): warning C4101: 'e': unreferenced local variable
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\ChainStore.cpp(172,29): warning C4101: 'e': unreferenced local variable
-  Department.cpp
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\Department.cpp(117,29): warning C4101: 'e': unreferenced local variable
-  Employee.cpp
-  HelperFunctions.cpp
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\HelperFunctions.cpp(370,2): warning C4286: 'const AddEmployeeToNonRegularBranchException &': is caught by base class ('const std::runtime_error &') on line 365
-  Item.cpp
-  Manager.cpp
-  OnlineBranch.cpp
-  OnlineRegularBranch.cpp
-  Person.cpp
-  RegularBranch.cpp
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\RegularBranch.cpp(34,40): warning C4101: 'e': unreferenced local variable
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\RegularBranch.cpp(41,29): warning C4101: 'e': unreferenced local variable
-  main.cpp
-  Generating Code...
-  ChainStoreProj.vcxproj -> C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProj\ChainStoreProj\x64\Debug\ChainStoreProj.exe
+﻿  HelperFunctions.cpp
+C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProjectPart2\HelperFunctions.cpp(370,2): warning C4286: 'const AddEmployeeToNonRegularBranchException &': is caught by base class ('const std::runtime_error &') on line 365
+  ChainStoreProj.vcxproj -> C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProjectPart2\x64\Debug\ChainStoreProj.exe
