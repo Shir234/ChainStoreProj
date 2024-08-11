@@ -8,166 +8,136 @@ using namespace std;
 
 // Constructor
 RegularBranch::RegularBranch(const char* name, int maxNumDepartments, const char* address, int maxNumEmployees)
-    : Branch(name, maxNumDepartments), employees(nullptr), numEmployees(0), maxNumEmployees(maxNumEmployees), address(nullptr) 
+	: Branch(name, maxNumDepartments), employees(nullptr), numEmployees(0), maxNumEmployees(maxNumEmployees), address(nullptr)
 {
-    if(maxNumEmployees <=0)
-        throw InvalidMaxEmployeesException();
+	if (maxNumEmployees <= 0)
+		throw InvalidMaxEmployeesException();
 
-    setAddress(address);
-    employees = new Employee*[maxNumEmployees];
+	setAddress(address);
+	employees = new Employee * [maxNumEmployees];
 }
 
 // Copy constructor
 RegularBranch::RegularBranch(const RegularBranch& other)
-    : Branch(other), employees(nullptr), numEmployees(0), maxNumEmployees(0), address(nullptr) 
+	: Branch(other), employees(nullptr), numEmployees(0), maxNumEmployees(0), address(nullptr)
 {
-    try
-    {
-        setAddress(other.address);
-        maxNumEmployees = other.maxNumEmployees;
-        numEmployees = other.numEmployees;
-        employees = new Employee * [maxNumEmployees];
-        
-        for (int i = 0; i < numEmployees; i++)
-            employees[i] = new Employee(*other.employees[i]);   
-    }
-    catch (const InvalidNameException& e)
-    {
-        employees = nullptr; // avoid double deletion
-        numEmployees = 0;
-        maxNumEmployees = 0;
-        throw; // Re-throw exception
-    }
-    catch (const bad_alloc& e)
-    {
-        if (employees)
-        {
-            for (int i = 0; i < numEmployees; ++i)
-                delete employees[i];
-            delete[] employees;
-            delete[] address;
-        }
-        throw MemoryAllocationException("Failed to allocate memory in copy c'tor");
-    }
-    catch (...)
-    {
-        if (employees)
-        {
-            for (int i = 0; i < numEmployees; ++i)
-                delete employees[i];
-            delete[] employees;
-            delete[] address;
-        }
-        throw;
-    }  
+	try
+	{
+		setAddress(other.address);
+		maxNumEmployees = other.maxNumEmployees;
+		numEmployees = other.numEmployees;
+		employees = new Employee * [maxNumEmployees];
+
+		for (int i = 0; i < numEmployees; i++)
+			employees[i] = new Employee(*other.employees[i]);
+	}
+	catch (const InvalidNameException& e)
+	{
+		employees = nullptr; // avoid double deletion
+		numEmployees = 0;
+		maxNumEmployees = 0;
+		throw; // Re-throw exception
+	}
+	catch (const bad_alloc& e)
+	{
+		if (employees)
+		{
+			for (int i = 0; i < numEmployees; ++i)
+				delete employees[i];
+			delete[] employees;
+			delete[] address;
+		}
+		throw MemoryAllocationException("Failed to allocate memory in copy c'tor");
+	}
+	catch (...)
+	{
+		if (employees)
+		{
+			for (int i = 0; i < numEmployees; ++i)
+				delete employees[i];
+			delete[] employees;
+			delete[] address;
+		}
+		throw;
+	}
 }
-    
+
 // Move constructor
 RegularBranch::RegularBranch(RegularBranch&& other) noexcept
-    : Branch(std::move(other)), employees(nullptr), numEmployees(0), maxNumEmployees(0), address(nullptr) 
+	: Branch(std::move(other)), employees(nullptr), numEmployees(0), maxNumEmployees(0), address(nullptr)
 {
-    *this = std::move(other); // Call move assignment operator
+	*this = std::move(other); // Call move assignment operator
 }
 
 // Destructor
-RegularBranch::~RegularBranch() 
+RegularBranch::~RegularBranch()
 {
-    cout << "\nREGULAR DTOR";
-    delete[] address;
-    cout << "\nAFTER address DELETE";
-    for (int i = 0; i < numEmployees; i++)
-        delete employees[i];
-    cout << "after employees delete\n";
+	delete[] address;
+	for (int i = 0; i < numEmployees; i++)
+		delete employees[i];
 
-    delete[] employees;
-    cout << "end of dtor\n";
+	delete[] employees;
 }
 
 // Copy assignment operator
-RegularBranch& RegularBranch::operator=(const RegularBranch& other) 
+RegularBranch& RegularBranch::operator=(const RegularBranch& other)
 {
-    if (this != &other) 
-    { 
-        RegularBranch temp(other);  // Create a temporary using copy constructor
-        // Swap the contents of temp with this
-        swap(maxNumEmployees, temp.maxNumEmployees);
-        swap(numEmployees, temp.numEmployees);
-        swap(employees, temp.employees);
-        swap(address, temp.address);
+	if (this != &other)
+	{
+		RegularBranch temp(other);  // Create a temporary using copy constructor
+		// Swap the contents of temp with this
+		swap(maxNumEmployees, temp.maxNumEmployees);
+		swap(numEmployees, temp.numEmployees);
+		swap(employees, temp.employees);
+		swap(address, temp.address);
 
-        // Call base class assignment operator
-        Branch::operator=(other);
-    }
-    return *this;
+		// Call base class assignment operator
+		Branch::operator=(other);
+	}
+	return *this;
 }
 
 // Move assignment operator
 RegularBranch& RegularBranch::operator=(RegularBranch&& other) noexcept
 {
-    if (this != &other) 
-    {
-        Branch::operator=(std::move(other)); // Call base class move assignment operator
-        std::swap(address, other.address);
-        std::swap(employees, other.employees);
-        std::swap(numEmployees, other.numEmployees);
-        std::swap(maxNumEmployees, other.maxNumEmployees);
-    }
-    return *this;
+	if (this != &other)
+	{
+		Branch::operator=(std::move(other)); // Call base class move assignment operator
+		std::swap(address, other.address);
+		std::swap(employees, other.employees);
+		std::swap(numEmployees, other.numEmployees);
+		std::swap(maxNumEmployees, other.maxNumEmployees);
+	}
+	return *this;
 }
 
 // Setter for address
 void RegularBranch::setAddress(const char* address)
 {
-    if (address == nullptr || address[0] == '\0')
-        throw InvalidNameException("Address cannot be null or empty");
+	if (address == nullptr || address[0] == '\0')
+		throw InvalidNameException("Address cannot be null or empty");
 
-    delete[] this->address;
-    this->address = new char[strlen(address) + 1];
-    strcpy(this->address, address);
+	delete[] this->address;
+	this->address = new char[strlen(address) + 1];
+	strcpy(this->address, address);
 }
 
 // Method to add an employee
 void RegularBranch::addEmployee(const Employee& employee)
 {
-    if (isEmployeeArrayFull())
-        throw EmployeeArrayFullException();
+	if (isEmployeeArrayFull())
+		throw EmployeeArrayFullException();
 
-    employees[numEmployees] = new Employee(employee);
-    numEmployees++;
+	employees[numEmployees] = new Employee(employee);
+	numEmployees++;
 
 }
 
-//// Method to remove an employee
-//void RegularBranch::removeEmployee(Employee& employee) 
-//{
-//    for (int i = 0; i < numEmployees; ++i) 
-//    {
-//        if (*employees[i] == employee) 
-//        {
-//            delete employees[i];
-//            // Shift elements to fill the gap
-//            for (int j = i; j < numEmployees - 1; ++j) 
-//                employees[j] = employees[j + 1];
-//            numEmployees--;
-//        }
-//    }
-//    throw DepartmentNotFoundException();
-//}
-
-//// Getter for employee
-//Employee* RegularBranch::getEmployee(int index) const
-//{
-//    if (index < 0 || index >= numEmployees)
-//        throw BranchIndexOutOfRangeException();
-//
-//    return employees[index];
-//}
-
 void RegularBranch::toOs(ostream& os) const
 {
-    os << "Address: " << address << endl;
-    os << "Number of employees: " << numEmployees << endl;
-    for (int i = 0; i < numEmployees; ++i)
-        os << "\t" << i + 1 << ") " << *employees[i]; // Employee has operator<<
+	os << "Address: " << address << endl;
+	os << "Number of employees: " << numEmployees << endl;
+	for (int i = 0; i < numEmployees; ++i)
+		os << "\t" << i + 1 << ") " << *employees[i]; // Employee has operator<<
 }
 

@@ -71,6 +71,32 @@ void displayMenu()
 		<< "9. Exit\n";
 }
 
+void displayWelcomeMsg()
+{
+	cout << "=============================================================================" << endl;
+	cout << "                       Welcome to Chain Store Manager!" << endl;
+	cout << "=============================================================================" << endl;
+	cout << "Dear user," << endl;
+	cout << "You are about to become a chain store manager." << endl;
+	cout << "You need to choose a name for your chain store and decide the maximum branches it can grow to." << endl;
+	cout << endl;
+	cout << "Once you've made these initial choices, you'll have access to a menu where you can:" << endl;
+	cout << "1. Create new branches (both regular and online)" << endl;
+	cout << "2. Establish departments within your branches" << endl;
+	cout << "3. Hire employees for your regular branches" << endl;
+	cout << "4. Add items to department's inventory" << endl;
+	cout << endl;
+	cout << "You'll also be able to view the status of your stores, departments, and inventory at any time." << endl;
+	cout << endl;
+	cout << "* IMPORTANT NOTE: Employees can only be added to regular branches, not online branches.*" << endl;
+	cout << endl;
+	cout << "As you navigate through the system, please follow the on-screen instructions carefully." << endl;
+	cout << endl;
+	cout << "Good luck, and enjoy managing your new chain store!" << endl;
+	cout << "=============================================================================" << endl;
+	cout << endl;
+}
+
 // Chain store operations
 void establishNetwork(ChainStore*& store)
 {
@@ -91,17 +117,17 @@ void establishNetwork(ChainStore*& store)
 		catch (InvalidMaxBranchesException& e)
 		{
 			cout << e.what() << endl;
-			cout << "Enter valid input..\n";
+			cout << "Enter valid number of branches..\n";
 		}
 		catch (InvalidNameException& e)
 		{
 			cout << e.what() << endl;
-			cout << "Enter valid input..\n";
+			cout << "Enter valid name for the chain store..\n";
 		}
 		catch (MemoryAllocationException& e)
 		{
 			cout << e.what() << endl;
-			cout << "Enter valid input..\n";
+			cout << "Error, try again..\n";
 		}
 		catch (...)
 		{
@@ -198,7 +224,7 @@ void addNewBranch(ChainStore*& store)
 			cout << e.what() << endl;
 			cout << "Branch was not added\n";
 		}
-		delete newBranch; // Clean up dynamically allocated memory
+		delete newBranch;
 	}
 }
 
@@ -257,7 +283,7 @@ void addDepartmentToBranch(ChainStore*& store)
 				cout << e.what() << endl;
 				cout << "Department was not added\n";
 			}
-			delete newDepartment; // Clean up dynamically allocated memory
+			delete newDepartment;
 		}
 	}
 	catch (const BranchNotFoundException& e)
@@ -355,10 +381,14 @@ void addEmployeeToBranch(ChainStore*& store)
 				cout << e.what() << endl;
 				cout << "Employee was not added\n";
 			}
-			delete employee; // Clean up dynamically allocated memory
+			delete employee;
 		}
 	}
 	catch (const BranchNotFoundException& e)
+	{
+		cout << e.what() << endl;
+	}
+	catch (const AddEmployeeToNonRegularBranchException& e)
 	{
 		cout << e.what() << endl;
 	}
@@ -366,10 +396,6 @@ void addEmployeeToBranch(ChainStore*& store)
 	{
 		cout << e.what() << endl;
 		cout << "Cannot add employee." << endl;
-	}
-	catch (const AddEmployeeToNonRegularBranchException& e)
-	{
-		cout << e.what() << endl;
 	}
 	catch (const invalid_argument& e)
 	{
@@ -435,7 +461,7 @@ void addItemToInventory(ChainStore*& store)
 		{
 			cout << "Unknown error occurred";
 		}
-		delete newItem; // Clean up the dynamically allocated memory
+		delete newItem;
 	}
 }
 
@@ -446,10 +472,17 @@ void removeItemFromInventory(ChainStore*& store)
 	if (!getBranchAndDepartment(store, selectedBranch, selectedDepartment))
 		return;
 
-	if (selectedDepartment->getNumItems() == 0)
-		throw InventoryEmptyException();
+	try
+	{
+		selectedDepartment->showInventory();
+	}
+	catch (const InventoryEmptyException& e)
+	{
+		cout << e.what() << endl;
+		cout << "Cannot remove item, back to menu" << endl;
+		return;
+	}
 
-	selectedDepartment->showInventory();
 	int max = selectedDepartment->getNumItems();
 	int itemIndex;
 	itemIndex = getValidIntegerInput("\n--------- Select item number to remove: ", 1, max);
@@ -518,6 +551,10 @@ void displayInventoryDetails(ChainStore*& store)
 	{
 		cout << e.what() << endl;
 	}
+	catch (const InventoryEmptyException& e)
+	{
+		cout << e.what() << endl;
+	}
 	catch (const runtime_error& e)
 	{
 		cout << e.what() << endl;
@@ -536,7 +573,6 @@ void displayChainStoreDetails(ChainStore*& store)
 
 void cleanupAndExit(ChainStore*& store)
 {
-	store->showBranchesArray();
 	cout << *store << "\n";
 	delete store;
 	cout << "Exiting program. Goodbye!" << endl;
@@ -578,10 +614,10 @@ Branch* getBranchFromStore(ChainStore*& store)
 
 	cout << "\n--------- Select a branch ---------" << endl;
 	store->showBranchesArray();
-	
+
 	Branch* selectedBranch = nullptr;
 	int attempts = 0;
-	
+
 	while (attempts < MAX_ITERATIONS_LOOPS)
 	{
 		int max = store->getNumBranches();
@@ -662,8 +698,9 @@ void runChainStoreSystem()
 {
 	try
 	{
+		displayWelcomeMsg();
 		ChainStore* store = nullptr;
-		establishNetwork(store);		//TRY CATCH FOR THIS
+		establishNetwork(store);
 		if (!store)
 			throw runtime_error("Failed to establish network, Store is null, Exiting..");
 
@@ -678,21 +715,11 @@ void runChainStoreSystem()
 			case 2: addDepartmentToBranch(store); break;
 			case 3: addEmployeeToBranch(store); break;
 			case 4: addItemToInventory(store); break;
-			case 5:
-				try
-				{
-					removeItemFromInventory(store);
-				}
-				catch (const InventoryEmptyException& e)
-				{
-					cout << e.what() << endl;
-				}
-				break;
+			case 5: removeItemFromInventory(store); break;
 			case 6: displayBranchDetails(store); break;
 			case 7: displayInventoryDetails(store); break;
 			case 8: displayChainStoreDetails(store); break;
-			case 9: cleanupAndExit(store);
-				return;
+			case 9: cleanupAndExit(store); return;
 			default:
 				cout << "Invalid choice. Please enter a number between 1 and 9.\n";
 				break;
@@ -709,7 +736,3 @@ void runChainStoreSystem()
 		return;
 	}
 }
-
-
-
-

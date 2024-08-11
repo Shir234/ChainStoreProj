@@ -24,6 +24,7 @@ int getValidIntegerInput(const char* prompt, int minValue = 0, int maxValue = 10
 
 // UI functions
 void displayMenu();
+void displayWelcomeMsg();
 
 // Chain store operations
 void establishNetwork(ChainStore*& store);
@@ -45,6 +46,5 @@ Branch* createBranch(int branchType, const char* name, int maxDepartments, const
 
 // Main system function
 void runChainStoreSystem();
-
 
 #endif // HELPER_FUNCTIONS_H

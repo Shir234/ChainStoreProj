@@ -1,3 +1,1 @@
-﻿  HelperFunctions.cpp
-C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProjectPart2\HelperFunctions.cpp(370,2): warning C4286: 'const AddEmployeeToNonRegularBranchException &': is caught by base class ('const std::runtime_error &') on line 365
-  ChainStoreProj.vcxproj -> C:\Users\shir6\OneDrive - Afeka College Of Engineering\שנה ה\סמסטר ב\סי++\פרויקט\ChainStoreProjectPart2\x64\Debug\ChainStoreProj.exe
+﻿

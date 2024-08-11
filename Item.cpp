@@ -8,96 +8,90 @@ using namespace std;
 // Constructor
 Item::Item(const char* name, int price) : name(nullptr), price(0)
 {
-    cout << "in item c'tor\n";
-    setName(name);
-    setPrice(price);
+	setName(name);
+	setPrice(price);
 }
 
 // Copy constructor
 Item::Item(const Item& other) : name(nullptr), price(0)
 {
-    cout << "in item copy c'tor\n";
-    *this = other; // Call copy assignment operator
+	*this = other; // Call copy assignment operator
 }
 
 // Move constructor
 Item::Item(Item&& other) noexcept : name(nullptr), price(0)
 {
-    cout << "in item move c'tor\n";
-    *this = std::move(other); // Call move assignment operator
+	*this = std::move(other); // Call move assignment operator
 }
 
 // Destructor
 Item::~Item()
 {
-    cout << "in item d'tor\n";
-    delete[] name;
+	delete[] name;
 }
 
 // Copy assignment operator
 Item& Item::operator=(const Item& other)
 {
-    cout << "in item operator =\n";
-    if (this != &other) 
-    {
-        try
-        {
-            setName(other.name);
-            setPrice(other.price);
+	if (this != &other)
+	{
+		try
+		{
+			setName(other.name);
+			setPrice(other.price);
 
-        }
-        catch (...)
-        {
-            delete[] name;
-            name = nullptr;
-            price = 0;
-            throw;
-        }
-    }
-    return *this;
+		}
+		catch (...)
+		{
+			delete[] name;
+			name = nullptr;
+			price = 0;
+			throw;
+		}
+	}
+	return *this;
 }
 
 // Move assignment operator
 Item& Item::operator=(Item&& other) noexcept
 {
-    cout << "in item move operator =\n";
-    if (this != &other) 
-    {
-        std::swap(name, other.name);
-        this->price = other.price;
-    }
-    return *this;
+	if (this != &other)
+	{
+		std::swap(name, other.name);
+		this->price = other.price;
+	}
+	return *this;
 }
 
 // Setter for name
-void Item::setName(const char* name) 
+void Item::setName(const char* name)
 {
-    if (name == nullptr || name[0] == '\0')
-        throw InvalidNameException("Item name cannot be null or empty");
+	if (name == nullptr || name[0] == '\0')
+		throw InvalidNameException("Item name cannot be null or empty");
 
-    delete[] this->name;
-    this->name = new char[strlen(name) + 1];
-    strcpy(this->name, name);
+	delete[] this->name;
+	this->name = new char[strlen(name) + 1];
+	strcpy(this->name, name);
 }
 
 // Setter for price
 void Item::setPrice(int price)
 {
-    if (price <= 0) 
-        throw InvalidItemPriceException();
+	if (price <= 0)
+		throw InvalidItemPriceException();
 
-    this->price = price;
+	this->price = price;
 }
 
 // Equality operator
 bool Item::operator==(const Item& other) const
 {
-    return (strcmp(getName(), other.getName()) == 0 && getPrice() == other.getPrice());
+	return (strcmp(getName(), other.getName()) == 0 && getPrice() == other.getPrice());
 }
 
 
 ostream& operator<<(ostream& os, const Item& item)
 {
-    os << "Item: " << item.name << "\tPrice: $: " << item.price << "\n";
-    return os;
+	os << "Item: " << item.name << "\tPrice: $: " << item.price << "\n";
+	return os;
 }

@@ -139,8 +139,6 @@
     <ClCompile Include="OnlineRegularBranch.cpp" />
     <ClCompile Include="Person.cpp" />
     <ClCompile Include="RegularBranch.cpp" />
-    <ClCompile Include="temp.cpp" />
-    <ClCompile Include="tempMainForStoring.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Branch.h" />
